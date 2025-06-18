@@ -38,6 +38,15 @@
   </url>
   
   <url>
+    <loc>https://southernfish.github.io/2025/06/18/hello-thread/</loc>
+    
+    <lastmod>2025-06-18</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://southernfish.github.io/2025/06/18/java-base/</loc>
     
     <lastmod>2025-06-18</lastmod>
@@ -130,6 +139,13 @@
   
   <url>
     <loc>https://southernfish.github.io/tags/hexo/</loc>
+    <lastmod>2025-06-18</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://southernfish.github.io/tags/%E5%A4%9A%E7%BA%BF%E7%A8%8B/</loc>
     <lastmod>2025-06-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
