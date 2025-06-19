@@ -2,42 +2,6 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>https://southernfish.github.io/2025/06/19/java-business/</loc>
-    
-    <lastmod>2025-06-19</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://southernfish.github.io/2025/06/19/java-reflection/</loc>
-    
-    <lastmod>2025-06-19</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://southernfish.github.io/2025/06/18/java-thread/</loc>
-    
-    <lastmod>2025-06-19</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://southernfish.github.io/about/index.html</loc>
-    
-    <lastmod>2025-06-19</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>https://southernfish.github.io/2022/08/13/Test-4/</loc>
     
     <lastmod>2025-06-19</lastmod>
@@ -75,6 +39,96 @@
   
   <url>
     <loc>https://southernfish.github.io/2025/06/18/java-base/</loc>
+    
+    <lastmod>2025-06-19</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://southernfish.github.io/2025/06/19/java-business/</loc>
+    
+    <lastmod>2025-06-19</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://southernfish.github.io/2025/06/19/java-design-patterns/</loc>
+    
+    <lastmod>2025-06-19</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://southernfish.github.io/2022/08/10/java-exceptions/</loc>
+    
+    <lastmod>2025-06-19</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://southernfish.github.io/2025/06/19/java-network/</loc>
+    
+    <lastmod>2025-06-19</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://southernfish.github.io/2022/08/10/java-object-copy/</loc>
+    
+    <lastmod>2025-06-19</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://southernfish.github.io/2025/06/19/java-oop/</loc>
+    
+    <lastmod>2025-06-19</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://southernfish.github.io/2025/06/19/java-reflection/</loc>
+    
+    <lastmod>2025-06-19</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://southernfish.github.io/2025/06/18/java-thread/</loc>
+    
+    <lastmod>2025-06-19</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://southernfish.github.io/2025/06/19/java-web/</loc>
+    
+    <lastmod>2025-06-19</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://southernfish.github.io/about/index.html</loc>
     
     <lastmod>2025-06-19</lastmod>
     
@@ -163,7 +217,49 @@
   </url>
   
   <url>
+    <loc>https://southernfish.github.io/tags/java/</loc>
+    <lastmod>2025-06-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>https://southernfish.github.io/tags/%E5%A4%A7%E6%89%B9%E9%87%8F%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/</loc>
+    <lastmod>2025-06-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://southernfish.github.io/tags/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/</loc>
+    <lastmod>2025-06-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://southernfish.github.io/tags/Exceptions/</loc>
+    <lastmod>2025-06-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://southernfish.github.io/tags/%E7%BD%91%E7%BB%9C/</loc>
+    <lastmod>2025-06-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://southernfish.github.io/tags/Object/</loc>
+    <lastmod>2025-06-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://southernfish.github.io/tags/OOP/</loc>
     <lastmod>2025-06-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -184,7 +280,7 @@
   </url>
   
   <url>
-    <loc>https://southernfish.github.io/tags/java/</loc>
+    <loc>https://southernfish.github.io/tags/web/</loc>
     <lastmod>2025-06-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -229,6 +325,13 @@
   
   <url>
     <loc>https://southernfish.github.io/categories/java/</loc>
+    <lastmod>2025-06-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://southernfish.github.io/categories/Java/</loc>
     <lastmod>2025-06-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
