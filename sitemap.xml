@@ -2,7 +2,25 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://southernfish.github.io/about/index.html</loc>
+    
+    <lastmod>2025-06-19</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://southernfish.github.io/2022/08/13/Test-4/</loc>
+    
+    <lastmod>2025-06-19</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://southernfish.github.io/2022/08/11/Test-1/</loc>
     
     <lastmod>2025-06-19</lastmod>
     
@@ -20,7 +38,25 @@
   </url>
   
   <url>
+    <loc>https://southernfish.github.io/2025/06/19/SpringMvc/</loc>
+    
+    <lastmod>2025-06-19</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://southernfish.github.io/2025/06/18/hexo-blog-build/</loc>
+    
+    <lastmod>2025-06-19</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://southernfish.github.io/2025/06/19/hibernate/</loc>
     
     <lastmod>2025-06-19</lastmod>
     
@@ -119,7 +155,7 @@
   </url>
   
   <url>
-    <loc>https://southernfish.github.io/about/index.html</loc>
+    <loc>https://southernfish.github.io/2025/06/19/mybatis/</loc>
     
     <lastmod>2025-06-19</lastmod>
     
@@ -128,7 +164,16 @@
   </url>
   
   <url>
-    <loc>https://southernfish.github.io/2022/08/11/Test-1/</loc>
+    <loc>https://southernfish.github.io/2025/06/19/SpringBoot/</loc>
+    
+    <lastmod>2025-06-19</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://southernfish.github.io/2025/06/19/SpringCloud/</loc>
     
     <lastmod>2025-06-19</lastmod>
     
@@ -217,6 +262,34 @@
   </url>
   
   <url>
+    <loc>https://southernfish.github.io/tags/Spring-Boot/</loc>
+    <lastmod>2025-06-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://southernfish.github.io/tags/Spring-Cloud/</loc>
+    <lastmod>2025-06-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://southernfish.github.io/tags/Spring-MVC/</loc>
+    <lastmod>2025-06-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://southernfish.github.io/tags/Hibernate/</loc>
+    <lastmod>2025-06-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>https://southernfish.github.io/tags/java/</loc>
     <lastmod>2025-06-19</lastmod>
     <changefreq>weekly</changefreq>
@@ -286,6 +359,13 @@
     <priority>0.2</priority>
   </url>
   
+  <url>
+    <loc>https://southernfish.github.io/tags/MyBatis/</loc>
+    <lastmod>2025-06-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
 
   
   <url>
@@ -324,7 +404,35 @@
   </url>
   
   <url>
+    <loc>https://southernfish.github.io/categories/%E6%A1%86%E6%9E%B6/</loc>
+    <lastmod>2025-06-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://southernfish.github.io/categories/%E6%A1%86%E6%9E%B6/spring/</loc>
+    <lastmod>2025-06-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://southernfish.github.io/categories/%E6%A1%86%E6%9E%B6/Hibernate/</loc>
+    <lastmod>2025-06-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
     <loc>https://southernfish.github.io/categories/java/</loc>
+    <lastmod>2025-06-19</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://southernfish.github.io/categories/%E6%A1%86%E6%9E%B6/MyBatis/</loc>
     <lastmod>2025-06-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
