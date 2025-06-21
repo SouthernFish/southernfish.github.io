@@ -1,7 +1,6 @@
 https://southernfish.github.io/2025/06/19/mybatis/
 https://southernfish.github.io/about/index.html
 https://southernfish.github.io/2022/08/10/hello-world/
-https://southernfish.github.io/2025/06/21/front-end-webpack/
 https://southernfish.github.io/2025/06/21/front-end-websocket/
 https://southernfish.github.io/2025/06/18/hexo-blog-build/
 https://southernfish.github.io/2025/06/19/hibernate/
@@ -24,6 +23,7 @@ https://southernfish.github.io/2025/06/19/SpringMvc/
 https://southernfish.github.io/2025/06/21/docker-commands/
 https://southernfish.github.io/2025/06/20/front-end-base/
 https://southernfish.github.io/2025/06/21/front-end-javascript/
+https://southernfish.github.io/2025/06/21/front-end-webpack/
 https://southernfish.github.io/2025/06/20/database-redis/
 https://southernfish.github.io/2025/06/19/database-sql/
 https://southernfish.github.io/2025/06/21/docker/
