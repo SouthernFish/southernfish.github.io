@@ -1,0 +1,202 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>WebPack | Southern Fish</title><meta name="keywords" content="WebPack"><meta name="author" content="Southern Fish"><meta name="copyright" content="Southern Fish"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="WebPack">
+<meta property="og:type" content="article">
+<meta property="og:title" content="WebPack">
+<meta property="og:url" content="https://southernfish.github.io/2025/06/21/front-end-webpack/index.html">
+<meta property="og:site_name" content="Southern Fish">
+<meta property="og:description" content="WebPack">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://southernfish.github.io/img/article/article6.png">
+<meta property="article:published_time" content="2025-06-21T04:55:36.000Z">
+<meta property="article:modified_time" content="2025-06-21T08:05:35.151Z">
+<meta property="article:author" content="Southern Fish">
+<meta property="article:tag" content="WebPack">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://southernfish.github.io/img/article/article6.png"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://southernfish.github.io/2025/06/21/front-end-webpack/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//fonts.googleapis.com" crossorigin=""/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Titillium+Web&amp;display=swap" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":200},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: true
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'WebPack',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2025-06-21 16:05:35'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 5.4.2"><link rel="alternate" href="/atom.xml" title="Southern Fish" type="application/atom+xml">
+</head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/avatar.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">29</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">28</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">12</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 文章</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于我</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/img/article/article6.png')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Southern Fish</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 文章</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于我</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">WebPack</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2025-06-21T04:55:36.000Z" title="发表于 2025-06-21 12:55:36">2025-06-21</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-06-21T08:05:35.151Z" title="更新于 2025-06-21 16:05:35">2025-06-21</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/front-end/">front end</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">968</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>3分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="WebPack"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><p>webpack 是代码编译工具，有入口、出口、loader 和<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E6%8F%92%E4%BB%B6/369160?fromModule=lemma_inlink">插件</a>。webpack 是一个用于现代 JavaScript 应用程序的静态模块打包工具。当 webpack 处理应用程序时，它会在内部构建一个依赖图(dependency graph)，此依赖图对应映射到项目所需的每个模块，并生成一个或多个 <em>bundle</em>。</p>
+<h2 id="什么是-webpack">什么是 webpack ?</h2>
+<p><code>webpack</code> 是一个现代 JavaScript 应用程序的<strong>静态模块打包器</strong><br>
+<code>webpack</code> 可以<strong>递归的打包项目中所有模块</strong>（递归：指定一个入口，分析模块的依赖，它会递归的查找所有相关的依赖）</p>
+<h2 id="核心概念">核心概念</h2>
+<p><code>Entry</code>：配置入口文件。webpack 会找出有哪些模块是入库的依赖 ， 相关的依赖会被处理，输出到 bundles 的文件中<br>
+<code>Output</code>：output 属性会告诉 webpack 它<strong>所创建的bundles 如何命名，默认值为 ./dist</strong><br>
+<code>module</code>：模块。Webpack 里一切皆模块，一个模块对应一个文件。Webpack 从配置的 Entry 开始递归找出所有依赖的模块。<br>
+<code>Chunk</code>：代码块。一个 chunk 由多个模块组合而成，用于代码的合并和分割。<br>
+<code>loader</code>：模块转换器。用于将模块的原内容按照需要转成你想要的内容<br>
+<strong>babel 和 webpack的区别：</strong></p>
+<ul>
+<li><code>babel</code>：JS新语法编译工具，只关心语法，不关心模块化</li>
+<li><code>webpack</code>：打包构建工具，是多个 Loader plugin 的集合</li>
+</ul>
+<h2 id="webpack与grunt、gulp的不同？">webpack与grunt、gulp的不同？</h2>
+<p>Webpack 与 Gulp、Grunt 没有什么可比性。<br>
+Webpack 可以看作<strong>模块打包机</strong>，通过分析项目结构找到js模块及一些浏览器不能直接运行的语言（<code>scss typescript</code>）<br>
+<strong><code>Grunt</code> 和 <code>Gulp</code> 的工作方式</strong>：在一个<strong>配置文件</strong>中，指明对某些文件进行类似编译，组合，压缩等<strong>任务的具体步骤，工具之后可以自动替你完成这些任务</strong>。<br>
+<strong><code>Webpack</code> 的工作方式</strong>：把项目当做一个整体，通过一个<strong>给定主文件</strong>（如：index.js），Webpack 将这个文件<strong>开始找到你的项目的所有依赖文件，使用 <code>loaders</code> 处理它们，最后打包为一个（或多个）浏览器可识别的 <code>JavaScript</code> 文件</strong>。</p>
+<h2 id="webpack有哪些优缺点">webpack有哪些优缺点</h2>
+<p><strong>优点：</strong></p>
+<ul>
+<li>可通过 <code>plugin</code> 扩展</li>
+<li>使用场景不局限于 <code>web</code> 开发</li>
+<li>良好的开发体验</li>
+</ul>
+<p>**缺点：**只能用于采用模块化开发的项目</p>
+<h2 id="webpack打包原理？">webpack打包原理？</h2>
+<p><strong>把所有依赖打包成一个 bundle.js 文件，通过代码分割成单元片段并按需加载</strong>。<br>
+Webpack 是一个模块打包器，grunt 和 gulp 是执行任务的，<br>
+webpack 递归的打包项目中所有模块，最终生成几个打包后的文件，与其他工具最大的不同在于它<strong>支持 code-splitting（代码分割），模块化（AMD，ESM，CommonJS）开发，全局的分析工具（分析整个项目引入的模块）</strong></p>
+<h2 id="什么是模块热跟新-？-有什么优点？">什么是模块热跟新 ？ 有什么优点？</h2>
+<p><strong>模块热更新：<strong>是webpack的一个功能，可以使</strong>代码修改后不用刷新浏览器就可更新内容</strong>。 是高级版的自动刷新浏览器（将代码重新执行一遍而不是整体刷新浏览器）<br>
+**优点：**只更新变更内容，以节省开发时间。<strong>调整样式更加快速</strong>，几乎相当于在浏览器中更改样式</p>
+<h2 id="如何利用webpack来优化前端性能？">如何利用webpack来优化前端性能？</h2>
+<p><strong>代码压缩、按需加载、使用 <code>Dll</code> 进行分包</strong><br>
+正常情况下 <code>node_module</code> 会被打包成一个文件，使用 <code>dll</code> 技术，可<strong>将不常更新的框架和库进行单独打包，生成一个chunk</strong></p>
+<h2 id="webpack-为什么启动速度慢">webpack 为什么启动速度慢</h2>
+<p>它是将所有模块构建完了，再去启动项目的</p>
+<h2 id="如何提高webpack的构建速度？">如何提高webpack的构建速度？</h2>
+<ul>
+<li>减少需要构建的文件或代码</li>
+<li>多进程打包 <code>thread-loader</code>，将其放在费时的 <code>loader</code> 之前</li>
+</ul>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="https://southernfish.github.io">Southern Fish</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://southernfish.github.io/2025/06/21/front-end-webpack/">https://southernfish.github.io/2025/06/21/front-end-webpack/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://southernfish.github.io" target="_blank">Southern Fish</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/WebPack/">WebPack</a></div><div class="post_share"><div class="social-share" data-image="/img/article/article6.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2025/06/21/front-end-javascript/"><img class="prev-cover" src="/img/article/article2.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">JavaScript</div></div></a></div><div class="next-post pull-right"><a href="/2025/06/21/docker/"><img class="next-cover" src="/img/article/article2.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">Docker</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Southern Fish</div><div class="author-info__description"></div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">29</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">28</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">12</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/SouthernFish" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="/1002721576@qq.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF-webpack"><span class="toc-number">1.</span> <span class="toc-text">什么是 webpack ?</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5"><span class="toc-number">2.</span> <span class="toc-text">核心概念</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#webpack%E4%B8%8Egrunt%E3%80%81gulp%E7%9A%84%E4%B8%8D%E5%90%8C%EF%BC%9F"><span class="toc-number">3.</span> <span class="toc-text">webpack与grunt、gulp的不同？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#webpack%E6%9C%89%E5%93%AA%E4%BA%9B%E4%BC%98%E7%BC%BA%E7%82%B9"><span class="toc-number">4.</span> <span class="toc-text">webpack有哪些优缺点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#webpack%E6%89%93%E5%8C%85%E5%8E%9F%E7%90%86%EF%BC%9F"><span class="toc-number">5.</span> <span class="toc-text">webpack打包原理？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E6%A8%A1%E5%9D%97%E7%83%AD%E8%B7%9F%E6%96%B0-%EF%BC%9F-%E6%9C%89%E4%BB%80%E4%B9%88%E4%BC%98%E7%82%B9%EF%BC%9F"><span class="toc-number">6.</span> <span class="toc-text">什么是模块热跟新 ？ 有什么优点？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E5%88%A9%E7%94%A8webpack%E6%9D%A5%E4%BC%98%E5%8C%96%E5%89%8D%E7%AB%AF%E6%80%A7%E8%83%BD%EF%BC%9F"><span class="toc-number">7.</span> <span class="toc-text">如何利用webpack来优化前端性能？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#webpack-%E4%B8%BA%E4%BB%80%E4%B9%88%E5%90%AF%E5%8A%A8%E9%80%9F%E5%BA%A6%E6%85%A2"><span class="toc-number">8.</span> <span class="toc-text">webpack 为什么启动速度慢</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E6%8F%90%E9%AB%98webpack%E7%9A%84%E6%9E%84%E5%BB%BA%E9%80%9F%E5%BA%A6%EF%BC%9F"><span class="toc-number">9.</span> <span class="toc-text">如何提高webpack的构建速度？</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2025/06/21/front-end-websocket/" title="WebSocket"><img src="/img/article/article6.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="WebSocket"/></a><div class="content"><a class="title" href="/2025/06/21/front-end-websocket/" title="WebSocket">WebSocket</a><time datetime="2025-06-21T05:33:36.000Z" title="发表于 2025-06-21 13:33:36">2025-06-21</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/06/21/docker-commands/" title="Docker"><img src="/img/article/article1.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Docker"/></a><div class="content"><a class="title" href="/2025/06/21/docker-commands/" title="Docker">Docker</a><time datetime="2025-06-21T04:55:36.000Z" title="发表于 2025-06-21 12:55:36">2025-06-21</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/06/21/front-end-javascript/" title="JavaScript"><img src="/img/article/article2.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="JavaScript"/></a><div class="content"><a class="title" href="/2025/06/21/front-end-javascript/" title="JavaScript">JavaScript</a><time datetime="2025-06-21T04:55:36.000Z" title="发表于 2025-06-21 12:55:36">2025-06-21</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/06/21/front-end-webpack/" title="WebPack"><img src="/img/article/article6.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="WebPack"/></a><div class="content"><a class="title" href="/2025/06/21/front-end-webpack/" title="WebPack">WebPack</a><time datetime="2025-06-21T04:55:36.000Z" title="发表于 2025-06-21 12:55:36">2025-06-21</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/06/21/docker/" title="Docker"><img src="/img/article/article2.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Docker"/></a><div class="content"><a class="title" href="/2025/06/21/docker/" title="Docker">Docker</a><time datetime="2025-06-21T04:55:36.000Z" title="发表于 2025-06-21 12:55:36">2025-06-21</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url('/img/article/article6.png')"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2025 By Southern Fish</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><script>var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',preloader.endLoading())</script><div class="js-pjax"></div><canvas class="fireworks" mobile="true"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/fireworks.min.js"></script><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="true" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-nest.min.js"></script><script id="click-heart" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/click-heart.min.js" async="async" mobile="true"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body></html>
