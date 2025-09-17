@@ -1,0 +1,446 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>MySQL数据库-表设计优化、读写分离与分库分表 | Southern Fish</title><meta name="keywords" content="MySQL"><meta name="author" content="Southern Fish"><meta name="copyright" content="Southern Fish"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="‌数据库系统优化是通过调整数据库结构、参数及应用程序以提升系统性能的技术，目标是将低效SQL语句转换为高效等效语句。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MySQL数据库-表设计优化、读写分离与分库分表">
+<meta property="og:url" content="https://southernfish.github.io/pages/database/db-mysql-5-sharding/index.html">
+<meta property="og:site_name" content="Southern Fish">
+<meta property="og:description" content="‌数据库系统优化是通过调整数据库结构、参数及应用程序以提升系统性能的技术，目标是将低效SQL语句转换为高效等效语句。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://southernfish.github.io/img/article/article6.png">
+<meta property="article:published_time" content="2025-07-26T11:30:36.000Z">
+<meta property="article:modified_time" content="2025-09-17T07:51:48.701Z">
+<meta property="article:author" content="Southern Fish">
+<meta property="article:tag" content="MySQL">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://southernfish.github.io/img/article/article6.png"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://southernfish.github.io/pages/database/db-mysql-5-sharding/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//fonts.googleapis.com" crossorigin=""/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Titillium+Web&amp;display=swap" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":200},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: true
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'MySQL数据库-表设计优化、读写分离与分库分表',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2025-09-17 15:51:48'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 5.4.2"><link rel="alternate" href="/atom.xml" title="Southern Fish" type="application/atom+xml">
+</head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/avatar.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">87</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">34</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">16</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 文章</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于我</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/img/article/article6.png')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Southern Fish</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 文章</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于我</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">MySQL数据库-表设计优化、读写分离与分库分表</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2025-07-26T11:30:36.000Z" title="发表于 2025-07-26 19:30:36">2025-07-26</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-09-17T07:51:48.701Z" title="更新于 2025-09-17 15:51:48">2025-09-17</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Database/">Database</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">6.4k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>19分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="MySQL数据库-表设计优化、读写分离与分库分表"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><p>数据库系统优化是通过调整数据库结构、参数及应用程序以提升系统性能的技术，核心目标是将低效SQL语句转换为高效等效语句。人工智能自动优化技术通过重写SQL语句实现性能提升。优化技术演变历经三代工具：第一代解析执行计划，第二代推荐索引优化，第三代提出语法改进建议。优化策略贯穿数据库生命周期，其中设计阶段优化成本最低且收益最大。</p>
+<blockquote>
+<p>参考文章：</p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_40991313/article/details/139088747">【MySQL调优】如何进行MySQL调优？从参数,数据,建模,索引,SQL语句等方向，三万字详细解读MySQL的性能优化方案（2024版）</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_40991313/article/details/133797658">一篇文章搞懂MySQL的分库分表，从拆分场景、目标评估、拆分方案、不停机迁移、一致性补偿等方面详细阐述MySQL数据库的分库分表方案</a></p>
+</blockquote>
+<h1 id="表设计优化"><a href="#表设计优化" class="headerlink" title="表设计优化"></a>表设计优化</h1><h2 id="混合业务分表、冷热数据分表"><a href="#混合业务分表、冷热数据分表" class="headerlink" title="混合业务分表、冷热数据分表"></a>混合业务分表、冷热数据分表</h2><p>例如把一个大的任务表，分离成任务表和历史任务表，任务表里任务完成后移动到历史任务表。任务表是热数据，历史任务表是冷数据，提高查询性能。</p>
+<p><strong>混合业务分表：</strong></p>
+<p>根据业务逻辑，将不同的业务数据分开存储在不同的表中。每个业务模块的数据单独存储，减少了单表的大小和查询的复杂度。</p>
+<ul>
+<li><strong>示例：</strong>将一个大的日志表，拆分成交易日志表、操作日志表、登录日志表等。这些要在项目设计期间就根据预估的数据量进行拆分。</li>
+</ul>
+<p><strong>冷热数据分表：</strong></p>
+<p>将频繁访问的“热数据”和不常访问的“冷数据”分开存储。这种策略有助于提高热数据的查询性能，并且在存储和备份方面更加灵活。</p>
+<ul>
+<li><strong>示例1：</strong>把一个大的任务表，分离成任务表和历史任务表，任务表里任务完成后移动到历史任务表。任务表是热数据，历史任务表是冷数据，提高查询性能。</li>
+<li><strong>示例2：</strong>或者将日志表分成日志表和历史日志表，使用定时任务将三个月前的日志都迁移到历史日志表，用户查看操作记录时，默认只显示近三个月的数据，从而提高性能。</li>
+</ul>
+<h2 id="联合查询改为中间关系表"><a href="#联合查询改为中间关系表" class="headerlink" title="联合查询改为中间关系表"></a>联合查询改为中间关系表</h2><p>例如属性表和属性分组表，不使用连接查询，使用“属性-属性分组表”存储每条属性与“属性关系”的id。</p>
+<p>对于复杂的数据库设计，使用关系表是一种常见的方法，特别是在多对多的关系中，例如学生表和课程表、商品表和商品属性表、用户和角色表、作者和书籍表、部门和人员表。</p>
+<p><strong>示例：</strong> </p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"># 部门表 (departments)</span><br><span class="line">departments(department_id, department_name)</span><br><span class="line"># 人员表 (employees)</span><br><span class="line">employees(employee_id, employee_name)</span><br><span class="line"># 部门员工关联表 (department_employees)</span><br><span class="line">department_employees(id, department_id, employee_id)</span><br><span class="line"># department_id：外键，指向 departments 表；employee_id：外键，指向 employees 表</span><br></pre></td></tr></table></figure>
+
+<p><strong>关系表的优点：</strong></p>
+<ul>
+<li><strong>多对多关系：</strong>通过中间表可以管理多对多的映射关系。</li>
+<li><strong>支持扩展：</strong>关系表可以添加额外的字段来描述关系的属性。</li>
+<li><strong>提高查询性能：</strong>减少表连接的次数，提高查询性能。</li>
+</ul>
+<h2 id="遵循三个范式"><a href="#遵循三个范式" class="headerlink" title="遵循三个范式"></a>遵循三个范式</h2><p>每个属性不可再分、表必须有且只有一个主键、非主键列必须直接依赖于主键</p>
+<h2 id="字段建议非空约束"><a href="#字段建议非空约束" class="headerlink" title="字段建议非空约束"></a>字段建议非空约束</h2><ol>
+<li>可能查询出现空指针问题；</li>
+<li>导致聚合函数不准确，因为它会忽略null</li>
+<li>不能用“=”判断，只能用is null判断；</li>
+<li>null和其他值运算只能是null，可能让你不小心把它当成0；</li>
+<li>null值比空字符更占用空间，空值长度是0，null长度是1bit；</li>
+<li>不覆盖索引情况下，is not null无法用索引</li>
+</ol>
+<h2 id="反范式：使用冗余字段"><a href="#反范式：使用冗余字段" class="headerlink" title="反范式：使用冗余字段"></a>反范式：使用冗余字段</h2><p>虽然列字段不能太多，但为查询效率可增加冗余字段。</p>
+<p><strong>反范式：</strong>为提高查询效率，可添加不常更新的字段为冗余字段。</p>
+<p>反范式化是数据库设计的一种策略，通过在设计中引入冗余数据来提高查询性能，简化查询操作，或满足其他业务需求。</p>
+<p><strong>使用场景：</strong></p>
+<p>将多读少写的字段，增加为冗余字段，从而不再需要每次都连表查询这个字段。</p>
+<blockquote>
+<p><strong>注意：</strong></p>
+<p>增加冗余字段后，当这个冗余字段对应的数据改动后，必须同步更改这个冗余字段。</p>
+<p>例如成绩表除了有student_id字段外，增加冗余字段student_name，因为学生名基本不会变化，但在修改姓名的接口里，修改学生名后要同步修改成绩表的student_name字段。</p>
+</blockquote>
+<h2 id="数据类型优化"><a href="#数据类型优化" class="headerlink" title="数据类型优化"></a>数据类型优化</h2><ol>
+<li><p><strong>整数类型</strong></p>
+<p>考虑好数值范围，前期可以使用<code>int</code>保证稳定性。非负数类型要用UNSIGNED；同样字节数，存储的数值范围更大。主键一般使用<code>bigint</code>，布尔类型<code>tinint</code></p>
+</li>
+<li><p><strong>能整数就不要用文本类型：</strong>跟文本类型数据相比，大整数往往占用更少的存储空间。</p>
+</li>
+<li><p><strong>避免使用TEXT、BLOB数据类</strong></p>
+<p>这两个大数据类型，排序时不能使用临时内存表，只能使用磁盘临时表，效率很差，建议别用，或分表到单独扩展表里。LongBlob类型能存储4G文件；</p>
+</li>
+<li><p><strong>避免使用枚举类型：</strong>排序很慢。</p>
+</li>
+<li><p><strong>使用TIMESTAMP存储时间：</strong></p>
+<p>TIMESTAMP使用4字节，DATETIME使用8个字节，同时TIMESTAMP具有自动赋值以及自动更新的特性。 缺点是只能存到2038年，MySQL5.6.4版本可以参数配置，自动修改它为BIGINT类型。</p>
+</li>
+<li><p><strong>DECIMAL存浮点数</strong></p>
+<p>Decimal类型为精准浮点数，在计算时不会丢失精度，尤其是财务相关的金融类数据。占用空间由定义的宽度决定，每4个字节可以存储9位数字，并且小数点要占用一个字节。可用于存储比bigint更大的整型数据。 </p>
+</li>
+</ol>
+<hr>
+<h1 id="读写分离"><a href="#读写分离" class="headerlink" title="读写分离"></a>读写分离</h1><p><strong>读写分离</strong>：读写分离能有效提高查询性能。读写分离基于MySQL的主从同步，一台主库负责写，多台从库负责读，每次主库发生写操作后，通过binlog和relay log，将修改操作同步到从库，从而保持主库和从库的数据一致性。</p>
+<p><strong>主从同步：</strong>一台或多台MySQL数据库(slave，即从库)从另一台NySQL数据库（master，即主库）进行日志的复制，然后再解析日志并应用到自身，最终实现从库的数据和主库的数据保持一致。MySQL主从复制是NySQL数据库自带功能，无需借助第三方工具。</p>
+<p><strong>主从同步实现步骤：</strong> </p>
+<ol>
+<li><strong>主服务器</strong>把数据更改记录到<strong>二进制日志</strong>（binlog，记录改不记录读，用于数据复制和数据恢复）中；</li>
+<li><strong>从服务器</strong>异步近似实时地把主服务器的二进制日志<strong>复制到</strong>自己的<strong>中继日志</strong>（relay log）中；</li>
+<li><strong>从服务器重做</strong>中继日志中的操作，把更改应用到自己的数据库上，以达到数据的最终一致性。</li>
+</ol>
+<p><strong>主从同步的延时问题：</strong></p>
+<ul>
+<li><p><strong>延时问题：</strong>是主服务器压力大导致的复制延时问题。</p>
+</li>
+<li><p><strong>解决方案</strong>：</p>
+<ul>
+<li><strong>网络带宽优化：</strong>如果是网络延时问题，可以通过增大服务器的带宽解决。</li>
+<li><strong>硬件调优：</strong>如果是因为硬件配置差导致同步延时，可以通过提升服务器配置解决。</li>
+</ul>
+</li>
+<li><p><strong>参数调优：</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[mysqld]</span><br><span class="line"><span class="comment"># 多线程复制（MySQL 5.7及以上版本）：设置并行线程数</span></span><br><span class="line">slave_parallel_workers = 4  </span><br><span class="line"><span class="comment"># 开启半同步复制（MySQL 5.5及以上版本）</span></span><br><span class="line">rpl_semi_sync_master_enabled = 1</span><br><span class="line">rpl_semi_sync_slave_enabled = 1</span><br><span class="line"><span class="comment"># 同步延时时间：1秒超时。如果频繁写，则适当缩小；如果频繁读少写，则适当增大，以降低服务器压力</span></span><br><span class="line">rpl_semi_sync_master_timeout = 1000  </span><br></pre></td></tr></table></figure></li>
+<li><p><strong>缩小事务粒度：</strong>一些代码中直接在整个Controller或者整个Service方法上加个@Transcational，而整个业务中其实只有一小段需要保持事务，这样是很影响性能的，因为事务不是那个，MySQL的连接会一直被占用，对数据库的压力很大。</p>
+<p><strong>解决方案：</strong>减小代码中事务的粒度，例如将大事务拆解成小事务，将其中的一些查询操作脱离出去，只在写操作的方法中加事务；</p>
+</li>
+</ul>
+<p><strong>复制原理：</strong> </p>
+<ul>
+<li><strong>主库二进制日志转储线程：</strong>负责将二进制日志发给从库。强制从主库读取数据时（/<em>master</em>/ SELECT * FROM user），会给二进制日志<strong>加锁</strong> ，读完解锁。</li>
+<li><strong>从库I/O 线程：</strong>负责连接主库，并向主库发送请求和复制二进制日志到中继日志。</li>
+<li><strong>从库SQL 线程：</strong>负责读取并执行中继日志中的更新语句，实现主从同步。 </li>
+</ul>
+<p><strong>主从库数量：</strong> </p>
+<ul>
+<li>每个 Master 可以有多个 Slave</li>
+<li>每个 Slave 只能有一个唯一的服务器ID，只有一个 Master。</li>
+</ul>
+<hr>
+<h1 id="分库分表"><a href="#分库分表" class="headerlink" title="分库分表"></a>分库分表</h1><h2 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h2><ul>
+<li><strong>只分表：</strong>单表数据量大，读写出现瓶颈，这个表所在的库还可以支撑未来几年的增长。</li>
+<li><strong>只分库：</strong>整个数据库读写出现性能瓶颈，将整个库拆开。</li>
+<li><strong>分库分表：</strong>单表数据量大，所在库也出现性能瓶颈，就要既分库又分表。</li>
+<li><strong>垂直拆分：</strong>把字段分开。例如spu表的pic字段特别长，建议把这个pic字段拆到另一个表（同库或不同库）。</li>
+<li><strong>水平拆分：</strong>把记录分开。例如表数据量到达百万，我们拆成四张20万的表。</li>
+</ul>
+<h2 id="拆分原则"><a href="#拆分原则" class="headerlink" title="拆分原则"></a>拆分原则</h2><p>一般情况下，单表数据量到达千万级别，就可以考虑分库分表了。</p>
+<p>具体是否分库分表看具体业务场景，例如流水表、记录表，数据量非常容易到达千万级、亿万级，需要在设计数据库表的阶段就进行分表，还有一些表虽然数据量只有几百万，但字段非常多，而且有很多text、blog格式的字段，查询性能也会很慢，可以考虑分库分表。</p>
+<table>
+<thead>
+<tr>
+<th align="left">数据量增长情况</th>
+<th align="left">数据表类型</th>
+<th align="left">优化核心思想</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">数据量为千万级，是一个相对<strong>稳定</strong>的数据量</td>
+<td align="left">状态表</td>
+<td align="left">能不拆就不拆读需求水平扩展</td>
+</tr>
+<tr>
+<td align="left">数据量为千万级，可能达到<strong>亿级</strong>或者更高</td>
+<td align="left">流水表</td>
+<td align="left">业务拆分，面向分布式存储设计</td>
+</tr>
+<tr>
+<td align="left">数据量为千万级，可能达到<strong>亿级</strong>或者更高</td>
+<td align="left">流水表</td>
+<td align="left">设计数据统计需求存储的分布式扩展</td>
+</tr>
+<tr>
+<td align="left">数据量为千万级，不应该有这么多的数据</td>
+<td align="left">配置表</td>
+<td align="left">小而简，避免大一统</td>
+</tr>
+</tbody></table>
+<h2 id="分库分表步骤简述"><a href="#分库分表步骤简述" class="headerlink" title="分库分表步骤简述"></a>分库分表步骤简述</h2><ol>
+<li><strong>MySQL调优：</strong>数据量能稳定在千万级，近几年不会到达亿级，其实是不用着急拆的，先尝试MySQL调优，优化读写性能。</li>
+<li><strong>目标评估：</strong>评估拆几个库、表，举例: 当前20亿，5年后评估为100亿。分几个表? 分几个库?解答:一个合理的答案，1024个表，16个库按1024个表算，拆分完单表200万，5年后为1000万.1024个表*200w≈100亿。</li>
+<li><strong>表拆分：</strong><ul>
+<li><strong>业务层拆分：</strong>混合业务拆分为独立业务、冷热分离</li>
+<li><strong>数据层拆分：</strong><ul>
+<li><strong>按日期拆分：</strong>这种方式较普遍，尤其是按照日期维度的拆分，其实在程序层面的改动很小，但扩展性方面的收益很大。<ul>
+<li>日维度拆分，如test_20191021</li>
+<li>月维度拆分,如test_201910</li>
+<li>年维度拆分,如test_2019</li>
+</ul>
+</li>
+<li><strong>按主键范围拆分：</strong>例如【1,200w】主键在一个表，【200w，400w】主键在一个表。优点是单表数据量可控。缺点是流量无法分摊，写操作集中在最后面的表。</li>
+<li><strong>中间表映射：</strong>表随意拆分，引入中间表记录查询的字段值，以及它对应的数据在哪个表里。优点是灵活。确定是引入中间表让流程变复杂。</li>
+<li><strong>hash切分：</strong>sharding_key%N。优点是数据分片均匀，流量分摊。缺点是扩容需要迁移数据，跨节点查询问题。</li>
+<li><strong>按分区拆分：</strong>hash,range等方式。不建议，因为数据其实难以实现水平扩展。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>sharding_key（分表字段）选择：</strong>尽量选择查询频率最高的字段，然后根据表拆分方式选择字段。</li>
+<li><strong>代码改造：</strong>修改代码里的查询、更新语句，以便让其适应分库分表后的情况。</li>
+<li><strong>数据迁移：</strong>最简单的就是停机迁移，复杂点的就是不停机迁移，要考虑增量同步和全量同步的问题。<ol>
+<li><strong>全量同步：</strong>老库到新库的数据迁移，要控制好迁移效率，解决增量数据的一致性。<ol>
+<li><strong>定时任务：</strong>定时任务查老库写新库</li>
+<li><strong>中间件：</strong>使用中间件迁移数据</li>
+</ol>
+</li>
+<li><strong>增量同步：</strong>老库迁移到新库期间，新增删改命令的落库不能出错<ol>
+<li><strong>同步双写：</strong>同步写新库和老库；</li>
+<li><strong>异步双写（推荐）：</strong> 写老库，监听binlog异步同步到新库</li>
+<li><strong>中间件同步工具：</strong>通过一定的规则将数据同步到目标库表</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><strong>数据一致性校验和补偿：</strong>假设采用异步双写方案，在迁移完成后，逐条对比新老库数据，<strong>一致则跳过，不一致则补偿：</strong><ol>
+<li>新库存在，老库不存在：新库删除数据</li>
+<li>新库不存在，老库存在：新库插入数据</li>
+<li>新库存在、老库存在：比较所有字段，不一致则将新库更新为老库数据</li>
+</ol>
+</li>
+<li><strong>灰度切读：</strong>灰度发布指黑（旧版本）与白（新版本）之间，让一些用户继续用旧版本，一些用户开始用新版本，如果用户对新版本没什么意见，就逐步把所有用户迁移到新版本，实现平滑过渡发布。<strong>原则：</strong><ol>
+<li>有问题及时切回老库</li>
+<li>灰度放量先慢后快，每次放量观察一段时间</li>
+<li>支持灵活的规则：门店维度灰度、百 (万)分比灰度</li>
+</ol>
+</li>
+<li><strong>停老用新：</strong>下线老库，用新库读写。</li>
+</ol>
+<h2 id="分库分表步骤详细"><a href="#分库分表步骤详细" class="headerlink" title="分库分表步骤详细"></a>分库分表步骤详细</h2><h3 id="分库分表的原则：能不分就不分"><a href="#分库分表的原则：能不分就不分" class="headerlink" title="分库分表的原则：能不分就不分"></a>分库分表的原则：能不分就不分</h3><ol>
+<li><p><strong>优先MySQL调优，能不分就不分</strong></p>
+<p>数据量能稳定在千万级，近几年不会到达亿级，其实是不用着急拆的，先尝试MySQL调优，优化读写性能。只有在MySQL调优已经无法解决慢查询问题时，才可以考虑分库分表。</p>
+</li>
+<li><p><strong>分片数量尽量少</strong>。</p>
+<p>分片尽量均匀分布在多个 DataHost 上，因为一个查询 SQL 跨分片越多，则总体性能越差，虽然要好于所有数据在一个分片的结果，只在必要的时候进行扩容，增加分片数量。</p>
+</li>
+<li><p><strong>不要一个事务里跨越多个分片查询</strong></p>
+<p>尽量不要在一个事务中的 SQL 跨越多个分片，分布式事务一直是个不好处理的问题。</p>
+</li>
+</ol>
+<h3 id="目标评估"><a href="#目标评估" class="headerlink" title="目标评估"></a>目标评估</h3><p>评估需要拆分成几个库、几个表。</p>
+<p><strong>举例：</strong>当前20亿，5年后评估为100亿。分几个表? 分几个库?</p>
+<p><strong>解答</strong>：一个合理的答案，1024个表，16个库按1024个表算，拆分完单表200万，5年后为1000万.1024个表*200w≈100亿</p>
+<h3 id="表拆分"><a href="#表拆分" class="headerlink" title="表拆分"></a>表拆分</h3><h4 id="业务层面拆分"><a href="#业务层面拆分" class="headerlink" title="业务层面拆分"></a>业务层面拆分</h4><h5 id="混合业务拆分"><a href="#混合业务拆分" class="headerlink" title="混合业务拆分"></a>混合业务拆分</h5><p>将混合业务拆分为独立业务。<strong>业务场景举例：</strong></p>
+<ul>
+<li><strong>电商网站：</strong>一个典型的混合业务，包含用户信息、订单信息、商品信息等。可以将用户信息、订单信息和商品信息分别拆分到不同的库或表中，以减少数据冗余并提高访问效率。</li>
+<li><strong>社交媒体平台：</strong>含用户信息、好友关系、动态信息等。可将用户信息和好友关系分离存储，以便更好支持好友关系的查询和更新。</li>
+<li><strong>在线游戏：</strong>涉及角色信息、道具信息、战斗日志等。可以将角色信息和道具信息拆分到不同的表中，以提升查询效率，并将战斗日志存储到日志数据库中，以减轻主数据库的负载。</li>
+<li><strong>物流系统：</strong>包含订单信息、配送信息、运输信息等。可以将订单信息、配送信息和运输信息分别拆分到不同的表中，以便更好地支持订单的查询和跟踪。</li>
+</ul>
+<h5 id="冷热分离"><a href="#冷热分离" class="headerlink" title="冷热分离"></a>冷热分离</h5><p>将常用的“热”数据和不常使用的“冷”数据分开存储。即在处理数据时将数据库分成冷库和热库，冷库存放那些走到终态、不常使用的数据，热库存放还需要修改、经常使用的数据。</p>
+<p><strong>什么情况下可以使用冷热分离？</strong></p>
+<ol>
+<li><strong>数据走到终态后只有读没有写的需求。</strong>例如订单完结后基本只会读不会改。</li>
+<li><strong>用户能接受新旧数据分开查询。</strong>比如某电商网站默认只让查询3个月内的订单，若要查询3个月前的订单，还需要访问其他的页面。</li>
+</ol>
+<p><strong>业务场景举例：</strong></p>
+<ul>
+<li><strong>邮件系统：</strong>邮件系统中最近邮件是用户经常访问和修改的，三个月前的邮件或已归档的邮件不经常访问的。可以将用户的收件箱、发件箱里最近三个月的邮件放在一个库里（热库），之前的邮件或者已读的邮件放在另一个库里（冷库）。</li>
+<li><strong>日志系统：</strong>在大型应用中，日志数据是非常庞大的，但并不是所有日志都需要经常查询或分析。可以将最近一段时间的活动日志存放在热库中，而将过去的历史日志存放在冷库中，以减轻热库的负载和优化查询性能。</li>
+<li><strong>社交媒体平台</strong>：社交媒体平台上的用户数据量通常很大，但是只有少部分用户是活跃的，并且只有少量用户的数据会频繁访问和更新，如果所有用户都放在同一个库里，势必会影响活跃用户的查询效率。可以将活跃用户的个人信息、好友关系等存放在热库中，而将不活跃用户的数据存放在冷库中，以提升热库的性能和减少冷库的存储成本。</li>
+<li><strong>电商平台：</strong>电商平台上的商品数据也可以进行冷热分离。热库中存放热门商品的基本信息和库存等，以支持频繁的查询和更新操作，而将不活跃或下架的商品信息存放在冷库中，以减少热库的负载和优化查询性能。</li>
+<li><strong>客服工单：</strong>在我们日常操作时，经常能看到查询历史工单时会有个“近三个月工单”的选项，实际业务场景中，用户基本只会关注近三个月工单，而且这些工单也会经常需要进行修改、删除的操作，而对很早期的历史订单基本就没有修改、删除的需求，只有少量的查询需求。</li>
+</ul>
+<h4 id="数据层面拆分"><a href="#数据层面拆分" class="headerlink" title="数据层面拆分"></a>数据层面拆分</h4><ul>
+<li><strong>按日期拆分：</strong>这种使用方式比较普遍，尤其是按照日期维度的拆分，其实在程序层面的改动很小，但是扩展性方面的收益很大。<ul>
+<li>日维度拆分，如test_20191021</li>
+<li>月维度拆分,如test_201910</li>
+<li>年维度拆分,如test_2019</li>
+</ul>
+</li>
+<li><strong>按主键范围拆分：</strong>例如【1,200w】主键在一个表，【200w，400w】主键在一个表。优点是单表数据量可控。缺点是流量无法分摊，写操作集中在最后面的表。</li>
+<li><strong>中间表映射：</strong>表随意拆分，引入中间表记录查询的字段值，及它对应的数据在哪个表里。虽然灵活但是引入中间表让流程变复杂。</li>
+<li><strong>hash切分：</strong>sharding_key%N。优点是数据分片均匀，流量分摊。缺点是扩容需要迁移数据，跨节点查询问题。</li>
+<li><strong>按分区拆分：</strong>hash,range等方式。不建议，因为数据其实难以实现水平扩展。</li>
+</ul>
+<h3 id="分表字段（sharding-key）选择"><a href="#分表字段（sharding-key）选择" class="headerlink" title="分表字段（sharding_key）选择"></a>分表字段（sharding_key）选择</h3><p>最佳的分表字段应该是能够让数据分布均匀、频繁查询的字段及不可变的字段。通过选择最佳的分表字段，可提高系统性能和查询效率。</p>
+<h4 id="常用字段"><a href="#常用字段" class="headerlink" title="常用字段"></a>常用字段</h4><ul>
+<li><strong>主键ID：</strong>频繁查询并且唯一，非常适合作分表字段。<em>例如</em>，在用户表中，用户ID作为分表字段是一个不错的选择，因为用户ID是唯一的，而且在查询用户信息时经常会用到。</li>
+<li><strong>时间字段：</strong>如果业务需要按时间范围查询数据，那么选择时间字段作为分表字段是合理的。<em>例如</em>，在日志表中，可以选择时间戳字段作为分表字段，以便按天、按月或按年分割数据，方便查询和维护。</li>
+<li><strong>地理信息字段：</strong>如果业务需要按地区查询数据，那么选择地理信息字段作为分表字段是合适的。<em>例如</em>，在订单表中，可以选择订单地区字段作为分表字段，以便将订单数据按地区进行拆分，方便查询和扩展。</li>
+<li><strong>关联字段：</strong>如果业务需要频繁进行关联查询，那么选择订单号等关联字段作为分表字段。<em>例如</em>，在订单表中，可以选择订单号作为分表字段，因为订单号唯一且包含业务信息，并且日常查询、关联查询都是根据订单号查询的，很少根据id查询，方便查询和维护。</li>
+</ul>
+<h4 id="选择分表字段的原则"><a href="#选择分表字段的原则" class="headerlink" title="选择分表字段的原则"></a>选择分表字段的原则</h4><ol>
+<li><p><strong>数据分布均匀</strong></p>
+<p>最佳的分表字段应该是能够让数据分布均匀的字段，这样可以避免某个表的数据过多，导致查询效率降低。在用户表中，如果以地区作为分表字段，可能会导致某些地区的数据过多，而某些地区的数据过少。</p>
+</li>
+<li><p><strong>频繁查询的字段</strong></p>
+<p>尽量选择查询频率最高的字段（例如主键id），然后根据表拆分方式选择字段。在一个订单表中，如果经常需要根据用户ID查询订单信息，那么以用户ID作为分表字段是一个不错的选择。</p>
+</li>
+<li><p><strong>不可变字段</strong></p>
+<p>最佳的分表字段还应该是不可变的字段，这样可以避免在数据迁移时出现问题。在一个商品表中，如果选择以商品名称作为分表字段，那么当商品名称发生变化时，就需要将数据移动到不同的表中，这样会增加系统的复杂度。</p>
+</li>
+</ol>
+<h3 id="代码改造"><a href="#代码改造" class="headerlink" title="代码改造"></a>代码改造</h3><p>修改代码里的查询、更新语句，以便让其适应分库分表后的情况。</p>
+<p><strong>查询语句改造：</strong></p>
+<ul>
+<li><p><strong>单库查询改为跨库查询：</strong>对于需要查询的字段，需要明确指定查询的库和表，以避免查询到错误的数据。例如：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> users <span class="keyword">WHERE</span> id <span class="operator">=</span> <span class="number">1</span>;            # 原查询语句</span><br><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> db.table_name <span class="keyword">WHERE</span> id <span class="operator">=</span> <span class="number">1</span>;     # 修改后：其中 db 为目标数据库，table_name 为目标表</span><br></pre></td></tr></table></figure></li>
+<li><p><strong>单表查询改为跨表查询：</strong>例如投诉记录表根据哈希取余的方式分成10个表，如果id%1=0，则查0号表complaint_records_0。</p>
+</li>
+</ul>
+<h3 id="数据迁移"><a href="#数据迁移" class="headerlink" title="数据迁移"></a>数据迁移</h3><p>最简单的就是停机迁移，复杂点的就是不停机迁移，要考虑增量同步和全量同步的问题。</p>
+<h4 id="增量同步"><a href="#增量同步" class="headerlink" title="增量同步"></a>增量同步</h4><p>老库迁移到新库期间，增删改命令的落库不能出错</p>
+<ul>
+<li>同步双写：同步写新库和老库；</li>
+<li><strong>异步双写（推荐）：</strong> 写老库，监听binlog异步同步到新库</li>
+<li>中间件同步工具：通过一定的规则将数据同步到目标库表</li>
+</ul>
+<h4 id="全量同步"><a href="#全量同步" class="headerlink" title="全量同步"></a>全量同步</h4><p>老库到新库的数据迁移，要控制好迁移效率，解决增量数据的一致性。</p>
+<ul>
+<li><strong>定时任务查老库写新库</strong></li>
+<li>使用中间件迁移数据，例如<code>Dbmate、Apache NiFi、Ladder、Phinx、Flyway、TiDB</code>等。</li>
+</ul>
+<h3 id="数据一致性校验和补偿"><a href="#数据一致性校验和补偿" class="headerlink" title="数据一致性校验和补偿"></a>数据一致性校验和补偿</h3><p>假设采用异步双写方案，在迁移完成后，逐条对比新老库数据，一致则跳过，<strong>不一致则补偿：</strong></p>
+<ul>
+<li>新库存在，老库不存在：新库删除数据</li>
+<li>新库不存在，老库存在：新库插入数据</li>
+<li>新库存在、老库存在：比较所有字段，不一致则将新库更新为老库数据</li>
+</ul>
+<h3 id="灰度切读"><a href="#灰度切读" class="headerlink" title="灰度切读"></a>灰度切读</h3><p>灰度发布指黑（旧版本）与白（新版本）之间，让一些用户继续用旧版本，一些用户开始用新版本，如果用户对新版本没什么意见，就逐步把所有用户迁移到新版本，实现平滑过渡发布。<strong>遵循原则如下：</strong></p>
+<ul>
+<li>有问题及时切回老库</li>
+<li>灰度放量先慢后快，每次放量观察一段时间</li>
+<li>支持灵活的规则：门店维度灰度、百 (万)分比灰度</li>
+</ul>
+<h3 id="停旧库、写新库"><a href="#停旧库、写新库" class="headerlink" title="停旧库、写新库"></a>停旧库、写新库</h3><p>下线老库，用新库读写。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="https://southernfish.github.io">Southern Fish</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://southernfish.github.io/pages/database/db-mysql-5-sharding/">https://southernfish.github.io/pages/database/db-mysql-5-sharding/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://southernfish.github.io" target="_blank">Southern Fish</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/MySQL/">MySQL</a></div><div class="post_share"><div class="social-share" data-image="/img/article/article6.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/pages/java/java-coding-guidelines/"><img class="prev-cover" src="/img/article/article2.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">阿里规约</div></div></a></div><div class="next-post pull-right"><a href="/pages/database/db-mysql-6-query/"><img class="next-cover" src="/img/article/article4.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">MySQL数据库-查询优化</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/pages/database/db-innodb/" title="InnoDB + MVCC"><img class="cover" src="/img/article/article6.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2025-06-24</div><div class="title">InnoDB + MVCC</div></div></a></div><div><a href="/pages/database/db-mysql-2-engine/" title="MySQL数据库-存储引擎和索引"><img class="cover" src="/img/article/article1.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2025-07-24</div><div class="title">MySQL数据库-存储引擎和索引</div></div></a></div><div><a href="/pages/database/db-mysql-3-index/" title="MySQL数据库-索引"><img class="cover" src="/img/article/article4.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2025-07-25</div><div class="title">MySQL数据库-索引</div></div></a></div><div><a href="/pages/database/db-mysql-6-query/" title="MySQL数据库-查询优化"><img class="cover" src="/img/article/article4.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2025-07-26</div><div class="title">MySQL数据库-查询优化</div></div></a></div><div><a href="/pages/database/db-mysql-1-conception/" title="MySQL数据库-概述"><img class="cover" src="/img/article/article2.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2025-07-24</div><div class="title">MySQL数据库-概述</div></div></a></div><div><a href="/pages/database/db-mysql-4-optimize/" title="MySQL数据库-优化"><img class="cover" src="/img/article/article1.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2025-07-26</div><div class="title">MySQL数据库-优化</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Southern Fish</div><div class="author-info__description"></div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">87</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">34</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">16</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/SouthernFish" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="/1002721576@qq.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">天下事岂能尽如吾意，心境须恰适，尽其在我，随遇而安。</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%A1%A8%E8%AE%BE%E8%AE%A1%E4%BC%98%E5%8C%96"><span class="toc-number">1.</span> <span class="toc-text">表设计优化</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B7%B7%E5%90%88%E4%B8%9A%E5%8A%A1%E5%88%86%E8%A1%A8%E3%80%81%E5%86%B7%E7%83%AD%E6%95%B0%E6%8D%AE%E5%88%86%E8%A1%A8"><span class="toc-number">1.1.</span> <span class="toc-text">混合业务分表、冷热数据分表</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%81%94%E5%90%88%E6%9F%A5%E8%AF%A2%E6%94%B9%E4%B8%BA%E4%B8%AD%E9%97%B4%E5%85%B3%E7%B3%BB%E8%A1%A8"><span class="toc-number">1.2.</span> <span class="toc-text">联合查询改为中间关系表</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%81%B5%E5%BE%AA%E4%B8%89%E4%B8%AA%E8%8C%83%E5%BC%8F"><span class="toc-number">1.3.</span> <span class="toc-text">遵循三个范式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AD%97%E6%AE%B5%E5%BB%BA%E8%AE%AE%E9%9D%9E%E7%A9%BA%E7%BA%A6%E6%9D%9F"><span class="toc-number">1.4.</span> <span class="toc-text">字段建议非空约束</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%8D%E8%8C%83%E5%BC%8F%EF%BC%9A%E4%BD%BF%E7%94%A8%E5%86%97%E4%BD%99%E5%AD%97%E6%AE%B5"><span class="toc-number">1.5.</span> <span class="toc-text">反范式：使用冗余字段</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E4%BC%98%E5%8C%96"><span class="toc-number">1.6.</span> <span class="toc-text">数据类型优化</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%AF%BB%E5%86%99%E5%88%86%E7%A6%BB"><span class="toc-number">2.</span> <span class="toc-text">读写分离</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%88%86%E5%BA%93%E5%88%86%E8%A1%A8"><span class="toc-number">3.</span> <span class="toc-text">分库分表</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="toc-number">3.1.</span> <span class="toc-text">基本概念</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8B%86%E5%88%86%E5%8E%9F%E5%88%99"><span class="toc-number">3.2.</span> <span class="toc-text">拆分原则</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%86%E5%BA%93%E5%88%86%E8%A1%A8%E6%AD%A5%E9%AA%A4%E7%AE%80%E8%BF%B0"><span class="toc-number">3.3.</span> <span class="toc-text">分库分表步骤简述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%86%E5%BA%93%E5%88%86%E8%A1%A8%E6%AD%A5%E9%AA%A4%E8%AF%A6%E7%BB%86"><span class="toc-number">3.4.</span> <span class="toc-text">分库分表步骤详细</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%86%E5%BA%93%E5%88%86%E8%A1%A8%E7%9A%84%E5%8E%9F%E5%88%99%EF%BC%9A%E8%83%BD%E4%B8%8D%E5%88%86%E5%B0%B1%E4%B8%8D%E5%88%86"><span class="toc-number">3.4.1.</span> <span class="toc-text">分库分表的原则：能不分就不分</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9B%AE%E6%A0%87%E8%AF%84%E4%BC%B0"><span class="toc-number">3.4.2.</span> <span class="toc-text">目标评估</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A1%A8%E6%8B%86%E5%88%86"><span class="toc-number">3.4.3.</span> <span class="toc-text">表拆分</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%9A%E5%8A%A1%E5%B1%82%E9%9D%A2%E6%8B%86%E5%88%86"><span class="toc-number">3.4.3.1.</span> <span class="toc-text">业务层面拆分</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E6%B7%B7%E5%90%88%E4%B8%9A%E5%8A%A1%E6%8B%86%E5%88%86"><span class="toc-number">3.4.3.1.1.</span> <span class="toc-text">混合业务拆分</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E5%86%B7%E7%83%AD%E5%88%86%E7%A6%BB"><span class="toc-number">3.4.3.1.2.</span> <span class="toc-text">冷热分离</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E5%B1%82%E9%9D%A2%E6%8B%86%E5%88%86"><span class="toc-number">3.4.3.2.</span> <span class="toc-text">数据层面拆分</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%86%E8%A1%A8%E5%AD%97%E6%AE%B5%EF%BC%88sharding-key%EF%BC%89%E9%80%89%E6%8B%A9"><span class="toc-number">3.4.4.</span> <span class="toc-text">分表字段（sharding_key）选择</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%B8%B8%E7%94%A8%E5%AD%97%E6%AE%B5"><span class="toc-number">3.4.4.1.</span> <span class="toc-text">常用字段</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%80%89%E6%8B%A9%E5%88%86%E8%A1%A8%E5%AD%97%E6%AE%B5%E7%9A%84%E5%8E%9F%E5%88%99"><span class="toc-number">3.4.4.2.</span> <span class="toc-text">选择分表字段的原则</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81%E6%94%B9%E9%80%A0"><span class="toc-number">3.4.5.</span> <span class="toc-text">代码改造</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E8%BF%81%E7%A7%BB"><span class="toc-number">3.4.6.</span> <span class="toc-text">数据迁移</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A2%9E%E9%87%8F%E5%90%8C%E6%AD%A5"><span class="toc-number">3.4.6.1.</span> <span class="toc-text">增量同步</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%85%A8%E9%87%8F%E5%90%8C%E6%AD%A5"><span class="toc-number">3.4.6.2.</span> <span class="toc-text">全量同步</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E4%B8%80%E8%87%B4%E6%80%A7%E6%A0%A1%E9%AA%8C%E5%92%8C%E8%A1%A5%E5%81%BF"><span class="toc-number">3.4.7.</span> <span class="toc-text">数据一致性校验和补偿</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%81%B0%E5%BA%A6%E5%88%87%E8%AF%BB"><span class="toc-number">3.4.8.</span> <span class="toc-text">灰度切读</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%81%9C%E6%97%A7%E5%BA%93%E3%80%81%E5%86%99%E6%96%B0%E5%BA%93"><span class="toc-number">3.4.9.</span> <span class="toc-text">停旧库、写新库</span></a></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/pages/algorithm/simple_algorithm/" title="其他简单算法"><img src="/img/article/article5.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="其他简单算法"/></a><div class="content"><a class="title" href="/pages/algorithm/simple_algorithm/" title="其他简单算法">其他简单算法</a><time datetime="2025-08-07T07:30:36.000Z" title="发表于 2025-08-07 15:30:36">2025-08-07</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/pages/algorithm/backtrack-algorithm/" title="回溯算法"><img src="/img/article/article3.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="回溯算法"/></a><div class="content"><a class="title" href="/pages/algorithm/backtrack-algorithm/" title="回溯算法">回溯算法</a><time datetime="2025-08-06T10:30:36.000Z" title="发表于 2025-08-06 18:30:36">2025-08-06</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/pages/algorithm/greedy-algorithm/" title="贪心算法"><img src="/img/article/article5.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="贪心算法"/></a><div class="content"><a class="title" href="/pages/algorithm/greedy-algorithm/" title="贪心算法">贪心算法</a><time datetime="2025-08-04T07:20:36.000Z" title="发表于 2025-08-04 15:20:36">2025-08-04</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/pages/algorithm/dynamic-programming/" title="动态规划算法"><img src="/img/article/article4.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="动态规划算法"/></a><div class="content"><a class="title" href="/pages/algorithm/dynamic-programming/" title="动态规划算法">动态规划算法</a><time datetime="2025-08-02T06:20:36.000Z" title="发表于 2025-08-02 14:20:36">2025-08-02</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/pages/algorithm/sliding-window/" title="滑动窗口算法"><img src="/img/article/article4.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="滑动窗口算法"/></a><div class="content"><a class="title" href="/pages/algorithm/sliding-window/" title="滑动窗口算法">滑动窗口算法</a><time datetime="2025-08-02T02:00:36.000Z" title="发表于 2025-08-02 10:00:36">2025-08-02</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url('/img/article/article6.png')"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2025 By Southern Fish</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><script>var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',preloader.endLoading())</script><div class="js-pjax"></div><canvas class="fireworks" mobile="true"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/fireworks.min.js"></script><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="true" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-nest.min.js"></script><script id="click-heart" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/click-heart.min.js" async="async" mobile="true"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body></html>

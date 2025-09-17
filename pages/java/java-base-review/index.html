@@ -1,0 +1,314 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>JAVA 基础 | Southern Fish</title><meta name="keywords" content="java基础"><meta name="author" content="Southern Fish"><meta name="copyright" content="Southern Fish"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="Java是一门面向对象的编程语言，不仅吸收了C++语言的各种优点，还摒弃了C++里难以理解的多继承、指针等概念，因此Java语言具有功能强大和简单易用两个特征。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JAVA 基础">
+<meta property="og:url" content="https://southernfish.github.io/pages/java/java-base-review/index.html">
+<meta property="og:site_name" content="Southern Fish">
+<meta property="og:description" content="Java是一门面向对象的编程语言，不仅吸收了C++语言的各种优点，还摒弃了C++里难以理解的多继承、指针等概念，因此Java语言具有功能强大和简单易用两个特征。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://southernfish.github.io/img/article/article5.png">
+<meta property="article:published_time" content="2025-06-18T10:28:36.000Z">
+<meta property="article:modified_time" content="2025-07-22T05:12:20.191Z">
+<meta property="article:author" content="Southern Fish">
+<meta property="article:tag" content="java基础">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://southernfish.github.io/img/article/article5.png"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://southernfish.github.io/pages/java/java-base-review/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//fonts.googleapis.com" crossorigin=""/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Titillium+Web&amp;display=swap" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":200},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: true
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'JAVA 基础',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2025-07-22 13:12:20'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 5.4.2"><link rel="alternate" href="/atom.xml" title="Southern Fish" type="application/atom+xml">
+</head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/avatar.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">87</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">34</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">16</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 文章</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于我</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/img/article/article5.png')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Southern Fish</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 文章</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于我</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">JAVA 基础</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2025-06-18T10:28:36.000Z" title="发表于 2025-06-18 18:28:36">2025-06-18</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-07-22T05:12:20.191Z" title="更新于 2025-07-22 13:12:20">2025-07-22</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/java/">java</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">3.8k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>12分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="JAVA 基础"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><p>Java是一门面向对象的<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80/9845131?fromModule=lemma_inlink">编程语言</a>，不仅吸收了<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/C%2B%2B/99272?fromModule=lemma_inlink">C++</a>语言的各种优点，还摒弃了C++里难以理解的多<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E7%BB%A7%E6%89%BF/20267560?fromModule=lemma_inlink">继承</a>、<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E6%8C%87%E9%92%88/2878304?fromModule=lemma_inlink">指针</a>等概念，因此Java语言具有功能强大和简单易用两个特征。Java语言作为静态面向对象编程语言的代表，极好地实现了面向对象理论，允许程序员以优雅的思维方式进行复杂的编程。Java具有简单性、面向对象、<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E5%88%86%E5%B8%83%E5%BC%8F/19276232?fromModule=lemma_inlink">分布式</a>、<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E5%81%A5%E5%A3%AE%E6%80%A7/4430133?fromModule=lemma_inlink">健壮性</a>、<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E5%AE%89%E5%85%A8%E6%80%A7/7664678?fromModule=lemma_inlink">安全性</a>、平台独立与可移植性、<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E5%A4%9A%E7%BA%BF%E7%A8%8B/1190404?fromModule=lemma_inlink">多线程</a>、动态性等特点。 Java可以编写<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E6%A1%8C%E9%9D%A2%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F/2331979?fromModule=lemma_inlink">桌面应用程序</a>、Web应用程序、<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E5%88%86%E5%B8%83%E5%BC%8F%E7%B3%BB%E7%BB%9F/4905336?fromModule=lemma_inlink">分布式系统</a>和<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E5%B5%8C%E5%85%A5%E5%BC%8F%E7%B3%BB%E7%BB%9F/186978?fromModule=lemma_inlink">嵌入式系统</a>应用程序等</p>
+<h1 id="常见问题"><a href="#常见问题" class="headerlink" title="常见问题"></a>常见问题</h1><h2 id="和-equals-的区别"><a href="#和-equals-的区别" class="headerlink" title="== 和 equals 的区别"></a>== 和 equals 的区别</h2><ul>
+<li><p><strong>== 解读</strong>：</p>
+<p><em>基本类型：</em>比较的是值是否相同；                          <em>引用类型：</em>比较的是引用是否相同； </p>
+<p>若指向同一个引用，== 为 true，而 <code>new String()</code> 方法重新开辟了内存空间， == 结果为 false，而 equals 比较的是值，结果为 true</p>
+</li>
+<li><p><strong>equals 解读</strong>：equals 本质上就是 ==，只不过 String 和 Integer 等重写了 equals 方法，把它变成了值比较</p>
+</li>
+<li><p><strong>总结</strong>： == 对于基本类型来说是值比较，对于引用类型来说是比较的是引用；而 equals 默认情况下是引用比较，String、Integer 等类重写了equals，把它变成了值比较，所以一般情况下 equals 比较的是值是否相等。</p>
+</li>
+</ul>
+<h2 id="两个对象的-hashCode-相同，则-equals-也一定为-true，对吗"><a href="#两个对象的-hashCode-相同，则-equals-也一定为-true，对吗" class="headerlink" title="两个对象的 hashCode() 相同，则 equals() 也一定为 true，对吗"></a>两个对象的 hashCode() 相同，则 equals() 也一定为 true，对吗</h2><p>不对，两个对象的 <code>hashCode()</code> 相同，equals() 不一定 true。代码解读：显然“通话”和“重地”的 hashCode() 相同，然而 equals()为 false，因为在散列表中，hashCode() 相等即两个键值对的哈希值相等，然而哈希值相等，并不一定能得出键值对相等。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">String</span> <span class="variable">str1</span> <span class="operator">=</span> “通话”;</span><br><span class="line"><span class="type">String</span> <span class="variable">str2</span> <span class="operator">=</span> <span class="string">&quot;重地”;</span></span><br><span class="line"><span class="string">System. out.printIn(string. format(&quot;</span>str1:%d|str2:%d<span class="string">&quot;, str1. hashcode(),str2. hashcode()));</span></span><br><span class="line"><span class="string">System. out.println(str1. equals(str2));</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"># 打印结果</span></span><br><span class="line"><span class="string">str1:1179395 | str2:1179395</span></span><br><span class="line"><span class="string">false</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="Java-中的-Math-round-1-5-等于多少"><a href="#Java-中的-Math-round-1-5-等于多少" class="headerlink" title="Java 中的 Math. round(-1. 5) 等于多少"></a>Java 中的 Math. round(-1. 5) 等于多少</h2><p>等于 -1，因为在数轴上取值时，中间值（0.5）向右取整，所以正 0.5 是往上取整，负 0.5 是直接舍弃。</p>
+<h2 id="final-在-Java-中有什么作用"><a href="#final-在-Java-中有什么作用" class="headerlink" title="final 在 Java 中有什么作用"></a>final 在 Java 中有什么作用</h2><ul>
+<li>final 修饰的类叫最终类，该类不能被继承。</li>
+<li>final 修饰的方法不能被重写。</li>
+<li>final 修饰的变量叫常量，常量必须初始化，初始化之后值就不能被修改。</li>
+</ul>
+<h2 id="基础的数据类型"><a href="#基础的数据类型" class="headerlink" title="基础的数据类型"></a>基础的数据类型</h2><p>基础类型有 8 种：<code>byte</code>、<code>boolean</code>、<code>char</code>、<code>short</code>、<code>int</code>、<code>float</code>、<code>long</code>、<code>double</code></p>
+<p> <code>String</code> 不属于基础类型， String 属于对象</p>
+<h2 id="Files的常用方法都有哪些？"><a href="#Files的常用方法都有哪些？" class="headerlink" title="Files的常用方法都有哪些？"></a>Files的常用方法都有哪些？</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Files.exists()：检测文件路径是否存在。</span><br><span class="line">Files.createFile()：创建文件。</span><br><span class="line">Files.createDirectory()：创建文件夹。</span><br><span class="line">Files.delete()：删除一个文件或目录。</span><br><span class="line">Files.copy()：复制文件。</span><br><span class="line">Files.move()：移动文件。</span><br><span class="line">Files.size()：查看文件个数。</span><br><span class="line">Files.read()：读取文件。</span><br><span class="line">Files.write()：写入文件。</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h1 id="字符串String"><a href="#字符串String" class="headerlink" title="字符串String"></a>字符串String</h1><h2 id="Java-中操作字符串都有哪些类？它们之间有什么区别？"><a href="#Java-中操作字符串都有哪些类？它们之间有什么区别？" class="headerlink" title="Java 中操作字符串都有哪些类？它们之间有什么区别？"></a>Java 中操作字符串都有哪些类？它们之间有什么区别？</h2><p>操作字符串的类有：<code>String</code>、<code>StringBuffer</code>、<code>StringBuilder</code>。</p>
+<p>String 和 StringBuffer、StringBuilder 的区别在于 <strong><code>String</code> 声明的是不可变的对象，每次操作都会生成新的 <code>String</code> 对象，然后将指针指向新的 <code>String</code> 对象</strong>，而 <code>StringBuffer</code>、<code>StringBuilder</code> 可以在原有对象的基础上进行操作，所以在经常改变字符串内容的情况下最好不要使用 String。</p>
+<p>StringBuffer 和 StringBuilder 最大的区别在于，**<code>StringBuffer 线程安全，而 StringBuilder</code> 非线程安全**，但 <code>StringBuilder</code> 性能高于 <code>StringBuffer</code>，所以在单线程环境下推荐使用 <code>StringBuilder</code>，多线程环境下推荐使用 <code>StringBuffer</code>。</p>
+<h2 id="String-str-”i”与-String-str-new-String-“i”-一样吗？"><a href="#String-str-”i”与-String-str-new-String-“i”-一样吗？" class="headerlink" title="String str=”i”与 String str=new String(“i”)一样吗？"></a>String str=”i”与 String str=new String(“i”)一样吗？</h2><p>不一样，因为内存的分配方式不一样。</p>
+<p><code>String str = ”i”</code> 的方式，Java 虚拟机会将其分配到常量池中；</p>
+<p><code>String str = new String(“i”) </code>则会被分到堆内存中。</p>
+<h2 id="如何将字符串反转？"><a href="#如何将字符串反转？" class="headerlink" title="如何将字符串反转？"></a>如何将字符串反转？</h2><p>使用 StringBuilder 或者 stringBuffer 的 reverse() 方法。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// stringBuffer reverse</span></span><br><span class="line"><span class="type">StringBuffer</span> <span class="variable">stringBuffer</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">stringBuffer</span>();</span><br><span class="line">stringBuffer. append(<span class="string">&quot;abcdefg&quot;</span>);</span><br><span class="line">System. out. println(stringBuffer. reverse()); <span class="comment">// gfedcba</span></span><br><span class="line"><span class="comment">// stringBuilder reverse</span></span><br><span class="line"><span class="type">stringBuilder</span> <span class="variable">stringBuilder</span> <span class="operator">=</span><span class="keyword">new</span> <span class="title class_">stringBuilder</span>();</span><br><span class="line">stringBuilder. append(<span class="string">&quot;abcdefg&quot;</span>);System. out. println(stringBuilder. reverse()); <span class="comment">// gfedcba</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="String-类的常用方法"><a href="#String-类的常用方法" class="headerlink" title="String 类的常用方法"></a>String 类的常用方法</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">indexOf()：返回指定字符的索引。</span><br><span class="line">charAt()：返回指定索引处的字符。</span><br><span class="line">replace()：字符串替换。</span><br><span class="line">trim()：去除字符串两端空白。</span><br><span class="line">split()：分割字符串，返回一个分割后的字符串数组。</span><br><span class="line">getBytes()：返回字符串的 byte 类型数组。</span><br><span class="line">length()：返回字符串长度。</span><br><span class="line">toLowerCase()：将字符串转成小写字母。</span><br><span class="line">toUpperCase()：将字符串转成大写字符。</span><br><span class="line">substring()：截取字符串。</span><br><span class="line">equals()：字符串比较。</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h1 id="抽象类问题"><a href="#抽象类问题" class="headerlink" title="抽象类问题"></a>抽象类问题</h1><h2 id="抽象类必须要有抽象方法吗"><a href="#抽象类必须要有抽象方法吗" class="headerlink" title="抽象类必须要有抽象方法吗?"></a>抽象类必须要有抽象方法吗?</h2><p>不需要，抽象类不一定非要有抽象方法。</p>
+<h2 id="普通类和抽象类有哪些区别？"><a href="#普通类和抽象类有哪些区别？" class="headerlink" title="普通类和抽象类有哪些区别？"></a>普通类和抽象类有哪些区别？</h2><p>普通类不能包含抽象方法，抽象类可以包含抽象方法。抽象类不能直接实例化，普通类可以直接实例化。</p>
+<h2 id="抽象类能使用-final-修饰吗？"><a href="#抽象类能使用-final-修饰吗？" class="headerlink" title="抽象类能使用 final 修饰吗？"></a>抽象类能使用 final 修饰吗？</h2><p>不能，定义抽象类就是让其他类继承的，定义为 <code>final</code>的类不能被继承，所以 final 不能修饰抽象类，编辑器也会提示错误信息：<code>illegal combination of modifiers: &#39;abstract&#39; and &#39;final</code></p>
+<h2 id="接口和抽象类有什么区别？"><a href="#接口和抽象类有什么区别？" class="headerlink" title="接口和抽象类有什么区别？"></a>接口和抽象类有什么区别？</h2><ul>
+<li><strong>实现：</strong>抽象类的子类使用 <code>extends</code> 来继承；接口必须使用 <code>implements</code> 来实现接口。</li>
+<li><strong>构造函数：</strong>抽象类可以有构造函数；接口不能有。</li>
+<li><strong>实现数量：</strong>类可以实现很多个接口；但是只能继承一个抽象类。</li>
+<li><strong>访问修饰符：</strong>接口中的方法默认使用 public 修饰；抽象类中的方法可以是任意访问修饰符。</li>
+</ul>
+<hr>
+<h1 id="Java中的IO"><a href="#Java中的IO" class="headerlink" title="Java中的IO"></a>Java中的IO</h1><h2 id="Java-中-IO-流分为几种？"><a href="#Java-中-IO-流分为几种？" class="headerlink" title="Java 中 IO 流分为几种？"></a>Java 中 IO 流分为几种？</h2><ul>
+<li><strong>按功能来分：</strong>输入流（input）、输出流（output）。</li>
+<li><strong>按类型来分：</strong>字节流和字符流。字节流和字符流的区别是：字节流按 8 位传输以字节为单位输入输出数据，字符流按 16 位传输以字符为单位输入输出数据。</li>
+</ul>
+<h2 id="BIO、NIO、AIO-有什么区别？"><a href="#BIO、NIO、AIO-有什么区别？" class="headerlink" title="BIO、NIO、AIO 有什么区别？"></a>BIO、NIO、AIO 有什么区别？</h2><ul>
+<li><strong>BIO：</strong><code>Block IO</code>，同步阻塞式 IO，就是我们平常使用的传统 IO，它的特点是模式简单使用方便，并发处理能力低。</li>
+<li><strong>NIO：</strong><code>Non IO</code>，同步非阻塞 IO，是传统 IO 的升级，客户端和服务器端通过 <code>Channel</code>（通道）通讯，实现了多路复用。</li>
+<li><strong>AIO：</strong><code>Asynchronous IO</code>，是 NIO 的升级，也叫 <code>NIO2</code>，<strong>实现了异步非堵塞 IO</strong> ，异步 IO 的操作基于事件和回调机制。</li>
+</ul>
+<h1 id="Lambda表达式"><a href="#Lambda表达式" class="headerlink" title="Lambda表达式"></a>Lambda表达式</h1><h2 id="Lambda表达式的语法"><a href="#Lambda表达式的语法" class="headerlink" title="Lambda表达式的语法"></a>Lambda表达式的语法</h2><p><strong>基本语法：</strong> <code>(parameters) -&gt; expression</code> 或<code> (parameters) -&gt;&#123; statements; &#125;</code></p>
+<p><strong>Lambda表达式由三部分组成：</strong></p>
+<ul>
+<li><strong>paramaters：</strong>类似方法中的形参列表，这里的参数是函数式接口里的参数。这里的参数类型可以明确的声明也可不声明而由JVM隐含的推断。另外当只有一个推断类型时可以省略掉圆括号。</li>
+<li><strong>-&gt;：</strong>可理解为“被用于”的意思</li>
+<li><strong>方法体：</strong>可以是表达式也可以代码块，是函数式接口里方法的实现。代码块可返回一个值或者什么都不反回，这里的代码块块等同于方法的方法体。如果是表达式，也可以返回一个值或者什么都不反回。</li>
+</ul>
+<p><strong>优缺点：</strong></p>
+<ul>
+<li><strong>优点：</strong>代码简洁，开发迅速、方便函数式编程、容易进行并行计算、Java 引入 Lambda，改善了集合操作</li>
+<li><strong>缺点：</strong>代码可读性变差、在非并行计算中，很多计算未必有传统的 for 性能要高、不易调试</li>
+</ul>
+<h2 id="应用举例"><a href="#应用举例" class="headerlink" title="应用举例"></a>应用举例</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">list.stream().filter(s -&gt; s.length() &gt; 3).forEach(System.out::println);</span><br><span class="line">list.stream().map(StuffEntity::getCode).collect(Collectors.toList());</span><br><span class="line">list.stream().collect(Collectors.collectingAndThen(Collectors.toCollection(</span><br><span class="line">                () -&gt; new TreeSet&lt;&gt;(Comparator.comparing(obj -&gt; obj.getDealerPlan() ))), ArrayList::new));</span><br><span class="line">Map&lt;String, List&lt;VpEntity&gt;&gt; map = stuffVp.stream().collect(Collectors.groupingBy(obj -&gt; obj.getDealerPlan() ));</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h1 id="容器"><a href="#容器" class="headerlink" title="容器"></a>容器</h1><h2 id="Java-容器都有哪些？"><a href="#Java-容器都有哪些？" class="headerlink" title="Java 容器都有哪些？"></a>Java 容器都有哪些？</h2><p>Java 容器分为 Collection 和 Map 两大类，其下又有很多子类，如下所示：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">Collection</span><br><span class="line">    List</span><br><span class="line">        ArrayList</span><br><span class="line">        LinkedList</span><br><span class="line">        Vector</span><br><span class="line">        Stack</span><br><span class="line">    Set</span><br><span class="line">        HashSet</span><br><span class="line">        LinkedHashSet</span><br><span class="line">        TreeSet</span><br><span class="line">Map</span><br><span class="line">    HashMap </span><br><span class="line">        LinkedHashMap</span><br><span class="line">    TreeMap</span><br><span class="line">    ConcurrentHashMap</span><br><span class="line">    Hashtable</span><br></pre></td></tr></table></figure>
+
+<h2 id="Collection-和-Collections-有什么区别"><a href="#Collection-和-Collections-有什么区别" class="headerlink" title="Collection 和 Collections 有什么区别"></a>Collection 和 Collections 有什么区别</h2><p><code>Collection</code> 是一个<strong>集合接口，它提供了对集合对象进行基本操作的通用接口方法</strong>，所有集合都是它的子类，比如 List、Set 等。<code>Collections</code> 是一个<strong>包装类，包含了很多静态方法，不能被实例化，就像一个工具类</strong>，比如提供的排序方法：<code>Collections. sort(list)</code>。</p>
+<h2 id="List、Set、Map-之间的区别是什么？"><a href="#List、Set、Map-之间的区别是什么？" class="headerlink" title="List、Set、Map 之间的区别是什么？"></a>List、Set、Map 之间的区别是什么？</h2><p>List、Set、Map 的区别主要体现在两个方面：元素是否有序、是否允许元素重复。三者之间的区别，如下表：</p>
+<p><img src="https://raw.githubusercontent.com/SouthernFish/ImageHostServer/main/java/20250618204117.png" alt="20250618204117"></p>
+<h2 id="List、Set-和-Map-的初始容量和加载因子"><a href="#List、Set-和-Map-的初始容量和加载因子" class="headerlink" title="List、Set 和 Map 的初始容量和加载因子"></a>List、Set 和 Map 的初始容量和加载因子</h2><table>
+<thead>
+<tr>
+<th></th>
+<th>初始容量</th>
+<th>加载因子</th>
+<th>扩容增量</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>ArrayList</strong>‌</td>
+<td>10</td>
+<td>0.5</td>
+<td>原容量的1.5倍</td>
+</tr>
+<tr>
+<td><strong>Vector</strong>‌</td>
+<td>10</td>
+<td>1</td>
+<td>原容量的2倍</td>
+</tr>
+<tr>
+<td><strong>HashSet</strong>‌</td>
+<td>16</td>
+<td>0.75</td>
+<td>原容量的2倍</td>
+</tr>
+<tr>
+<td><strong>HashMap</strong>‌</td>
+<td>16</td>
+<td>0.75</td>
+<td>原容量的2倍</td>
+</tr>
+</tbody></table>
+<ul>
+<li>‌<strong>初始容量</strong>‌：这是集合在<strong>创建时分配的存储空间大小</strong>。初始容量越大，集合在创建时分配的内存空间就越大，但这并不意味着它不会进行扩容。初始容量只是集合在创建时的一个预设值。</li>
+<li>‌<strong>加载因子</strong>‌：这是<strong>触发集合扩容的比例</strong>。当集合中的元素数量超过当前容量的加载因子时，集合会自动进行扩容操作。加载因子越小，集合的内存利用率越高，但可能会导致更多的内存开销；加载因子越大，内存利用率低，但可以减少扩容次数。</li>
+</ul>
+<h1 id="HashMap"><a href="#HashMap" class="headerlink" title="HashMap"></a>HashMap</h1><h2 id="HashMap-和-Hashtable-有什么区别？"><a href="#HashMap-和-Hashtable-有什么区别？" class="headerlink" title="HashMap 和 Hashtable 有什么区别？"></a>HashMap 和 Hashtable 有什么区别？</h2><ul>
+<li><strong>存储：</strong><code>HashMap</code> 允许 key 和 value 为 null，而 <code>Hashtable</code> 不允许。</li>
+<li><strong>线程安全：</strong><code>Hashtable</code> 是线程安全的，而 <code>HashMap</code> 是非线程安全的。</li>
+<li><strong>推荐使用：</strong>在 <code>Hashtable</code> 的类注释可以看到，<code>Hashtable</code> 是保留类不建议使用，推荐在单线程环境下使用 <code>HashMap</code> 替代，如果需要多线程使用则用 <code>ConcurrentHashMap</code> 替代。</li>
+</ul>
+<h2 id="HashMap-的实现原理？"><a href="#HashMap-的实现原理？" class="headerlink" title="HashMap 的实现原理？"></a>HashMap 的实现原理？</h2><p>HashMap 基于 <strong>Hash 算法</strong>实现的，我们通过 <strong><code>put(key,value)</code>存储，<code>get(key)</code>来获取</strong>。当传入 key 时，HashMap 会根据 key. <code>hashCode()</code> 计算出 hash 值，根据 hash 值将 value 保存在 <code>bucket</code> 里。当<strong>计算出的 hash 值相同时，我们称为 hash 冲突</strong>，HashMap 的做法是<strong>用链表和红黑树存储相同 hash 值的 value</strong>。当 <code>hash 冲突</code>的个数比较少时，使用链表否则使用红黑树。</p>
+<h2 id="HashMap为什么线程不安全？"><a href="#HashMap为什么线程不安全？" class="headerlink" title="HashMap为什么线程不安全？"></a>HashMap为什么线程不安全？</h2><p>主要原因在于其<strong>内部结构的非原子性操作和缺乏同步机制</strong>，导致<strong>多线程并发操作时可能引发数据不一致、死循环、数据覆盖</strong>等问题‌。</p>
+<h2 id="如何决定使用-HashMap-还是-TreeMap？"><a href="#如何决定使用-HashMap-还是-TreeMap？" class="headerlink" title="如何决定使用 HashMap 还是 TreeMap？"></a>如何决定使用 HashMap 还是 TreeMap？</h2><p>对于在 Map 中<strong>插入、删除、定位</strong>一个元素这类操作，<code>HashMap</code> 是最好的选择，因为相对而言 HashMap 的插入会更快，但是如果你要对一个 key 集合进行<strong>有序的遍历</strong>，那 <code>TreeMap</code> 是更好的选择。</p>
+<h2 id="HashSet-的实现原理？"><a href="#HashSet-的实现原理？" class="headerlink" title="HashSet 的实现原理？"></a>HashSet 的实现原理？</h2><p><code>HashSet</code> 是基于 <code>HashMap</code> 实现的，HashSet 不允许重复的值。<br>HashSet 保证元素不重复是利用 HashMap 的 <code>put</code> 方法实现的，在<strong>存储之前先根据 key 的 <code>hashCode 和 equals </code>判断是否已存在，如果存在就不在重复插入了</strong>，这样就保证了元素的不重复。</p>
+<h2 id="HashMap-和-ConcurrentHashMap-有什么区别？"><a href="#HashMap-和-ConcurrentHashMap-有什么区别？" class="headerlink" title="HashMap 和 ConcurrentHashMap 有什么区别？"></a>HashMap 和 ConcurrentHashMap 有什么区别？</h2><p><code>ConcurrentHashMap</code>的线程安全实现</p>
+<ul>
+<li><strong>Java7：</strong>分段锁(Segment)。将数据分成多个段，每段独立加锁，不同段的操作可并发。</li>
+<li><strong>Java 8+：</strong><code>CAS(无锁算法)+ synchronized(锁单个桶的头节点)</code>。锁粒度更细，并发度更高。插入时，如果桶为空，用 CAS 添加;否则锁住头节点再操作。<code>CAS（Compare And Swap(比较与交换)）</code>。读操作通常无锁(依赖 volatile 保证可见性)。</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/SouthernFish/ImageHostServer/main/java/20250618205242.png" alt="20250618205242"></p>
+<h1 id="List"><a href="#List" class="headerlink" title="List"></a>List</h1><h2 id="ArrayList-和-LinkedList-的区别是什么？"><a href="#ArrayList-和-LinkedList-的区别是什么？" class="headerlink" title="ArrayList 和 LinkedList 的区别是什么？"></a>ArrayList 和 LinkedList 的区别是什么？</h2><ul>
+<li><strong>数据结构实现：</strong><code>ArrayList</code> 是动态数组的数据结构实现，而 <code>LinkedList</code> 是双向链表的数据结构实现。</li>
+<li><strong>随机访问效率：</strong><code>ArrayList</code> 比 <code>LinkedList </code>在随机访问的时候效率要高，因为 <code>LinkedList</code> 是线性的数据存储方式，所以需要移动指针从前往后依次查找。</li>
+<li><strong>增加和删除效率：</strong>在非首尾的增加和删除操作，<code>LinkedList</code> 要比 <code>ArrayList</code> 效率要高，因为 <code>ArrayList</code> 增删操作要影响数组内的其他数据的下标。</li>
+</ul>
+<h2 id="如何实现数组和-List-之间的转换？"><a href="#如何实现数组和-List-之间的转换？" class="headerlink" title="如何实现数组和 List 之间的转换？"></a>如何实现数组和 List 之间的转换？</h2><ul>
+<li>数组转 List：使用 <code>Arrays. asList(array)</code> 进行转换。</li>
+<li>List 转数组：使用 List 自带的 <code>toArray()</code> 方法。</li>
+</ul>
+<h2 id="ArrayList-和-Vector-的区别是什么？"><a href="#ArrayList-和-Vector-的区别是什么？" class="headerlink" title="ArrayList 和 Vector 的区别是什么？"></a>ArrayList 和 Vector 的区别是什么？</h2><ul>
+<li><strong>线程安全：</strong><code>Vector</code> 使用了 <code>Synchronized</code> 来实现线程同步，是线程安全的，而 ArrayList 是非线程安全的。</li>
+<li>**性能：<code>**ArrayList</code> 在性能方面要优于 <code>Vector</code>。</li>
+<li><strong>扩容：</strong><code>ArrayList 和 Vector</code> 都会根据实际需要动态调整容量，它们的初始容量都是10，不过 <code>Vector 扩容每次会增加 1 倍</code>，而 <code>ArrayList 增加 50%</code>。</li>
+</ul>
+<h2 id="Array-和-ArrayList-有何区别？"><a href="#Array-和-ArrayList-有何区别？" class="headerlink" title="Array 和 ArrayList 有何区别？"></a>Array 和 ArrayList 有何区别？</h2><p>Array 可以存储基本数据类型和对象，ArrayList 只能存储对象。<br>Array 是指定固定大小的，而 ArrayList 大小是自动扩展的。<br>Array 内置方法没有 ArrayList 多，比如 <code>addAll、removeAll、iteration</code> 等方法只有 ArrayList 有。</p>
+<h1 id="迭代器Iterator"><a href="#迭代器Iterator" class="headerlink" title="迭代器Iterator"></a>迭代器Iterator</h1><h2 id="迭代器-Iterator-是什么？"><a href="#迭代器-Iterator-是什么？" class="headerlink" title="迭代器 Iterator 是什么？"></a>迭代器 Iterator 是什么？</h2><p><strong>Iterator 接口提供遍历任何 Collection 的接口</strong>。我们可以从一个 Collection 中使用迭代器方法来获取迭代器实例。迭代器取代了 Java 集合框架中的 Enumeration，<strong>迭代器允许调用者在迭代过程中移除元素</strong>。</p>
+<h2 id="Iterator-怎么使用？有什么特点？"><a href="#Iterator-怎么使用？有什么特点？" class="headerlink" title="Iterator 怎么使用？有什么特点？"></a>Iterator 怎么使用？有什么特点？</h2><p>Iterator 使用代码如下所示：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">List&lt;string&gt; list = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line">Iterator&lt;string&gt;it = list.iterator();</span><br><span class="line"><span class="keyword">while</span>(it.hasNext()*)&#123;</span><br><span class="line">    <span class="type">String</span> <span class="variable">obj</span> <span class="operator">=</span> it.next();</span><br><span class="line">    System.out.println(obj);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Iterator 的特点是更加安全，因为它可以确保，在当前遍历的集合元素被更改时，就会抛出 ConcurrentModificationException 异常。</p>
+<h2 id="Iterator-和-ListIterator-有什么区别？"><a href="#Iterator-和-ListIterator-有什么区别？" class="headerlink" title="Iterator 和 ListIterator 有什么区别？"></a>Iterator 和 ListIterator 有什么区别？</h2><p><code>Iterator</code> 可以遍历 Set 和 List 集合，而 ListIterator 只能遍历 List。<br><code>Iterator</code> 只能单向遍历，而 ListIterator 可以双向遍历（向前/后遍历）。<br><code>ListIterator</code> 从 Iterator 接口继承，添加了一些额外功能，如添加一个元素、替换一个元素、获取前面或后面元素的索引位置。</p>
+<hr>
+<h1 id="其他相关问题"><a href="#其他相关问题" class="headerlink" title="其他相关问题"></a>其他相关问题</h1><h2 id="在-Queue-中-poll-和-remove-有什么区别？"><a href="#在-Queue-中-poll-和-remove-有什么区别？" class="headerlink" title="在 Queue 中 poll()和 remove()有什么区别？"></a>在 Queue 中 poll()和 remove()有什么区别？</h2><p><strong>相同点：</strong>都是返回第一个元素，并在队列中删除返回的对象。<br><strong>不同点：</strong>如果没有元素 <code>poll()</code> 会返回 null，而 <code>remove()</code>会直接抛出 <code>NoSuchElementException</code> 异常。</p>
+<h2 id="哪些集合类是线程安全的？"><a href="#哪些集合类是线程安全的？" class="headerlink" title="哪些集合类是线程安全的？"></a>哪些集合类是线程安全的？</h2><p><code>Vector、Hashtable、Stack</code> 都是线程安全的，而像 HashMap 则是非线程安全的，JDK 1.5 之后随着 <code>Java. util. concurrent</code> 并发包的出现，它们也有了自己对应的线程安全类，比如 HashMap 对应的线程安全类就是 <code>ConcurrentHashMap</code>。</p>
+<h2 id="怎么确保一个集合不能被修改？"><a href="#怎么确保一个集合不能被修改？" class="headerlink" title="怎么确保一个集合不能被修改？"></a>怎么确保一个集合不能被修改？</h2><p>使用 <code>Collections. unmodifiableCollection(Collection c) </code>方法来创建一个只读集合，这样改变集合的任何操作都会抛出 Java. lang. UnsupportedOperationException 异常。<br>示例代码如下所示：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">List&lt;string&gt; list = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();list. add(<span class="string">&quot;x”);</span></span><br><span class="line"><span class="string">Collection&lt;string&gt;clist = collections.unmodifiablecollection(list),clist. add(&quot;</span>y”);<span class="comment">// 运行时此行报错</span></span><br><span class="line">System. out. println(list. size());</span><br></pre></td></tr></table></figure>
+
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="https://southernfish.github.io">Southern Fish</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://southernfish.github.io/pages/java/java-base-review/">https://southernfish.github.io/pages/java/java-base-review/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://southernfish.github.io" target="_blank">Southern Fish</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/java%E5%9F%BA%E7%A1%80/">java基础</a></div><div class="post_share"><div class="social-share" data-image="/img/article/article5.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/pages/java/java-business/"><img class="prev-cover" src="/img/article/article5.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">业务相关问题</div></div></a></div><div class="next-post pull-right"><a href="/pages/java/java-jdk/"><img class="next-cover" src="/img/article/article4.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">JDK</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/pages/java/java-jvm/" title="JVM"><img class="cover" src="/img/article/article4.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2025-06-20</div><div class="title">JVM</div></div></a></div><div><a href="/pages/java/java-network/" title="网络编程"><img class="cover" src="/img/article/article6.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2025-06-19</div><div class="title">网络编程</div></div></a></div><div><a href="/pages/java/java-object-copy/" title="对象克隆"><img class="cover" src="/img/article/article4.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2025-06-19</div><div class="title">对象克隆</div></div></a></div><div><a href="/pages/java/java-web/" title="Java Web"><img class="cover" src="/img/article/article1.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2025-06-19</div><div class="title">Java Web</div></div></a></div><div><a href="/pages/java/java-encription/" title="java的加密方式"><img class="cover" src="/img/article/article3.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2025-06-24</div><div class="title">java的加密方式</div></div></a></div><div><a href="/pages/java/java-base-4-exceptions/" title="JAVA 异常"><img class="cover" src="/img/article/article6.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2025-07-23</div><div class="title">JAVA 异常</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Southern Fish</div><div class="author-info__description"></div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">87</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">34</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">16</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/SouthernFish" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="/1002721576@qq.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">天下事岂能尽如吾意，心境须恰适，尽其在我，随遇而安。</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98"><span class="toc-number">1.</span> <span class="toc-text">常见问题</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%92%8C-equals-%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-number">1.1.</span> <span class="toc-text">&#x3D;&#x3D; 和 equals 的区别</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%A4%E4%B8%AA%E5%AF%B9%E8%B1%A1%E7%9A%84-hashCode-%E7%9B%B8%E5%90%8C%EF%BC%8C%E5%88%99-equals-%E4%B9%9F%E4%B8%80%E5%AE%9A%E4%B8%BA-true%EF%BC%8C%E5%AF%B9%E5%90%97"><span class="toc-number">1.2.</span> <span class="toc-text">两个对象的 hashCode() 相同，则 equals() 也一定为 true，对吗</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Java-%E4%B8%AD%E7%9A%84-Math-round-1-5-%E7%AD%89%E4%BA%8E%E5%A4%9A%E5%B0%91"><span class="toc-number">1.3.</span> <span class="toc-text">Java 中的 Math. round(-1. 5) 等于多少</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#final-%E5%9C%A8-Java-%E4%B8%AD%E6%9C%89%E4%BB%80%E4%B9%88%E4%BD%9C%E7%94%A8"><span class="toc-number">1.4.</span> <span class="toc-text">final 在 Java 中有什么作用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E7%A1%80%E7%9A%84%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B"><span class="toc-number">1.5.</span> <span class="toc-text">基础的数据类型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Files%E7%9A%84%E5%B8%B8%E7%94%A8%E6%96%B9%E6%B3%95%E9%83%BD%E6%9C%89%E5%93%AA%E4%BA%9B%EF%BC%9F"><span class="toc-number">1.6.</span> <span class="toc-text">Files的常用方法都有哪些？</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2String"><span class="toc-number">2.</span> <span class="toc-text">字符串String</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Java-%E4%B8%AD%E6%93%8D%E4%BD%9C%E5%AD%97%E7%AC%A6%E4%B8%B2%E9%83%BD%E6%9C%89%E5%93%AA%E4%BA%9B%E7%B1%BB%EF%BC%9F%E5%AE%83%E4%BB%AC%E4%B9%8B%E9%97%B4%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB%EF%BC%9F"><span class="toc-number">2.1.</span> <span class="toc-text">Java 中操作字符串都有哪些类？它们之间有什么区别？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#String-str-%E2%80%9Di%E2%80%9D%E4%B8%8E-String-str-new-String-%E2%80%9Ci%E2%80%9D-%E4%B8%80%E6%A0%B7%E5%90%97%EF%BC%9F"><span class="toc-number">2.2.</span> <span class="toc-text">String str&#x3D;”i”与 String str&#x3D;new String(“i”)一样吗？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E5%B0%86%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%8F%8D%E8%BD%AC%EF%BC%9F"><span class="toc-number">2.3.</span> <span class="toc-text">如何将字符串反转？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#String-%E7%B1%BB%E7%9A%84%E5%B8%B8%E7%94%A8%E6%96%B9%E6%B3%95"><span class="toc-number">2.4.</span> <span class="toc-text">String 类的常用方法</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%8A%BD%E8%B1%A1%E7%B1%BB%E9%97%AE%E9%A2%98"><span class="toc-number">3.</span> <span class="toc-text">抽象类问题</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8A%BD%E8%B1%A1%E7%B1%BB%E5%BF%85%E9%A1%BB%E8%A6%81%E6%9C%89%E6%8A%BD%E8%B1%A1%E6%96%B9%E6%B3%95%E5%90%97"><span class="toc-number">3.1.</span> <span class="toc-text">抽象类必须要有抽象方法吗?</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%99%AE%E9%80%9A%E7%B1%BB%E5%92%8C%E6%8A%BD%E8%B1%A1%E7%B1%BB%E6%9C%89%E5%93%AA%E4%BA%9B%E5%8C%BA%E5%88%AB%EF%BC%9F"><span class="toc-number">3.2.</span> <span class="toc-text">普通类和抽象类有哪些区别？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8A%BD%E8%B1%A1%E7%B1%BB%E8%83%BD%E4%BD%BF%E7%94%A8-final-%E4%BF%AE%E9%A5%B0%E5%90%97%EF%BC%9F"><span class="toc-number">3.3.</span> <span class="toc-text">抽象类能使用 final 修饰吗？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8E%A5%E5%8F%A3%E5%92%8C%E6%8A%BD%E8%B1%A1%E7%B1%BB%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB%EF%BC%9F"><span class="toc-number">3.4.</span> <span class="toc-text">接口和抽象类有什么区别？</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Java%E4%B8%AD%E7%9A%84IO"><span class="toc-number">4.</span> <span class="toc-text">Java中的IO</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Java-%E4%B8%AD-IO-%E6%B5%81%E5%88%86%E4%B8%BA%E5%87%A0%E7%A7%8D%EF%BC%9F"><span class="toc-number">4.1.</span> <span class="toc-text">Java 中 IO 流分为几种？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#BIO%E3%80%81NIO%E3%80%81AIO-%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB%EF%BC%9F"><span class="toc-number">4.2.</span> <span class="toc-text">BIO、NIO、AIO 有什么区别？</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Lambda%E8%A1%A8%E8%BE%BE%E5%BC%8F"><span class="toc-number">5.</span> <span class="toc-text">Lambda表达式</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Lambda%E8%A1%A8%E8%BE%BE%E5%BC%8F%E7%9A%84%E8%AF%AD%E6%B3%95"><span class="toc-number">5.1.</span> <span class="toc-text">Lambda表达式的语法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BA%94%E7%94%A8%E4%B8%BE%E4%BE%8B"><span class="toc-number">5.2.</span> <span class="toc-text">应用举例</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AE%B9%E5%99%A8"><span class="toc-number">6.</span> <span class="toc-text">容器</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Java-%E5%AE%B9%E5%99%A8%E9%83%BD%E6%9C%89%E5%93%AA%E4%BA%9B%EF%BC%9F"><span class="toc-number">6.1.</span> <span class="toc-text">Java 容器都有哪些？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Collection-%E5%92%8C-Collections-%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB"><span class="toc-number">6.2.</span> <span class="toc-text">Collection 和 Collections 有什么区别</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#List%E3%80%81Set%E3%80%81Map-%E4%B9%8B%E9%97%B4%E7%9A%84%E5%8C%BA%E5%88%AB%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="toc-number">6.3.</span> <span class="toc-text">List、Set、Map 之间的区别是什么？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#List%E3%80%81Set-%E5%92%8C-Map-%E7%9A%84%E5%88%9D%E5%A7%8B%E5%AE%B9%E9%87%8F%E5%92%8C%E5%8A%A0%E8%BD%BD%E5%9B%A0%E5%AD%90"><span class="toc-number">6.4.</span> <span class="toc-text">List、Set 和 Map 的初始容量和加载因子</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#HashMap"><span class="toc-number">7.</span> <span class="toc-text">HashMap</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#HashMap-%E5%92%8C-Hashtable-%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB%EF%BC%9F"><span class="toc-number">7.1.</span> <span class="toc-text">HashMap 和 Hashtable 有什么区别？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#HashMap-%E7%9A%84%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86%EF%BC%9F"><span class="toc-number">7.2.</span> <span class="toc-text">HashMap 的实现原理？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#HashMap%E4%B8%BA%E4%BB%80%E4%B9%88%E7%BA%BF%E7%A8%8B%E4%B8%8D%E5%AE%89%E5%85%A8%EF%BC%9F"><span class="toc-number">7.3.</span> <span class="toc-text">HashMap为什么线程不安全？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E5%86%B3%E5%AE%9A%E4%BD%BF%E7%94%A8-HashMap-%E8%BF%98%E6%98%AF-TreeMap%EF%BC%9F"><span class="toc-number">7.4.</span> <span class="toc-text">如何决定使用 HashMap 还是 TreeMap？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#HashSet-%E7%9A%84%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86%EF%BC%9F"><span class="toc-number">7.5.</span> <span class="toc-text">HashSet 的实现原理？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#HashMap-%E5%92%8C-ConcurrentHashMap-%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB%EF%BC%9F"><span class="toc-number">7.6.</span> <span class="toc-text">HashMap 和 ConcurrentHashMap 有什么区别？</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#List"><span class="toc-number">8.</span> <span class="toc-text">List</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#ArrayList-%E5%92%8C-LinkedList-%E7%9A%84%E5%8C%BA%E5%88%AB%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="toc-number">8.1.</span> <span class="toc-text">ArrayList 和 LinkedList 的区别是什么？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E6%95%B0%E7%BB%84%E5%92%8C-List-%E4%B9%8B%E9%97%B4%E7%9A%84%E8%BD%AC%E6%8D%A2%EF%BC%9F"><span class="toc-number">8.2.</span> <span class="toc-text">如何实现数组和 List 之间的转换？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ArrayList-%E5%92%8C-Vector-%E7%9A%84%E5%8C%BA%E5%88%AB%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="toc-number">8.3.</span> <span class="toc-text">ArrayList 和 Vector 的区别是什么？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Array-%E5%92%8C-ArrayList-%E6%9C%89%E4%BD%95%E5%8C%BA%E5%88%AB%EF%BC%9F"><span class="toc-number">8.4.</span> <span class="toc-text">Array 和 ArrayList 有何区别？</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%BF%AD%E4%BB%A3%E5%99%A8Iterator"><span class="toc-number">9.</span> <span class="toc-text">迭代器Iterator</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BF%AD%E4%BB%A3%E5%99%A8-Iterator-%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="toc-number">9.1.</span> <span class="toc-text">迭代器 Iterator 是什么？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Iterator-%E6%80%8E%E4%B9%88%E4%BD%BF%E7%94%A8%EF%BC%9F%E6%9C%89%E4%BB%80%E4%B9%88%E7%89%B9%E7%82%B9%EF%BC%9F"><span class="toc-number">9.2.</span> <span class="toc-text">Iterator 怎么使用？有什么特点？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Iterator-%E5%92%8C-ListIterator-%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB%EF%BC%9F"><span class="toc-number">9.3.</span> <span class="toc-text">Iterator 和 ListIterator 有什么区别？</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%85%B6%E4%BB%96%E7%9B%B8%E5%85%B3%E9%97%AE%E9%A2%98"><span class="toc-number">10.</span> <span class="toc-text">其他相关问题</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9C%A8-Queue-%E4%B8%AD-poll-%E5%92%8C-remove-%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB%EF%BC%9F"><span class="toc-number">10.1.</span> <span class="toc-text">在 Queue 中 poll()和 remove()有什么区别？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%93%AA%E4%BA%9B%E9%9B%86%E5%90%88%E7%B1%BB%E6%98%AF%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8%E7%9A%84%EF%BC%9F"><span class="toc-number">10.2.</span> <span class="toc-text">哪些集合类是线程安全的？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%8E%E4%B9%88%E7%A1%AE%E4%BF%9D%E4%B8%80%E4%B8%AA%E9%9B%86%E5%90%88%E4%B8%8D%E8%83%BD%E8%A2%AB%E4%BF%AE%E6%94%B9%EF%BC%9F"><span class="toc-number">10.3.</span> <span class="toc-text">怎么确保一个集合不能被修改？</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/pages/algorithm/simple_algorithm/" title="其他简单算法"><img src="/img/article/article5.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="其他简单算法"/></a><div class="content"><a class="title" href="/pages/algorithm/simple_algorithm/" title="其他简单算法">其他简单算法</a><time datetime="2025-08-07T07:30:36.000Z" title="发表于 2025-08-07 15:30:36">2025-08-07</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/pages/algorithm/backtrack-algorithm/" title="回溯算法"><img src="/img/article/article3.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="回溯算法"/></a><div class="content"><a class="title" href="/pages/algorithm/backtrack-algorithm/" title="回溯算法">回溯算法</a><time datetime="2025-08-06T10:30:36.000Z" title="发表于 2025-08-06 18:30:36">2025-08-06</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/pages/algorithm/greedy-algorithm/" title="贪心算法"><img src="/img/article/article5.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="贪心算法"/></a><div class="content"><a class="title" href="/pages/algorithm/greedy-algorithm/" title="贪心算法">贪心算法</a><time datetime="2025-08-04T07:20:36.000Z" title="发表于 2025-08-04 15:20:36">2025-08-04</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/pages/algorithm/dynamic-programming/" title="动态规划算法"><img src="/img/article/article4.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="动态规划算法"/></a><div class="content"><a class="title" href="/pages/algorithm/dynamic-programming/" title="动态规划算法">动态规划算法</a><time datetime="2025-08-02T06:20:36.000Z" title="发表于 2025-08-02 14:20:36">2025-08-02</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/pages/algorithm/sliding-window/" title="滑动窗口算法"><img src="/img/article/article4.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="滑动窗口算法"/></a><div class="content"><a class="title" href="/pages/algorithm/sliding-window/" title="滑动窗口算法">滑动窗口算法</a><time datetime="2025-08-02T02:00:36.000Z" title="发表于 2025-08-02 10:00:36">2025-08-02</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url('/img/article/article5.png')"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2025 By Southern Fish</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><script>var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',preloader.endLoading())</script><div class="js-pjax"></div><canvas class="fireworks" mobile="true"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/fireworks.min.js"></script><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="true" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-nest.min.js"></script><script id="click-heart" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/click-heart.min.js" async="async" mobile="true"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body></html>
