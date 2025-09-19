@@ -1,0 +1,466 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>Redis支持的数据类型 | Southern Fish</title><meta name="keywords" content="Redis"><meta name="author" content="Southern Fish"><meta name="copyright" content="Southern Fish"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="‌Redis(Remote Dictionary Server)，远程字典服务，是用C语言编写、支持网络、可基于内存亦可持久化的日志型、Key-Value数据库，提供多种语言的API。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Redis支持的数据类型">
+<meta property="og:url" content="https://southernfish.github.io/pages/database/db-redis-datatype/index.html">
+<meta property="og:site_name" content="Southern Fish">
+<meta property="og:description" content="‌Redis(Remote Dictionary Server)，远程字典服务，是用C语言编写、支持网络、可基于内存亦可持久化的日志型、Key-Value数据库，提供多种语言的API。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://southernfish.github.io/img/article/article5.png">
+<meta property="article:published_time" content="2025-09-17T11:43:36.000Z">
+<meta property="article:modified_time" content="2025-09-19T03:11:09.130Z">
+<meta property="article:author" content="Southern Fish">
+<meta property="article:tag" content="Redis">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://southernfish.github.io/img/article/article5.png"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://southernfish.github.io/pages/database/db-redis-datatype/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//fonts.googleapis.com" crossorigin=""/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Titillium+Web&amp;display=swap" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":200},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: true
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Redis支持的数据类型',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2025-09-19 11:11:09'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 5.4.2"><link rel="alternate" href="/atom.xml" title="Southern Fish" type="application/atom+xml">
+</head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/avatar.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">96</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">35</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">16</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 文章</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于我</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/img/article/article5.png')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Southern Fish</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 文章</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于我</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">Redis支持的数据类型</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2025-09-17T11:43:36.000Z" title="发表于 2025-09-17 19:43:36">2025-09-17</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-09-19T03:11:09.130Z" title="更新于 2025-09-19 11:11:09">2025-09-19</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Database/">Database</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">6.8k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>23分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="Redis支持的数据类型"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><p>Redis(Remote Dictionary Server)，远程字典服务，是用C语言编写、支持网络、可基于内存亦可持久化的日志型、Key-Value数据库，提供多种语言的API。</p>
+<blockquote>
+<p>参考文章：</p>
+<p><a target="_blank" rel="noopener" href="https://javaguide.cn/database/redis/redis-data-structures-01.html">Redis 5 种基本数据类型详解</a></p>
+<p><a target="_blank" rel="noopener" href="https://javaguide.cn/database/redis/redis-data-structures-02.html">Redis 3 种特殊数据类型详解</a></p>
+<p><a target="_blank" rel="noopener" href="https://javaguide.cn/cs-basics/data-structure/bloom-filter.html">Bloom filter（布隆过滤器）</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/u022812849/article/details/145855462">【redis】数据类型之Bitfields</a></p>
+</blockquote>
+<h1 id="Redis-支持的数据类型"><a href="#Redis-支持的数据类型" class="headerlink" title="Redis 支持的数据类型"></a>Redis 支持的数据类型</h1><ul>
+<li><strong>5 种基础数据类型</strong>：String（字符串）、List（列表）、Set（集合）、Hash（散列）、Zset（有序集合）。</li>
+<li><strong>3 种特殊数据类型</strong>：HyperLogLog（基数统计）、Bitmap （位图）、Geospatial (地理位置)。</li>
+<li>此外，还有一些其他的，比如 Bloom filter（布隆过滤器）、Bitfield（位域）。</li>
+</ul>
+<h2 id="5-种基本数据类型"><a href="#5-种基本数据类型" class="headerlink" title="5 种基本数据类型"></a>5 种基本数据类型</h2><p>Redis 共有 5 种基本数据类型：String（字符串）、List（列表）、Set（集合）、Hash（散列）、Zset（有序集合）。</p>
+<p>这 5 种数据类型是直接提供给用户使用的，是数据的保存形式，其底层实现主要依赖这 8 种数据结构：简单动态字符串（SDS）、LinkedList（双向链表）、Dict（哈希表/字典）、SkipList（跳跃表）、Intset（整数集合）、ZipList（压缩列表）、QuickList（快速列表）。</p>
+<p>Redis 5 种基本数据类型对应的底层数据结构实现如下表所示：</p>
+<table>
+<thead>
+<tr>
+<th align="left">String</th>
+<th align="left">List</th>
+<th align="left">Hash</th>
+<th align="left">Set</th>
+<th align="left">Zset</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">SDS</td>
+<td align="left">LinkedList/ZipList/QuickList</td>
+<td align="left">Dict、ZipList</td>
+<td align="left">Dict、Intset</td>
+<td align="left">ZipList、SkipList</td>
+</tr>
+</tbody></table>
+<h3 id="String（字符串）"><a href="#String（字符串）" class="headerlink" title="String（字符串）"></a>String（字符串）</h3><p>String 是 Redis 中最简单同时也是最常用的一个数据类型。它是一种二进制安全的数据类型，可以用来存储任何类型的数据比如字符串、整数、浮点数、图片（图片的 base64 编码或者解码或者图片的路径）、序列化后的对象。</p>
+<p><strong>应用场景</strong></p>
+<ul>
+<li><strong>常规数据</strong>： 缓存Session、Token、序列化后的对象、图片的路径。相关命令为<code>SET</code>、<code>GET</code>。</li>
+<li><strong>计数</strong>：用户单位时间的请求数（简单限流可以用到）、页面单位时间的访问数。相关命令为<code>SET</code>、<code>GET</code>、 <code>INCR</code>、<code>DECR</code> 。</li>
+<li><strong>分布式锁</strong>：利用 <code>SETNX key value</code> 命令可以实现一个最简易的分布式锁（有缺陷，不推荐）。</li>
+</ul>
+<p>Redis String 命令以及详细使用指南，请查看 Redis 官网对应的介绍：<a target="_blank" rel="noopener" href="https://redis.io/commands/?group=string">https://redis.io/commands/?group=string</a> 。</p>
+<p>Redis 构建了一种 <strong>简单动态字符串</strong>（Simple Dynamic String，<strong>SDS</strong>）。SDS 相比于 C 语言中的字符串有如下提升：</p>
+<ol>
+<li><strong>可以避免缓冲区溢出</strong>：C 语言中字符串被修改时，一旦没有分配足够长度的内存空间，就会造成缓冲区溢出。SDS 被修改时，会先根据 len 属性检查空间大小，不满足要求会先扩展至所需大小再进行修改操作。</li>
+<li><strong>获取字符串长度的复杂度较低</strong>：C 语言中的字符串的长度通常是经过遍历计数来实现的，时间复杂度为 O(n)。SDS 的长度获取直接读取 len 属性即可，时间复杂度为 O(1)。</li>
+<li><strong>减少内存分配次数</strong>：C 语言的字符串修改字符串时，每次都需要重新分配内存。SDS 实现了空间预分配和惰性空间释放两种优化策略。当 SDS 需要增加字符串时，Redis 会为 SDS 分配好内存，并且根据特定的算法分配多余的内存，这样可以减少连续执行字符串增长操作所需的内存重分配次数。当 SDS 需要减少字符串时，这部分内存不会立即被回收，会被记录下来，等待后续使用（支持手动释放，有对应的 API）。</li>
+<li><strong>二进制安全</strong>：C 语言中的字符串以空字符 <code>\0</code> 作为字符串结束的标识，而一些二进制文件（比如图片、视频、音频）就可能包括空字符，C 字符串无法正确保存。SDS 使用 len 属性判断字符串是否结束，不存在这个问题。</li>
+</ol>
+<h3 id="List（列表）"><a href="#List（列表）" class="headerlink" title="List（列表）"></a>List（列表）</h3><p>Redis 中的 List 是链表数据结构的实现，但 C 语言没有实现链表，所以 Redis 实现了自己的链表数据结构。Redis 的 List 的实现为一个 <strong>双向链表</strong>，即可以支持反向查找和遍历，更方便操作，不过带来了部分额外的内存开销。</p>
+<p>Redis List 命令以及详细使用指南，请查看 Redis 官网对应的介绍：<a target="_blank" rel="noopener" href="https://redis.io/commands/?group=list">https://redis.io/commands/?group=list</a> 。</p>
+<p><strong>应用场景</strong></p>
+<ul>
+<li><strong>信息流展示</strong>：最新文章、最新动态。相关命令为<code>LPUSH</code>、<code>LRANGE</code>。</li>
+<li><strong>消息队列</strong>：可以用来做消息队列，只是功能过于简单且存在很多缺陷，不建议这样做。</li>
+</ul>
+<h3 id="Hash（哈希）"><a href="#Hash（哈希）" class="headerlink" title="Hash（哈希）"></a>Hash（哈希）</h3><p>Redis 中的 Hash 是一个 String 类型的 field-value（键值对） 的映射表，适合用于存储对象，后续操作时可以直接修改这个对象中的某些字段的值。<br>Hash 类似于 JDK1.8 前的 HashMap，内部实现也差不多(数组 + 链表)。不过，Redis 的 Hash 做了更多优化。</p>
+<p>Redis Hash 命令以及详细使用指南，请查看 Redis 官网对应的介绍：<a target="_blank" rel="noopener" href="https://redis.io/commands/?group=hash">https://redis.io/commands/?group=hash</a> 。</p>
+<p><strong>应用场景</strong></p>
+<ul>
+<li><strong>对象数据存储</strong>：用户信息、商品信息、文章信息、购物车信息。相关命令为<code>HSET</code> （设置单个字段的值）、<code>HMSET</code>（设置多个字段的值）、<code>HGET</code>（获取单个字段的值）、<code>HMGET</code>（获取多个字段的值）。</li>
+</ul>
+<h3 id="Set（集合）"><a href="#Set（集合）" class="headerlink" title="Set（集合）"></a>Set（集合）</h3><p>Redis 中的 Set 类型是一种无序集合，集合中的元素没有先后顺序但都唯一，类似于 Java 的 <code>HashSet</code> 。当要存储列表数据，又不希望出现重复数据时，Set 是一个很好的选择，并且 Set 提供了判断某个元素是否在一个 Set 集合内的重要接口，这个也是 List 所不能提供的。</p>
+<p>可基于 Set 轻易实现交集、并集、差集的操作，比如实现如共同关注、共同粉丝、共同喜好等功能就是求交集的过程。</p>
+<p>Redis Set 命令以及详细使用指南，请查看 Redis 官网对应的介绍：<a target="_blank" rel="noopener" href="https://redis.io/commands/?group=set">https://redis.io/commands/?group=set</a> 。</p>
+<p><strong>应用场景</strong></p>
+<ul>
+<li><strong>存放的数据不能重复</strong>：网站 UV 统计（数据量巨大的场景还是 <code>HyperLogLog</code>更适合一些）、文章点赞、动态点赞等场景。相关命令为<code>SCARD</code>（获取集合数量） 。</li>
+<li><strong>获取多个数据源交集、并集和差集</strong>：共同好友(交集)、共同粉丝(交集)、共同关注(交集)、好友推荐（差集）、音乐推荐（差集）、订阅号推荐（差集+交集） 等场景。相关命令为<code>SINTER</code>（交集）、<code>SINTERSTORE</code> （交集）、<code>SUNION</code> （并集）、<code>SUNIONSTORE</code>（并集）、<code>SDIFF</code>（差集）、<code>SDIFFSTORE</code> （差集）。</li>
+<li><strong>随机获取数据源中的元素</strong>：抽奖系统、随机点名等场景。相关命令为<code>SPOP</code>（随机获取集合中的元素并移除，适合不允许重复中奖的场景）、<code>SRANDMEMBER</code>（随机获取集合中的元素，适合允许重复中奖的场景）。</li>
+</ul>
+<h3 id="Sorted-set（有序集合）"><a href="#Sorted-set（有序集合）" class="headerlink" title="Sorted set（有序集合）"></a>Sorted set（有序集合）</h3><p>Sorted Set 类似于 Set，但Sorted Set 增加了一个权重参数 <code>score</code>，使得集合中的元素能够按 <code>score</code> 进行有序排列，还可以通过 <code>score</code> 的范围来获取元素的列表。有点像 Java 中 <code>HashMap</code> 和 <code>TreeSet</code> 的结合体。</p>
+<p>Redis Sorted Set 命令以及详细使用指南，请查看 Redis 官网对应的介绍：<a target="_blank" rel="noopener" href="https://redis.io/commands/?group=sorted-set">https://redis.io/commands/?group=sorted-set</a> 。</p>
+<p><strong>应用场景</strong></p>
+<ul>
+<li><strong>随机获取数据源中的元素根据某个权重进行排序</strong>：各种排行榜，如直播间送礼物、朋友圈的微信步数、王者荣耀中的段位、话题热度排行榜等。相关命令为<code>ZRANGE</code> (从小到大排序)、 <code>ZREVRANGE</code> （从大到小排序）、<code>ZREVRANK</code> (指定元素排名)。</li>
+<li><strong>存储的数据有优先级或者重要程度</strong>：优先级任务队列。相关命令为<code>ZRANGE</code> (从小到大排序)、 <code>ZREVRANGE</code> （从大到小排序）、<code>ZREVRANK</code> (指定元素排名)。</li>
+</ul>
+<h3 id="String-对比-Hash"><a href="#String-对比-Hash" class="headerlink" title="String 对比 Hash"></a>String 对比 Hash</h3><ul>
+<li><strong>对象存储方式</strong>：String 存储的是序列化后的对象数据，存放的是整个对象，操作简单直接。Hash 是对对象的每个字段单独存储，可以获取部分字段的信息，也可以修改或者添加部分字段，节省网络流量。如果对象中某些字段需要经常变动或者经常需要单独查询对象中的个别字段信息，Hash 就非常适合。</li>
+<li><strong>内存消耗</strong>：Hash 通常比 String 更节省内存，特别是在字段较多且字段长度较短时。Redis 对小型 Hash 进行优化（如使用 ziplist 存储），进一步降低内存占用。</li>
+<li><strong>复杂对象存储</strong>：String 在处理多层嵌套或复杂结构的对象时更方便，因为无需处理每个字段的独立存储和操作。</li>
+<li><strong>性能</strong>：String 的操作通常具有 O(1) 的时间复杂度，因为它存储的是整个对象，操作简单直接，整体读写的性能较好。Hash 由于需要处理多个字段的增删改查操作，在字段较多且经常变动的情况下，可能会带来额外的性能开销。</li>
+</ul>
+<p><strong>总结</strong>：</p>
+<ul>
+<li>在绝大多数情况下，<strong>String</strong> 更适合存储对象数据，尤其是当对象结构简单且整体读写是主要操作时。</li>
+<li>如果你需要频繁操作对象的部分字段或节省内存，<strong>Hash</strong> 可能是更好的选择。</li>
+</ul>
+<h2 id="3-种特殊数据类型"><a href="#3-种特殊数据类型" class="headerlink" title="3 种特殊数据类型"></a>3 种特殊数据类型</h2><p>Redis 支持 3 种特殊的数据类型：Bitmap （位图）、HyperLogLog（基数统计）、Geospatial (地理位置)。</p>
+<h3 id="Bitmap-（位图）"><a href="#Bitmap-（位图）" class="headerlink" title="Bitmap （位图）"></a>Bitmap （位图）</h3><p>Bitmap 存储的是连续的二进制数字（0 和 1），通过 Bitmap，只需要一个 bit 位来表示某个元素对应的值或者状态，key 就是对应元素本身 。我们知道 8 个 bit 可以组成一个 byte，所以 Bitmap 本身会极大的节省储存空间。</p>
+<p>可将 Bitmap 看作是一个存储二进制数字（0 和 1）的数组，数组中每个元素的下标叫做 offset（偏移量）。</p>
+<p><strong>应用场景</strong></p>
+<ul>
+<li><strong>保存状态信息（0/1 即可表示）</strong>：用户签到情况、活跃用户情况、用户行为统计（比如是否点赞过某个视频）。相关命令为<code>SETBIT</code>、<code>GETBIT</code>、<code>BITCOUNT</code>、<code>BITOP</code>。</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>命令</th>
+<th>介绍</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>SETBIT key offset value</td>
+<td>设置指定 offset 位置的值</td>
+</tr>
+<tr>
+<td>GETBIT key offset</td>
+<td>获取指定 offset 位置的值</td>
+</tr>
+<tr>
+<td>BITCOUNT key start end</td>
+<td>获取 start 和 end 之间值为 1 的元素个数</td>
+</tr>
+<tr>
+<td>BITOP operation destkey key1 key2 …</td>
+<td>对一个或多个 Bitmap 进行运算，可用运算符有 AND, OR, XOR 以及 NOT</td>
+</tr>
+</tbody></table>
+<h3 id="HyperLogLog（基数统计）"><a href="#HyperLogLog（基数统计）" class="headerlink" title="HyperLogLog（基数统计）"></a>HyperLogLog（基数统计）</h3><p>HyperLogLog 是一种有名的基数计数概率算法 ，基于 LogLog Counting(LLC)优化改进得来，并不是 Redis 特有的，Redis 只是实现了这个算法并提供了一些开箱即用的 API。Redis 提供的 HyperLogLog 占用空间非常小，只需要 12k 的空间就能存储接近<code>2^64</code>个不同元素。另外，Redis 优化了 HyperLogLog 的存储结构，采用两种方式计数：</p>
+<ul>
+<li><strong>稀疏矩阵</strong>：计数较少的时候，占用空间很小。</li>
+<li><strong>稠密矩阵</strong>：计数达到某个阈值的时候，占用 12k 的空间。</li>
+</ul>
+<p>基数计数概率算法为了节省内存并不会直接存储元数据，而是通过一定的概率统计方法预估基数值（集合中包含元素的个数）。因此， HyperLogLog 的计数结果并不是一个精确值，存在一定的误差（标准误差为 <code>0.81%</code> ）。</p>
+<p><strong>应用场景</strong></p>
+<ul>
+<li><strong>数量巨大（百万、千万级别以上）的计数</strong>：热门网站每日/每周/每月访问 ip 数统计、热门帖子 uv 统计。相关命令为<code>PFADD</code>、<code>PFCOUNT</code> 。</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>命令</th>
+<th>介绍</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>PFADD key element1 element2 …</td>
+<td>添加一个或多个元素到 HyperLogLog 中</td>
+</tr>
+<tr>
+<td>PFCOUNT key1 key2</td>
+<td>获取一个或者多个 HyperLogLog 的唯一计数。</td>
+</tr>
+<tr>
+<td>PFMERGE destkey sourcekey1 sourcekey2 …</td>
+<td>将多个 HyperLogLog 合并到 destkey 中，destkey 会结合多个源，算出对应的唯一计数。</td>
+</tr>
+</tbody></table>
+<h3 id="Geospatial-地理位置"><a href="#Geospatial-地理位置" class="headerlink" title="Geospatial (地理位置)"></a>Geospatial (地理位置)</h3><p>Geospatial index（地理空间索引，简称 GEO） 主要用于存储地理位置信息，基于 Sorted Set 实现。通过 GEO 可轻松实现两个位置距离的计算、获取指定位置附近的元素等功能。</p>
+<p><strong>应用场景</strong></p>
+<ul>
+<li><strong>管理使用地理空间数据</strong>：附近的人。相关命令为 <code>GEOADD</code>、<code>GEORADIUS</code>、<code>GEORADIUSBYMEMBER</code> 。</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>命令</th>
+<th>介绍</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>GEOADD key longitude1 latitude1 member1 …</td>
+<td>添加一个或多个元素对应的经纬度信息到 GEO 中</td>
+</tr>
+<tr>
+<td>GEOPOS key member1 member2 …</td>
+<td>返回给定元素的经纬度信息</td>
+</tr>
+<tr>
+<td>GEODIST key member1 member2 M/KM/FT/MI</td>
+<td>返回两个给定元素之间的距离</td>
+</tr>
+<tr>
+<td>GEORADIUS key longitude latitude radius distance</td>
+<td>获取指定位置附近 distance 范围内的其他元素，支持 ASC(由近到远)、DESC（由远到近）、Count(数量) 等参数</td>
+</tr>
+<tr>
+<td>GEORADIUSBYMEMBER key member radius distance</td>
+<td>类似于 GEORADIUS 命令，只是参照的中心点是 GEO 中的元素</td>
+</tr>
+</tbody></table>
+<hr>
+<h1 id="Bloom-filter（布隆过滤器）"><a href="#Bloom-filter（布隆过滤器）" class="headerlink" title="Bloom filter（布隆过滤器）"></a>Bloom filter（布隆过滤器）</h1><h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>布隆过滤器（Bloom Filter，BF）是 Bloom 于 1970 年提出的。可以看作由<em>二进制向量（或者说位数组）和一系列随机映射函数（哈希函数）</em>两部分组成的数据结构。相比于 List、Map、Set 等数据结构，它占用空间更少并且效率更高，但其返回的结果是概率性的，而不是非常准确的。理论情况下添加到集合中的元素越多，误报的可能性就越大。并且，存放在布隆过滤器的数据不容易删除。</p>
+<p>Bloom Filter 会使用一个较大的 bit 数组来保存所有的数据，数组中的每个元素都只占用 1 bit ，并且每个元素只能是 0 或者 1（代表 false 或者 true），这也是 Bloom Filter 节省内存的核心所在。这样来算的话，申请一个 100w 个元素的位数组只占用 1000000Bit / 8 = 125000 Byte = 125000/1024 KB ≈ 122KB 的空间。</p>
+<p><strong>总结</strong>：一个名叫 Bloom 的人提出了一种来检索元素是否在给定大集合中的数据结构，这种数据结构是高效且性能很好的，但缺点是具有一定的错误识别率和删除难度。并且，理论情况下，添加到集合中的元素越多，误报的可能性就越大。</p>
+<h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h2><p><strong>当一个元素加入布隆过滤器中时，会进行如下操作：</strong></p>
+<ol>
+<li>使用布隆过滤器中的哈希函数（多个）对元素值进行<em>哈希计算</em>，得到哈希值（有几个哈希函数得到几个哈希值）。</li>
+<li>根据得到的哈希值，在位数组中把对应下标的值置为 1。</li>
+</ol>
+<p><strong>当需要判断一个元素是否存在于布隆过滤器时，会进行如下操作：</strong></p>
+<ol>
+<li>对给定元素再次进行相同的<em>哈希计算</em>；</li>
+<li>得到值之后判断位数组中的每个元素是否都为 1，如果值都为 1，那么说明这个值在布隆过滤器中，如果存在一个值不为 1，说明该元素不在布隆过滤器中。</li>
+</ol>
+<p><strong>注意</strong>：不同的字符串可能哈希出来的位置相同，这种情况可以适当增加位数组大小或者调整我们的哈希函数。</p>
+<p><strong>综上</strong>：布隆过滤器说某个元素存在，小概率会误判。布隆过滤器说某个元素不在，那么这个元素一定不在。</p>
+<h2 id="使用场景"><a href="#使用场景" class="headerlink" title="使用场景"></a>使用场景</h2><ol>
+<li><strong>判断给定数据是否存在</strong>：判断一个数字是否存在于包含大量数字的数字集中（数字集很大，上亿）、 防止缓存穿透（判断请求的数据是否有效避免直接绕过缓存请求数据库）等等、邮箱的垃圾邮件过滤（判断一个邮件地址是否在垃圾邮件列表中）、黑名单功能（判断一个 IP 地址或手机号码是否在黑名单中）等等。</li>
+<li><strong>去重</strong>：爬给定网址的时候对已经爬取过的 URL 去重、对巨量的 QQ 号/订单号去重。</li>
+</ol>
+<p>去重场景也需要用到判断给定数据是否存在，因此布隆过滤器主要是为了解决海量数据的存在性问题。</p>
+<h2 id="编码实战"><a href="#编码实战" class="headerlink" title="编码实战"></a>编码实战</h2><h3 id="java手动实现"><a href="#java手动实现" class="headerlink" title="java手动实现"></a>java手动实现</h3><p>步骤如下：</p>
+<ol>
+<li>一个合适大小的位数组保存数据</li>
+<li>几个不同的哈希函数</li>
+<li>添加元素到位数组（布隆过滤器）的方法实现</li>
+<li>判断给定元素是否存在于位数组（布隆过滤器）的方法实现。</li>
+</ol>
+<p>代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.BitSet;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">MyBloomFilter</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">int</span> <span class="variable">DEFAULT_SIZE</span> <span class="operator">=</span> <span class="number">2</span> &lt;&lt; <span class="number">24</span>; <span class="comment">// 位数组的大小</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">int</span>[] SEEDS = <span class="keyword">new</span> <span class="title class_">int</span>[]&#123;<span class="number">3</span>, <span class="number">13</span>, <span class="number">46</span>, <span class="number">71</span>, <span class="number">91</span>, <span class="number">134</span>&#125;; <span class="comment">// 通过此数组可创建6个不同哈希函数</span></span><br><span class="line">    <span class="keyword">private</span> <span class="type">BitSet</span> <span class="variable">bits</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">BitSet</span>(DEFAULT_SIZE); <span class="comment">// 位数组。数组中的元素只能是 0 或者 1</span></span><br><span class="line">    <span class="keyword">private</span> SimpleHash[] func = <span class="keyword">new</span> <span class="title class_">SimpleHash</span>[SEEDS.length]; <span class="comment">// 存放包含 hash 函数的类的数组</span></span><br><span class="line">    <span class="comment">// 初始化多个包含 hash 函数的类的数组，每个类中的 hash 函数都不一样</span></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">MyBloomFilter</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="comment">// 初始化多个不同的 Hash 函数</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; SEEDS.length; i++) &#123;</span><br><span class="line">            func[i] = <span class="keyword">new</span> <span class="title class_">SimpleHash</span>(DEFAULT_SIZE, SEEDS[i]);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 添加元素到位数组</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">add</span><span class="params">(Object value)</span> &#123;</span><br><span class="line">        <span class="keyword">for</span> (SimpleHash f : func) &#123;</span><br><span class="line">            bits.set(f.hash(value), <span class="literal">true</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 判断指定元素是否存在于位数组</span></span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">contains</span><span class="params">(Object value)</span> &#123;</span><br><span class="line">        <span class="type">boolean</span> <span class="variable">ret</span> <span class="operator">=</span> <span class="literal">true</span>;</span><br><span class="line">        <span class="keyword">for</span> (SimpleHash f : func) &#123;</span><br><span class="line">            ret = ret &amp;&amp; bits.get(f.hash(value));</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> ret;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// hash 操作的 静态内部类</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title class_">SimpleHash</span> &#123;</span><br><span class="line">        <span class="keyword">private</span> <span class="type">int</span> cap;</span><br><span class="line">        <span class="keyword">private</span> <span class="type">int</span> seed;</span><br><span class="line">        <span class="keyword">public</span> <span class="title function_">SimpleHash</span><span class="params">(<span class="type">int</span> cap, <span class="type">int</span> seed)</span> &#123;</span><br><span class="line">            <span class="built_in">this</span>.cap = cap;</span><br><span class="line">            <span class="built_in">this</span>.seed = seed;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 计算 hash 值</span></span><br><span class="line">        <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">hash</span><span class="params">(Object value)</span> &#123;</span><br><span class="line">            <span class="type">int</span> h;</span><br><span class="line">            <span class="keyword">return</span> (value == <span class="literal">null</span>) ? <span class="number">0</span> : Math.abs((cap - <span class="number">1</span>) &amp; seed * ((h = value.hashCode()) ^ (h &gt;&gt;&gt; <span class="number">16</span>)));</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>测试代码如下所示，得出结果为 false false true true</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">String</span> <span class="variable">value1</span> <span class="operator">=</span> <span class="string">&quot;https://javaguide.cn/&quot;</span>;</span><br><span class="line"><span class="type">String</span> <span class="variable">value2</span> <span class="operator">=</span> <span class="string">&quot;https://github.com/Snailclimb&quot;</span>;</span><br><span class="line"><span class="type">MyBloomFilter</span> <span class="variable">filter</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">MyBloomFilter</span>();</span><br><span class="line">System.out.println(filter.contains(value1));</span><br><span class="line">System.out.println(filter.contains(value2));</span><br><span class="line">filter.add(value1);</span><br><span class="line">filter.add(value2);</span><br><span class="line">System.out.println(filter.contains(value1));</span><br><span class="line">System.out.println(filter.contains(value2));</span><br></pre></td></tr></table></figure>
+
+<h3 id="利用-Guava-自带的布隆过滤器"><a href="#利用-Guava-自带的布隆过滤器" class="headerlink" title="利用 Guava 自带的布隆过滤器"></a>利用 Guava 自带的布隆过滤器</h3><p>在项目中引入 Guava 的依赖：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.google.guava<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>guava<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>28.0-jre<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>实际使用如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 创建布隆过滤器对象</span></span><br><span class="line">BloomFilter&lt;Integer&gt; filter = BloomFilter.create(</span><br><span class="line">    Funnels.integerFunnel(),</span><br><span class="line">    <span class="number">1500</span>,     <span class="comment">// 最多 1500 个整数的布隆过滤器</span></span><br><span class="line">    <span class="number">0.01</span>);     <span class="comment">// 容忍误判的概率为百分之（0.01）</span></span><br><span class="line"><span class="comment">// 判断指定元素是否存在</span></span><br><span class="line">System.out.println(filter.mightContain(<span class="number">1</span>));</span><br><span class="line">System.out.println(filter.mightContain(<span class="number">2</span>));</span><br><span class="line"><span class="comment">// 将元素添加进布隆过滤器</span></span><br><span class="line">filter.put(<span class="number">1</span>);</span><br><span class="line">filter.put(<span class="number">2</span>);</span><br><span class="line">System.out.println(filter.mightContain(<span class="number">1</span>));</span><br><span class="line">System.out.println(filter.mightContain(<span class="number">2</span>));</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>当 <code>mightContain()</code> 返回 <em>true</em> 时， 可以99％确定该元素在过滤器中，返回 <em>false</em> 时，可以 100％确定该元素不存在于过滤器中。</p>
+<p>缺陷：只能单机使用，容量扩展也不容易，而现在互联网一般都是分布式的场景，需要用到 Redis 中的布隆过滤器</p>
+</blockquote>
+<h2 id="Redis-中的布隆过滤器"><a href="#Redis-中的布隆过滤器" class="headerlink" title="Redis 中的布隆过滤器"></a>Redis 中的布隆过滤器</h2><h3 id="简介-1"><a href="#简介-1" class="headerlink" title="简介"></a>简介</h3><p>Redis v4.0 之后有了 Module（模块/插件） 功能，Redis Modules 让 Redis 可以使用外部模块扩展其功能 。布隆过滤器就是其中的 Module。官网推荐了一个 RedisBloom 作为 Redis 布隆过滤器的 Module，地址：<a target="_blank" rel="noopener" href="https://github.com/RedisBloom/RedisBloom">https://github.com/RedisBloom/RedisBloom</a></p>
+<p>其他还有：</p>
+<ul>
+<li>redis-lua-scaling-bloom-filter（lua 脚本实现）：<a target="_blank" rel="noopener" href="https://github.com/erikdubbelboer/redis-lua-scaling-bloom-filter">https://github.com/erikdubbelboer/redis-lua-scaling-bloom-filter</a></li>
+<li>pyreBloom（Python 中的快速 Redis 布隆过滤器）：<a target="_blank" rel="noopener" href="https://github.com/seomoz/pyreBloom">https://github.com/seomoz/pyreBloom</a></li>
+</ul>
+<p>RedisBloom 提供了多种语言的客户端支持，包括：Python、Java、JavaScript 和 PHP。</p>
+<h3 id="使用-Docker-安装"><a href="#使用-Docker-安装" class="headerlink" title="使用 Docker 安装"></a>使用 Docker 安装</h3><p>直接在 Google 搜索 docker redis bloomfilter，具体地址：<a target="_blank" rel="noopener" href="https://hub.docker.com/r/redislabs/rebloom/%EF%BC%88%E4%BB%8B%E7%BB%8D%E7%9A%84%E5%BE%88%E8%AF%A6%E7%BB%86">https://hub.docker.com/r/redislabs/rebloom/（介绍的很详细</a> ）。</p>
+<p><strong>具体操作如下：</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">docker run -p 6379:6379 --name redis-redisbloom redislabs/rebloom:latest</span><br><span class="line">docker <span class="built_in">exec</span> -it redis-redisbloom bash</span><br><span class="line">root@21396d02c252:/data<span class="comment"># redis-cli</span></span><br><span class="line">127.0.0.1:6379&gt;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><strong>注意：当前 rebloom 镜像已经被废弃，官方推荐使用<a target="_blank" rel="noopener" href="https://hub.docker.com/r/redis/redis-stack">redis-stack</a></strong></p>
+</blockquote>
+<h3 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h3><blockquote>
+<p>注意：key : 布隆过滤器的名称，item : 添加的元素。</p>
+</blockquote>
+<ol>
+<li><code>BF.ADD</code>：将元素添加到布隆过滤器中，如果该过滤器尚不存在，则创建该过滤器。格式：<code>BF.ADD &#123;key&#125; &#123;item&#125;</code>。</li>
+<li><code>BF.MADD</code> : 将一个或多个元素添加到“布隆过滤器”中，并创建一个尚不存在的过滤器。该命令的操作方式<code>BF.ADD</code>与之相同，只不过它允许多个输入并返回多个值。格式：<code>BF.MADD &#123;key&#125; &#123;item&#125; [item ...]</code> 。</li>
+<li><code>BF.EXISTS</code> : 确定元素是否在布隆过滤器中存在。格式：<code>BF.EXISTS &#123;key&#125; &#123;item&#125;</code>。</li>
+<li><code>BF.MEXISTS</code>：确定一个或者多个元素是否在布隆过滤器中存在。格式：<code>BF.MEXISTS &#123;key&#125; &#123;item&#125; [item ...]</code>。</li>
+<li> <code>BF.RESERVE</code>： 自定义参数的布隆过滤器。格式：<code>BF.RESERVE &#123;key&#125; &#123;error_rate&#125; &#123;capacity&#125; [EXPANSION expansion]</code> 。</li>
+<li><em>key</em>：布隆过滤器的名称</li>
+<li><em>error_rate</em> : 期望的误报率。该值必须介于 0 到 1 之间。例如，对于期望的误报率 0.1％（1000 中为 1），error_rate 应该设置为 0.001。该数字越接近零，则每个项目的内存消耗越大，并且每个操作的 CPU 使用率越高。</li>
+<li><em>capacity</em>: 过滤器的容量。当实际存储的元素个数超过这个值之后，性能将开始下降。实际的降级将取决于超出限制的程度。随着过滤器元素数量呈指数增长，性能将线性下降。</li>
+<li><em>expansion</em>：可选参数。如果创建了一个新的子过滤器，则其大小将是当前过滤器的大小乘以<code>expansion</code>。默认扩展值为 2。这意味着每个后续子过滤器将是前一个子过滤器的两倍。</li>
+</ol>
+<h3 id="实际使用"><a href="#实际使用" class="headerlink" title="实际使用"></a>实际使用</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; BF.ADD myFilter java</span><br><span class="line">(integer) 1</span><br><span class="line">127.0.0.1:6379&gt; BF.ADD myFilter javaguide</span><br><span class="line">(integer) 1</span><br><span class="line">127.0.0.1:6379&gt; BF.EXISTS myFilter java</span><br><span class="line">(integer) 1</span><br><span class="line">127.0.0.1:6379&gt; BF.EXISTS myFilter javaguide</span><br><span class="line">(integer) 1</span><br><span class="line">127.0.0.1:6379&gt; BF.EXISTS myFilter github</span><br><span class="line">(integer) 0</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h1 id="Bitfield（位域）"><a href="#Bitfield（位域）" class="headerlink" title="Bitfield（位域）"></a>Bitfield（位域）</h1><p>Bitfields（位域）与Bitmap一样，在Redis中不是一种独立的数据类型，而是一种基于字符串的数据结构，用于处理位级别的操作。允许用户将一个Redis字符串视作由一系列二进制位组成的数组，并对这些位进行高效的访问和操作。通过Bitfield，开发者可以将多个小的整数存储到一个较大的位图中，或者将一个庞大的键分割为多个较小的键进行存储，从而极大地提高了内存的使用效率。</p>
+<h2 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h2><p><strong>位域</strong>（Bitfield）：在Redis中，位域是一种特殊的数据结构，用于存储和操作二进制位数据。</p>
+<p><strong>字符串与位域</strong>：虽然Redis字符串是最基本的数据类型之一，支持丰富的操作，但在处理位级数据时，字符串的效率较低。相比之下，位域通过压缩存储多个小的整数或状态信息，极大地提高了内存的使用效率</p>
+<h2 id="主要操作"><a href="#主要操作" class="headerlink" title="主要操作"></a>主要操作</h2><p>bitfield是redis的一个命令，语法如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">BITFIELD key [GET <span class="built_in">type</span> offset] [SET <span class="built_in">type</span> offset value] [INCRBY <span class="built_in">type</span> offset increment] [OVERFLOW WRAP|SAT|FAIL]</span><br></pre></td></tr></table></figure>
+
+<h3 id="获取操作"><a href="#获取操作" class="headerlink" title="获取操作"></a>获取操作</h3><p><strong>语法</strong>：BITFIELD key [GET type offset]</p>
+<p><strong>功能</strong>：获取指定键的位域值。</p>
+<p><strong>参数</strong>：</p>
+<ul>
+<li><code>key</code>：要操作的Redis键。</li>
+<li><code>GET</code>：表示要从字符串值中读取位。</li>
+<li><code>type</code>：指定读取数据的类型（u表示无符号整数，i表示有符号整数）。</li>
+<li><code>offset</code>：位字段的起始偏移位置，从0开始计数。</li>
+</ul>
+<h3 id="设置操作"><a href="#设置操作" class="headerlink" title="设置操作"></a>设置操作</h3><p><strong>语法</strong>：BITFIELD key [SET type offset value]</p>
+<p><strong>功能</strong>：设置指定位域的值并返回其原值。</p>
+<p><strong>参数</strong>：</p>
+<ul>
+<li><code>SET</code>：表示要设置字符串值中的位。</li>
+<li><code>type</code>：指定读取数据的类型（u表示无符号整数，i表示有符号整数）。</li>
+<li><code>offset</code>：位字段的起始偏移位置，从0开始计数。</li>
+<li><code>value</code>：是要设置的值。</li>
+</ul>
+<h3 id="自增操作"><a href="#自增操作" class="headerlink" title="自增操作"></a>自增操作</h3><p><strong>语法</strong>：BITFIELD key [INCRBY type offset increment]</p>
+<p><strong>功能</strong>：对指定位域的值进行自增操作。</p>
+<p><strong>参数</strong>：</p>
+<ul>
+<li><code>key</code>：要操作的Redis键。</li>
+<li><code>INCRBY</code>：表示自增。</li>
+<li><code>type</code>：指定读取数据的类型（u表示无符号整数，i表示有符号整数）。</li>
+<li><code>offset</code>：位字段的起始偏移位置，从0开始计数。</li>
+<li><code>increment</code>：是自增的数值。</li>
+</ul>
+<h3 id="溢出控制"><a href="#溢出控制" class="headerlink" title="溢出控制"></a>溢出控制</h3><p>Bitfield提供了三种溢出控制方式：</p>
+<ul>
+<li><code>WRAP</code>：使用回绕方法处理有符号整数和无符号整数的溢出情况。</li>
+<li><code>SAT</code>：使用饱和计算处理溢出，超过最大值再增加则数值不变。下溢计算的结果为最小整数值，上溢计算的结果为最大的整数值。</li>
+<li><code>FAIL</code>：命令将拒绝执行那些会导致上溢或者下溢情况出现的计算，并向用户返回空值表示计算未被执行。</li>
+</ul>
+<h3 id="应用场景"><a href="#应用场景" class="headerlink" title="应用场景"></a>应用场景</h3><p><strong>集合运算</strong>：使用位掩码来表示集合中的元素，可以高效地进行集合运算，如并集、交集和差集。如使用一个整数的每一位来表示一个用户的兴趣标签，然后通过位运算来快速查询某个用户感兴趣的所有内容。</p>
+<p><strong>计数器</strong>：BitField可以用来实现高效的计数器，尤其是在需要对大量离散事件进行计数时。如使用一个BitField来记录某个在线游戏中的玩家死亡次数，或者记录某个网站的访问次数。</p>
+<p><strong>状态压缩</strong>：对于需要存储大量状态信息的情况，使用BitField可以将状态信息压缩到更少的存储空间中。如使用一个BitField来表示一个游戏中的多个游戏角色的状态，如是否在线、是否死亡等。</p>
+<p><strong>权限控制</strong>：BitField可以用于实现复杂的权限控制系统，通过位运算来快速检查用户是否具有某个权限。如使用一个BitField来表示用户的权限集合，然后通过位运算来检查用户是否具有访问某个资源的权限。</p>
+<p><strong>空间优化</strong>：对于需要存储大量二进制数据的情况，使用BitField可以节省存储空间。如使用一个BitField来表示一张图像的颜色信息，而不是使用完整的字节或整数来存储每个像素的颜色值。</p>
+<p><strong>网络协议优化</strong>：在网络通信中，使用BitField可以有效地压缩和传输数据。如使用一个BitField来表示一个TCP数据包中的标志位，从而减少数据包的大小和提高传输效率。</p>
+<blockquote>
+<p><strong>注意</strong>：虽然BitField提供了高效的存储和操作位级数据的能力，但它也有一些限制和缺点，如不支持事务、不支持范围查询等。因此，在使用BitField时，需要根据具体的应用场景和需求来权衡其优缺点。</p>
+</blockquote>
+<h3 id="在Java中的使用"><a href="#在Java中的使用" class="headerlink" title="在Java中的使用"></a>在Java中的使用</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> org.redisson.Redisson;</span><br><span class="line"><span class="keyword">import</span> org.redisson.api.RBitSet;</span><br><span class="line"><span class="keyword">import</span> org.redisson.api.RedissonClient;</span><br><span class="line"><span class="keyword">import</span> org.redisson.config.Config;</span><br><span class="line"><span class="comment">// redisson中bitfields的使用</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">RedissonBitfieldsDemo</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="comment">// 配置Redisson客户端</span></span><br><span class="line">        <span class="type">Config</span> <span class="variable">config</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Config</span>();</span><br><span class="line">        config.useSingleServer().setAddress(<span class="string">&quot;redis://127.0.0.1:6379&quot;</span>);</span><br><span class="line">        <span class="comment">// 创建Redisson客户端实例</span></span><br><span class="line">        <span class="type">RedissonClient</span> <span class="variable">redisson</span> <span class="operator">=</span> Redisson.create(config);</span><br><span class="line">        <span class="comment">// 表示用户的状态</span></span><br><span class="line">        <span class="comment">// 第0~15位：用户等级，共16位</span></span><br><span class="line">        <span class="comment">// 第16~47位：剩余积分，共32位</span></span><br><span class="line">        <span class="comment">// 第48位：是否VIP，1位布尔值</span></span><br><span class="line">        <span class="type">RBitSet</span> <span class="variable">userStatus</span> <span class="operator">=</span> redisson.getBitSet(<span class="string">&quot;user:status:10086&quot;</span>);</span><br><span class="line">        userStatus.setShort(<span class="number">0</span>, (<span class="type">short</span>) <span class="number">5</span>); <span class="comment">// 用户等级为5</span></span><br><span class="line">        userStatus.setInteger(<span class="number">16</span>, <span class="number">1100</span>); <span class="comment">// 用户剩余积分1100</span></span><br><span class="line">        userStatus.setByte(<span class="number">48</span>, (<span class="type">byte</span>) <span class="number">1</span>); <span class="comment">// 用户是VIP</span></span><br><span class="line">        System.out.println(userStatus.getShort(<span class="number">0</span>)); <span class="comment">// 5</span></span><br><span class="line">        System.out.println(userStatus.getInteger(<span class="number">16</span>)); <span class="comment">// 1100</span></span><br><span class="line">        System.out.println(userStatus.getByte(<span class="number">48</span>)); <span class="comment">// 1</span></span><br><span class="line">        <span class="type">int</span> <span class="variable">currentScore</span> <span class="operator">=</span> userStatus.incrementAndGetInteger(<span class="number">16</span>, <span class="number">100</span>);</span><br><span class="line">        System.out.println(currentScore); <span class="comment">// 1200</span></span><br><span class="line">        redisson.shutdown();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="https://southernfish.github.io">Southern Fish</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://southernfish.github.io/pages/database/db-redis-datatype/">https://southernfish.github.io/pages/database/db-redis-datatype/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://southernfish.github.io" target="_blank">Southern Fish</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Redis/">Redis</a></div><div class="post_share"><div class="social-share" data-image="/img/article/article5.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/pages/database/db-redis-produce-problem/"><img class="prev-cover" src="/img/article/article4.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">Redis的缓存穿透、缓存击穿、缓存雪崩</div></div></a></div><div class="next-post pull-right"><a href="/pages/distributed/distributed-lock/"><img class="next-cover" src="/img/article/article5.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">分布式锁详解</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/pages/database/cache-read-write-strategies/" title="三大缓存读写策略"><img class="cover" src="/img/article/article3.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2025-09-17</div><div class="title">三大缓存读写策略</div></div></a></div><div><a href="/pages/database/db-redis-cache-read-write/" title="三大缓存读写策略"><img class="cover" src="/img/article/article1.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2025-09-17</div><div class="title">三大缓存读写策略</div></div></a></div><div><a href="/pages/database/db-redis-consistency/" title="Redis缓存与数据库的一致性"><img class="cover" src="/img/article/article1.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2025-09-17</div><div class="title">Redis缓存与数据库的一致性</div></div></a></div><div><a href="/pages/database/db-redis-persistence/" title="Redis的持久化机制"><img class="cover" src="/img/article/article5.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2025-09-18</div><div class="title">Redis的持久化机制</div></div></a></div><div><a href="/pages/database/db-redis-produce-problem/" title="Redis的缓存穿透、缓存击穿、缓存雪崩"><img class="cover" src="/img/article/article4.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2025-09-17</div><div class="title">Redis的缓存穿透、缓存击穿、缓存雪崩</div></div></a></div><div><a href="/pages/distributed/distributed-lock/" title="分布式锁详解"><img class="cover" src="/img/article/article5.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2025-09-17</div><div class="title">分布式锁详解</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Southern Fish</div><div class="author-info__description"></div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">96</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">35</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">16</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/SouthernFish" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="/1002721576@qq.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">天下事岂能尽如吾意，心境须恰适，尽其在我，随遇而安。</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Redis-%E6%94%AF%E6%8C%81%E7%9A%84%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B"><span class="toc-number">1.</span> <span class="toc-text">Redis 支持的数据类型</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#5-%E7%A7%8D%E5%9F%BA%E6%9C%AC%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B"><span class="toc-number">1.1.</span> <span class="toc-text">5 种基本数据类型</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#String%EF%BC%88%E5%AD%97%E7%AC%A6%E4%B8%B2%EF%BC%89"><span class="toc-number">1.1.1.</span> <span class="toc-text">String（字符串）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#List%EF%BC%88%E5%88%97%E8%A1%A8%EF%BC%89"><span class="toc-number">1.1.2.</span> <span class="toc-text">List（列表）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Hash%EF%BC%88%E5%93%88%E5%B8%8C%EF%BC%89"><span class="toc-number">1.1.3.</span> <span class="toc-text">Hash（哈希）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Set%EF%BC%88%E9%9B%86%E5%90%88%EF%BC%89"><span class="toc-number">1.1.4.</span> <span class="toc-text">Set（集合）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Sorted-set%EF%BC%88%E6%9C%89%E5%BA%8F%E9%9B%86%E5%90%88%EF%BC%89"><span class="toc-number">1.1.5.</span> <span class="toc-text">Sorted set（有序集合）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#String-%E5%AF%B9%E6%AF%94-Hash"><span class="toc-number">1.1.6.</span> <span class="toc-text">String 对比 Hash</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E7%A7%8D%E7%89%B9%E6%AE%8A%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B"><span class="toc-number">1.2.</span> <span class="toc-text">3 种特殊数据类型</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Bitmap-%EF%BC%88%E4%BD%8D%E5%9B%BE%EF%BC%89"><span class="toc-number">1.2.1.</span> <span class="toc-text">Bitmap （位图）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#HyperLogLog%EF%BC%88%E5%9F%BA%E6%95%B0%E7%BB%9F%E8%AE%A1%EF%BC%89"><span class="toc-number">1.2.2.</span> <span class="toc-text">HyperLogLog（基数统计）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Geospatial-%E5%9C%B0%E7%90%86%E4%BD%8D%E7%BD%AE"><span class="toc-number">1.2.3.</span> <span class="toc-text">Geospatial (地理位置)</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Bloom-filter%EF%BC%88%E5%B8%83%E9%9A%86%E8%BF%87%E6%BB%A4%E5%99%A8%EF%BC%89"><span class="toc-number">2.</span> <span class="toc-text">Bloom filter（布隆过滤器）</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AE%80%E4%BB%8B"><span class="toc-number">2.1.</span> <span class="toc-text">简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8E%9F%E7%90%86"><span class="toc-number">2.2.</span> <span class="toc-text">原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="toc-number">2.3.</span> <span class="toc-text">使用场景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BC%96%E7%A0%81%E5%AE%9E%E6%88%98"><span class="toc-number">2.4.</span> <span class="toc-text">编码实战</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#java%E6%89%8B%E5%8A%A8%E5%AE%9E%E7%8E%B0"><span class="toc-number">2.4.1.</span> <span class="toc-text">java手动实现</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%A9%E7%94%A8-Guava-%E8%87%AA%E5%B8%A6%E7%9A%84%E5%B8%83%E9%9A%86%E8%BF%87%E6%BB%A4%E5%99%A8"><span class="toc-number">2.4.2.</span> <span class="toc-text">利用 Guava 自带的布隆过滤器</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Redis-%E4%B8%AD%E7%9A%84%E5%B8%83%E9%9A%86%E8%BF%87%E6%BB%A4%E5%99%A8"><span class="toc-number">2.5.</span> <span class="toc-text">Redis 中的布隆过滤器</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AE%80%E4%BB%8B-1"><span class="toc-number">2.5.1.</span> <span class="toc-text">简介</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8-Docker-%E5%AE%89%E8%A3%85"><span class="toc-number">2.5.2.</span> <span class="toc-text">使用 Docker 安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4"><span class="toc-number">2.5.3.</span> <span class="toc-text">常用命令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E9%99%85%E4%BD%BF%E7%94%A8"><span class="toc-number">2.5.4.</span> <span class="toc-text">实际使用</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Bitfield%EF%BC%88%E4%BD%8D%E5%9F%9F%EF%BC%89"><span class="toc-number">3.</span> <span class="toc-text">Bitfield（位域）</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="toc-number">3.1.</span> <span class="toc-text">基本概念</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%BB%E8%A6%81%E6%93%8D%E4%BD%9C"><span class="toc-number">3.2.</span> <span class="toc-text">主要操作</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%8E%B7%E5%8F%96%E6%93%8D%E4%BD%9C"><span class="toc-number">3.2.1.</span> <span class="toc-text">获取操作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AE%BE%E7%BD%AE%E6%93%8D%E4%BD%9C"><span class="toc-number">3.2.2.</span> <span class="toc-text">设置操作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%87%AA%E5%A2%9E%E6%93%8D%E4%BD%9C"><span class="toc-number">3.2.3.</span> <span class="toc-text">自增操作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%BA%A2%E5%87%BA%E6%8E%A7%E5%88%B6"><span class="toc-number">3.2.4.</span> <span class="toc-text">溢出控制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="toc-number">3.2.5.</span> <span class="toc-text">应用场景</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9C%A8Java%E4%B8%AD%E7%9A%84%E4%BD%BF%E7%94%A8"><span class="toc-number">3.2.6.</span> <span class="toc-text">在Java中的使用</span></a></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/pages/high-availability/server-limit-stream/" title="服务限流"><img src="/img/article/article2.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="服务限流"/></a><div class="content"><a class="title" href="/pages/high-availability/server-limit-stream/" title="服务限流">服务限流</a><time datetime="2025-09-18T09:02:36.000Z" title="发表于 2025-09-18 17:02:36">2025-09-18</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/pages/database/db-redis-persistence/" title="Redis的持久化机制"><img src="/img/article/article5.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Redis的持久化机制"/></a><div class="content"><a class="title" href="/pages/database/db-redis-persistence/" title="Redis的持久化机制">Redis的持久化机制</a><time datetime="2025-09-18T01:15:36.000Z" title="发表于 2025-09-18 09:15:36">2025-09-18</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/pages/database/cache-read-write-strategies/" title="三大缓存读写策略"><img src="/img/article/article3.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="三大缓存读写策略"/></a><div class="content"><a class="title" href="/pages/database/cache-read-write-strategies/" title="三大缓存读写策略">三大缓存读写策略</a><time datetime="2025-09-17T13:15:36.000Z" title="发表于 2025-09-17 21:15:36">2025-09-17</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/pages/database/db-redis-cache-read-write/" title="三大缓存读写策略"><img src="/img/article/article1.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="三大缓存读写策略"/></a><div class="content"><a class="title" href="/pages/database/db-redis-cache-read-write/" title="三大缓存读写策略">三大缓存读写策略</a><time datetime="2025-09-17T13:15:36.000Z" title="发表于 2025-09-17 21:15:36">2025-09-17</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/pages/database/db-redis-consistency/" title="Redis缓存与数据库的一致性"><img src="/img/article/article1.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Redis缓存与数据库的一致性"/></a><div class="content"><a class="title" href="/pages/database/db-redis-consistency/" title="Redis缓存与数据库的一致性">Redis缓存与数据库的一致性</a><time datetime="2025-09-17T13:15:36.000Z" title="发表于 2025-09-17 21:15:36">2025-09-17</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url('/img/article/article5.png')"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2025 By Southern Fish</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><script>var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',preloader.endLoading())</script><div class="js-pjax"></div><canvas class="fireworks" mobile="true"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/fireworks.min.js"></script><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="true" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-nest.min.js"></script><script id="click-heart" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/click-heart.min.js" async="async" mobile="true"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body></html>

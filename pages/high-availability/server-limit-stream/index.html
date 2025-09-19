@@ -1,0 +1,285 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>服务限流 | Southern Fish</title><meta name="keywords" content="Concurrency"><meta name="author" content="Southern Fish"><meta name="copyright" content="Southern Fish"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="‌Redis(Remote Dictionary Server)，远程字典服务，是用C语言编写、支持网络、可基于内存亦可持久化的日志型、Key-Value数据库，提供多种语言的API。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="服务限流">
+<meta property="og:url" content="https://southernfish.github.io/pages/high-availability/server-limit-stream/index.html">
+<meta property="og:site_name" content="Southern Fish">
+<meta property="og:description" content="‌Redis(Remote Dictionary Server)，远程字典服务，是用C语言编写、支持网络、可基于内存亦可持久化的日志型、Key-Value数据库，提供多种语言的API。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://southernfish.github.io/img/article/article2.png">
+<meta property="article:published_time" content="2025-09-18T09:02:36.000Z">
+<meta property="article:modified_time" content="2025-09-19T03:11:09.134Z">
+<meta property="article:author" content="Southern Fish">
+<meta property="article:tag" content="Concurrency">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://southernfish.github.io/img/article/article2.png"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://southernfish.github.io/pages/high-availability/server-limit-stream/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//fonts.googleapis.com" crossorigin=""/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Titillium+Web&amp;display=swap" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":200},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: true
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '服务限流',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2025-09-19 11:11:09'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 5.4.2"><link rel="alternate" href="/atom.xml" title="Southern Fish" type="application/atom+xml">
+</head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/avatar.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">96</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">35</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">16</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 文章</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于我</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/img/article/article2.png')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Southern Fish</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 文章</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于我</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">服务限流</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2025-09-18T09:02:36.000Z" title="发表于 2025-09-18 17:02:36">2025-09-18</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-09-19T03:11:09.134Z" title="更新于 2025-09-19 11:11:09">2025-09-19</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Distributed-Architecture/">Distributed Architecture</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">3.4k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>10分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="服务限流"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><p>对软件系统来讲，限流就是对请求的速率进行限制，避免瞬时的大量请求击垮软件系统。因为软件系统的处理能力是有限的，当超过了其处理能力的范围，软件系统可能直接宕机。限流可能会导致用户的请求无法被正确处理或者无法立即被处理，不过，这往往也是权衡了软件系统的稳定性之后得到的最优解。</p>
+<p>现实生活中，处处都有限流的实际应用，就比如排队买票是为了避免大量用户涌入购票而导致售票员无法处理。</p>
+<p>本文主要介绍了常见的限流算法、限流对象的选择以及单机限流和分布式限流分别应该怎么实现。</p>
+<blockquote>
+<p>参考文章：</p>
+<p><a target="_blank" rel="noopener" href="https://javaguide.cn/high-availability/limit-request.html">服务限流详解</a></p>
+</blockquote>
+<h1 id="常见限流算法"><a href="#常见限流算法" class="headerlink" title="常见限流算法"></a>常见限流算法</h1><p>简单介绍 4 种非常好理解并且容易实现的限流算法！</p>
+<blockquote>
+<p>图片来源于 InfoQ 的一篇文章<a target="_blank" rel="noopener" href="https://www.infoq.cn/article/Qg2tX8fyw5Vt-f3HH673">《分布式服务限流实战，已经为你排好坑了》</a>。</p>
+</blockquote>
+<h2 id="固定窗口计数器算法"><a href="#固定窗口计数器算法" class="headerlink" title="固定窗口计数器算法"></a>固定窗口计数器算法</h2><p>固定窗口其实就是时间窗口，其原理是将时间划分为固定大小的窗口，在每个窗口内限制请求的数量或速率，即固定窗口计数器算法规定了系统单位时间处理的请求数量。</p>
+<p>假如我们规定系统中某个接口 1 分钟只能被访问 33 次的话，使用固定窗口计数器算法的实现思路如下：</p>
+<ul>
+<li>将时间划分固定大小窗口，这里是 1 分钟一个窗口。</li>
+<li>给定一个变量 <code>counter</code> 来记录当前接口处理的请求数量，初始值为 0（代表接口当前 1 分钟内还未处理请求）。</li>
+<li>1 分钟之内每处理一个请求之后就将 <code>counter+1</code> ，当 <code>counter=33</code> 之后（也就是说在这 1 分钟内接口已经被访问 33 次的话），后续的请求就会被全部拒绝。</li>
+<li>等到 1 分钟结束后，将 <code>counter</code> 重置 0，重新开始计数。</li>
+</ul>
+<p><img src="https://raw.githubusercontent.com/SouthernFish/ImageHostServer/main/server/image-20250918212607016.png" alt="image-20250918212607016"></p>
+<p><strong>优点</strong>：实现简单，易于理解。</p>
+<p><strong>缺点</strong>：</p>
+<ul>
+<li><strong>限流不够平滑</strong>。例如，我们限制某个接口每分钟只能访问 30 次，假设前 30 秒就有 30 个请求到达的话，那后续 30 秒将无法处理请求，这是不可取的，用户体验极差！</li>
+<li><strong>无法保证限流速率，因而无法应对突然激增的流量</strong>。例如，我们限制某个接口 1 分钟只能访问 1000 次，该接口的 QPS 为 500，前 55s 这个接口 1 个请求没有接收，后 1s 突然接收了 1000 个请求。然后，在当前场景下，这 1000 个请求在 1s 内是没办法被处理的，系统直接就被瞬时的大量请求给击垮了。</li>
+</ul>
+<h2 id="滑动窗口计数器算法"><a href="#滑动窗口计数器算法" class="headerlink" title="滑动窗口计数器算法"></a>滑动窗口计数器算法</h2><p>是固定窗口计数器算法的升级版，<strong>限流的颗粒度更小</strong>。</p>
+<p>滑动窗口计数器算法相比于固定窗口计数器算法的优化在于：<strong>它把时间以一定比例分片</strong> 。</p>
+<p>例如我们的接口限流每分钟处理 60 个请求，我们可以把 1 分钟分为 60 个窗口。每隔 1 秒移动一次，每个窗口一秒只能处理不大于 <code>60(请求数)/60（窗口数）</code> 的请求， 如果当前窗口的请求计数总和超过了限制的数量的话就不再处理其他请求。</p>
+<p>显然， <strong>当滑动窗口的格子划分的越多，滑动窗口的滚动就越平滑，限流的统计就会越精确。</strong></p>
+<p><img src="https://raw.githubusercontent.com/SouthernFish/ImageHostServer/main/server/image-20250918212849635.png" alt="image-20250918212849635"></p>
+<p>优点：</p>
+<ul>
+<li>相比于固定窗口算法，滑动窗口计数器算法<strong>可以应对突然激增的流量</strong>。</li>
+<li>相比于固定窗口算法，滑动窗口计数器算法的颗粒度更小，可以<strong>提供更精确的限流控制</strong>。</li>
+</ul>
+<p>缺点：</p>
+<ul>
+<li>与固定窗口计数器算法类似，滑动窗口计数器算法依然存在<strong>限流不够平滑</strong>的问题。</li>
+<li>相比较于固定窗口计数器算法，滑动窗口计数器算法实现和理解起来更复杂一些。</li>
+</ul>
+<h2 id="漏桶算法"><a href="#漏桶算法" class="headerlink" title="漏桶算法"></a>漏桶算法</h2><p>可以把发请求的动作比作成注水到桶中，处理请求的过程可以比喻为漏桶漏水。<strong>往桶中以任意速率流入水，以一定速率流出水</strong>。当水超过桶流量则丢弃，因为桶容量是不变的，保证了整体的速率。</p>
+<p>实现也很简单，准备一个队列用来保存请求，然后定期从队列中拿请求来执行就好了（和消息队列削峰/限流的思想是一样的）。</p>
+<p><img src="https://raw.githubusercontent.com/SouthernFish/ImageHostServer/main/server/image-20250918213254887.png" alt="image-20250918213254887"></p>
+<p><strong>优点</strong>：</p>
+<ul>
+<li>实现简单，易于理解。</li>
+<li>可以控制限流速率，<strong>避免网络拥塞和系统过载</strong>。</li>
+</ul>
+<p><strong>缺点</strong>：</p>
+<ul>
+<li>无法应对突然激增的流量，因为<strong>只能以固定的速率处理请求</strong>，对系统资源利用不够友好。</li>
+<li>桶流入水（发请求）的速率如果一直大于桶流出水（处理请求）的速率的话，那么桶会一直是满的，一部分新的请求会被丢弃，导致服务质量下降。</li>
+</ul>
+<blockquote>
+<p> 注意：实际业务场景中，基本不会使用漏桶算法。</p>
+</blockquote>
+<h2 id="令牌桶算法"><a href="#令牌桶算法" class="headerlink" title="令牌桶算法"></a>令牌桶算法</h2><p>令牌桶算法也比较简单。和漏桶算法算法一样，主角还是桶，不过现在桶里装的是令牌，请求在被处理前需要拿到一个令牌，请求处理完后将这个令牌丢弃（删除）。<strong>根据限流大小，按照一定的速率往桶里添加令牌</strong>。如果桶装满了，就不能继续往里面继续添加令牌了。</p>
+<p><img src="https://raw.githubusercontent.com/SouthernFish/ImageHostServer/main/server/image-20250918213449848.png" alt="image-20250918213449848"></p>
+<p><strong>优点</strong>：</p>
+<ul>
+<li>可以限制平均速率和应对突然激增的流量。</li>
+<li>可以动态调整生成令牌的速率。</li>
+</ul>
+<p><strong>缺点</strong>：</p>
+<ul>
+<li>如果令牌产生速率和桶的容量设置不合理，可能会出现问题比如大量的请求被丢弃、系统过载。</li>
+<li>相比于其他限流算法，实现和理解起来更复杂一些。</li>
+</ul>
+<h1 id="限流对象"><a href="#限流对象" class="headerlink" title="限流对象"></a>限流对象</h1><p>实际项目中，还需要确定限流对象，也就是针对什么来进行限流。常见的限流对象如下：</p>
+<ul>
+<li><strong>IP</strong> ：针对 IP 进行限流，适用面较广，简单粗暴。</li>
+<li><strong>业务 ID</strong>：挑选<em>唯一的业务 ID</em> 以实现更针对性地限流。例如，基于用户 ID 进行限流。</li>
+<li><strong>个性化</strong>：根据用户的属性或行为，进行不同的限流策略。例如， VIP 用户不限流，而普通用户限流。根据系统的运行指标（如 QPS、并发调用数、系统负载等），动态调整限流策略。例如，当系统负载较高的时候，控制每秒通过的请求减少。</li>
+</ul>
+<p>针对 IP 进行限流是目前比较常用的一个方案。不过，实际应用中<strong>需要注意用户真实 IP 地址的正确获取</strong>。常用的真实 IP 获取方法有 <code>X-Forwarded-For</code> 和 <code>TCP Options</code> 字段承载真实源 IP 信息。虽然 <strong>X-Forwarded-For 字段可能会被伪造</strong>，但因为其实现简单方便，很多项目还是直接用的这种方法。</p>
+<p>还有一些其他较为复杂的限流对象策略，如阿里的 Sentinel 还支持 <a target="_blank" rel="noopener" href="https://github.com/alibaba/Sentinel/wiki/%E6%B5%81%E9%87%8F%E6%8E%A7%E5%88%B6#%E5%9F%BA%E4%BA%8E%E8%B0%83%E7%94%A8%E5%85%B3%E7%B3%BB%E7%9A%84%E6%B5%81%E9%87%8F%E6%8E%A7%E5%88%B6">基于调用关系的限流</a>（包括基于调用方限流、基于调用链入口限流、关联流量限流等）以及更细维度的 <a target="_blank" rel="noopener" href="https://github.com/alibaba/Sentinel/wiki/%E7%83%AD%E7%82%B9%E5%8F%82%E6%95%B0%E9%99%90%E6%B5%81">热点参数限流</a>（实时的统计热点参数并针对热点参数的资源调用进行流量控制）。</p>
+<p>另外，一个项目可以根据具体的业务需求选择多种不同的限流对象搭配使用。</p>
+<hr>
+<h1 id="单机限流实现"><a href="#单机限流实现" class="headerlink" title="单机限流实现"></a>单机限流实现</h1><p>单机限流针对的是单体架构应用。</p>
+<p>单机限流可以直接使用 Google Guava 自带的限流工具类 <code>RateLimiter</code> 。 <code>RateLimiter</code> 基于令牌桶算法，可以应对突发流量。</p>
+<blockquote>
+<p>Guava 地址：<a target="_blank" rel="noopener" href="https://github.com/google/guava">https://github.com/google/guava</a></p>
+</blockquote>
+<p>除了最基本的令牌桶算法(平滑突发限流)实现之外，Guava 的<code>RateLimiter</code>还提供了 <strong>平滑预热限流</strong> 的算法实现。</p>
+<p><strong>平滑突发限流</strong>就是按照指定的速率放令牌到桶里，而平滑预热限流会有一段预热时间，预热时间之内，速率会逐渐提升到配置的速率。</p>
+<p>在项目中引入 Guava 相关的依赖：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.google.guava<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>guava<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>31.0.1-jre<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>简单的 Guava 平滑突发限流的 Demo：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> com.google.common.util.concurrent.RateLimiter;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">RateLimiterDemo</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="type">RateLimiter</span> <span class="variable">rateLimiter</span> <span class="operator">=</span> RateLimiter.create(<span class="number">5</span>); <span class="comment">// 1s 放 5 个令牌到桶里也就是 0.2s 放 1个令牌到桶里</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; <span class="number">10</span>; i++) &#123;</span><br><span class="line">            <span class="type">double</span> <span class="variable">sleepingTime</span> <span class="operator">=</span> rateLimiter.acquire(<span class="number">1</span>);</span><br><span class="line">            System.out.printf(<span class="string">&quot;get 1 tokens: %ss%n&quot;</span>, sleepingTime);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>简单的 Guava 平滑预热限流的 Demo：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> com.google.common.util.concurrent.RateLimiter;</span><br><span class="line"><span class="keyword">import</span> java.util.concurrent.TimeUnit;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">RateLimiterDemo</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="comment">// 1s 放 5 个令牌到桶里也就是 0.2s 放 1个令牌到桶里</span></span><br><span class="line">        <span class="comment">// 预热时间为3s,也就说刚开始的 3s 内发牌速率会逐渐提升到 0.2s 放 1 个令牌到桶里</span></span><br><span class="line">        <span class="type">RateLimiter</span> <span class="variable">rateLimiter</span> <span class="operator">=</span> RateLimiter.create(<span class="number">5</span>, <span class="number">3</span>, TimeUnit.SECONDS);</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; <span class="number">20</span>; i++) &#123;</span><br><span class="line">            <span class="type">double</span> <span class="variable">sleepingTime</span> <span class="operator">=</span> rateLimiter.acquire(<span class="number">1</span>);</span><br><span class="line">            System.out.printf(<span class="string">&quot;get 1 tokens: %sds%n&quot;</span>, sleepingTime);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>另外，<strong>Bucket4j</strong> 是一个非常不错的基于令牌/漏桶算法的限流库。</p>
+<blockquote>
+<p>Bucket4j 地址：<a target="_blank" rel="noopener" href="https://github.com/vladimir-bukhtoyarov/bucket4j">https://github.com/vladimir-bukhtoyarov/bucket4j</a></p>
+</blockquote>
+<p>相对于，Guava 的限流工具类来说，Bucket4j 提供的限流功能更加全面。不仅支持单机限流和分布式限流，还可以集成监控，搭配 Prometheus 和 Grafana 使用。</p>
+<p>不过，毕竟 Guava 也只是一个功能全面的工具类库，其提供的开箱即用的限流功能在很多单机场景下还是比较实用的。</p>
+<p>Spring Cloud Gateway 中自带的单机限流的早期版本就是基于 Bucket4j 实现的。后来，替换成了 <strong>Resilience4j</strong>。</p>
+<p>Resilience4j 是一个轻量级的容错组件，其灵感来自于 Hystrix。自<a target="_blank" rel="noopener" href="https://github.com/Netflix/Hystrix/commit/a7df971cbaddd8c5e976b3cc5f14013fe6ad00e6">Netflix 宣布不再积极开发 Hystrix</a> 之后，Spring 官方和 Netflix 都更推荐使用 Resilience4j 来做限流熔断。</p>
+<blockquote>
+<p>Resilience4j 地址: <a target="_blank" rel="noopener" href="https://github.com/resilience4j/resilience4j">https://github.com/resilience4j/resilience4j</a></p>
+</blockquote>
+<p>一般情况下，为了保证系统的高可用，项目的限流和熔断都是要一起做的。</p>
+<p>Resilience4j 不仅提供限流，还提供了熔断、负载保护、自动重试等保障系统高可用开箱即用的功能。并且，Resilience4j 的生态也更好，很多网关都使用 Resilience4j 来做限流熔断的。</p>
+<p>因此，在绝大部分场景下 Resilience4j 或许会是更好的选择。如果是比较简单的限流场景的话，Guava 或者 Bucket4j 也是不错的选择。</p>
+<hr>
+<h1 id="分布式限流实现"><a href="#分布式限流实现" class="headerlink" title="分布式限流实现"></a>分布式限流实现</h1><p>分布式限流针对的分布式/微服务应用架构应用，此时单机限流不再适用，因为会存在多种服务，并且一种服务也可能会被部署多份。</p>
+<p>分布式限流常见的方案：</p>
+<ul>
+<li><strong>借助中间件限流</strong>：可以借助 <code>Sentinel</code> 或者使用 <code>Redis</code> 来自己实现对应的限流逻辑。</li>
+<li><strong>网关层限流</strong>：比较常用的一种方案，直接在网关层把限流给安排上了。不过，通常网关层限流通常也需要借助到中间件/框架。就比如 Spring Cloud Gateway 的分布式限流实现<code>RedisRateLimiter</code>就是基于 <code>Redis+Lua</code> 来实现的，再比如 Spring Cloud Gateway 还可以整合 <code>Sentinel</code> 来做限流。</li>
+</ul>
+<p>如果要基于 Redis 来手动实现限流逻辑的话，建议配合 Lua 脚本来做。</p>
+<p><strong>建议 Redis+Lua 的方式</strong> 主要有两点原因：</p>
+<ul>
+<li><strong>减少了网络开销</strong>：可利用 Lua 脚本批量执行多条 Redis 命令，这些 Redis 命令会被提交到 Redis 服务器一次性执行完成，大幅减小了网络开销。</li>
+<li><strong>原子性</strong>：一段 Lua 脚本可视作一条命令执行，一段 Lua 脚本执行过程中不会有其他脚本或 Redis 命令同时执行，保证了操作不会被其他指令插入或打扰。</li>
+</ul>
+<p>不想写 Lua 脚本也可直接利用 Redisson 中的 <code>RRateLimiter</code> 来实现分布式限流，其底层实现就是基于 Lua 代码+令牌桶算法。</p>
+<p>Redisson 是一个开源的 Java 语言 Redis 客户端，提供了很多开箱即用的功能，比如 Java 中常用的数据结构实现、分布式锁、延迟队列等等。并且，Redisson 还支持 Redis 单机、Redis Sentinel、Redis Cluster 等多种部署架构。</p>
+<p><code>RRateLimiter</code> 的使用方式非常简单。首先获取一个<code>RRateLimiter</code>对象，直接通过 Redisson 客户端获取。然后设置限流规则就好。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 创建一个 Redisson 客户端实例</span></span><br><span class="line"><span class="type">RedissonClient</span> <span class="variable">redissonClient</span> <span class="operator">=</span> Redisson.create();</span><br><span class="line"><span class="comment">// 获取一个名为 &quot;javaguide.limiter&quot; 的限流器对象</span></span><br><span class="line"><span class="type">RRateLimiter</span> <span class="variable">rateLimiter</span> <span class="operator">=</span> redissonClient.getRateLimiter(<span class="string">&quot;javaguide.limiter&quot;</span>);</span><br><span class="line"><span class="comment">// 尝试设置限流器的速率为每小时 100 次</span></span><br><span class="line"><span class="comment">// RateType 有两种，OVERALL是全局限流,ER_CLIENT是单Client限流（可以认为就是单机限流）</span></span><br><span class="line">rateLimiter.trySetRate(RateType.OVERALL, <span class="number">100</span>, <span class="number">1</span>, RateIntervalUnit.HOURS);</span><br></pre></td></tr></table></figure>
+
+<p>接下来调用<code>acquire()</code>方法或<code>tryAcquire()</code>方法即可获取许可。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 获取一个许可，如果超过限流器的速率则会等待</span></span><br><span class="line"><span class="comment">// acquire()是同步方法，对应的异步方法：acquireAsync()</span></span><br><span class="line">rateLimiter.acquire(<span class="number">1</span>);</span><br><span class="line"><span class="comment">// 尝试在 5 秒内获取一个许可，如果成功则返回 true，否则返回 false</span></span><br><span class="line"><span class="comment">// tryAcquire()是同步方法，对应的异步方法：tryAcquireAsync()</span></span><br><span class="line"><span class="type">boolean</span> <span class="variable">res</span> <span class="operator">=</span> rateLimiter.tryAcquire(<span class="number">1</span>, <span class="number">5</span>, TimeUnit.SECONDS);</span><br></pre></td></tr></table></figure></article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="https://southernfish.github.io">Southern Fish</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://southernfish.github.io/pages/high-availability/server-limit-stream/">https://southernfish.github.io/pages/high-availability/server-limit-stream/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://southernfish.github.io" target="_blank">Southern Fish</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Concurrency/">Concurrency</a></div><div class="post_share"><div class="social-share" data-image="/img/article/article2.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/pages/database/db-redis-persistence/"><img class="next-cover" src="/img/article/article5.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">Redis的持久化机制</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/pages/java/java-concurrency/" title="并发编程"><img class="cover" src="/img/article/article2.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2025-06-23</div><div class="title">并发编程</div></div></a></div><div><a href="/pages/framwork/system-design/" title="高性能、高并发、高可用、高安全"><img class="cover" src="/img/article/article6.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2025-06-25</div><div class="title">高性能、高并发、高可用、高安全</div></div></a></div><div><a href="/pages/framwork/system-design-high-concurrency/" title="高并发（High Concurrency）"><img class="cover" src="/img/article/article2.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2025-06-26</div><div class="title">高并发（High Concurrency）</div></div></a></div><div><a href="/pages/java/java-base-8-thread-impl/" title="使用多线程解决问题"><img class="cover" src="/img/article/article2.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2025-07-24</div><div class="title">使用多线程解决问题</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Southern Fish</div><div class="author-info__description"></div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">96</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">35</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">16</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/SouthernFish" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="/1002721576@qq.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">天下事岂能尽如吾意，心境须恰适，尽其在我，随遇而安。</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%B8%B8%E8%A7%81%E9%99%90%E6%B5%81%E7%AE%97%E6%B3%95"><span class="toc-number">1.</span> <span class="toc-text">常见限流算法</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9B%BA%E5%AE%9A%E7%AA%97%E5%8F%A3%E8%AE%A1%E6%95%B0%E5%99%A8%E7%AE%97%E6%B3%95"><span class="toc-number">1.1.</span> <span class="toc-text">固定窗口计数器算法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%BB%91%E5%8A%A8%E7%AA%97%E5%8F%A3%E8%AE%A1%E6%95%B0%E5%99%A8%E7%AE%97%E6%B3%95"><span class="toc-number">1.2.</span> <span class="toc-text">滑动窗口计数器算法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%BC%8F%E6%A1%B6%E7%AE%97%E6%B3%95"><span class="toc-number">1.3.</span> <span class="toc-text">漏桶算法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%A4%E7%89%8C%E6%A1%B6%E7%AE%97%E6%B3%95"><span class="toc-number">1.4.</span> <span class="toc-text">令牌桶算法</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%99%90%E6%B5%81%E5%AF%B9%E8%B1%A1"><span class="toc-number">2.</span> <span class="toc-text">限流对象</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8D%95%E6%9C%BA%E9%99%90%E6%B5%81%E5%AE%9E%E7%8E%B0"><span class="toc-number">3.</span> <span class="toc-text">单机限流实现</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%88%86%E5%B8%83%E5%BC%8F%E9%99%90%E6%B5%81%E5%AE%9E%E7%8E%B0"><span class="toc-number">4.</span> <span class="toc-text">分布式限流实现</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/pages/high-availability/server-limit-stream/" title="服务限流"><img src="/img/article/article2.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="服务限流"/></a><div class="content"><a class="title" href="/pages/high-availability/server-limit-stream/" title="服务限流">服务限流</a><time datetime="2025-09-18T09:02:36.000Z" title="发表于 2025-09-18 17:02:36">2025-09-18</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/pages/database/db-redis-persistence/" title="Redis的持久化机制"><img src="/img/article/article5.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Redis的持久化机制"/></a><div class="content"><a class="title" href="/pages/database/db-redis-persistence/" title="Redis的持久化机制">Redis的持久化机制</a><time datetime="2025-09-18T01:15:36.000Z" title="发表于 2025-09-18 09:15:36">2025-09-18</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/pages/database/cache-read-write-strategies/" title="三大缓存读写策略"><img src="/img/article/article3.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="三大缓存读写策略"/></a><div class="content"><a class="title" href="/pages/database/cache-read-write-strategies/" title="三大缓存读写策略">三大缓存读写策略</a><time datetime="2025-09-17T13:15:36.000Z" title="发表于 2025-09-17 21:15:36">2025-09-17</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/pages/database/db-redis-cache-read-write/" title="三大缓存读写策略"><img src="/img/article/article1.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="三大缓存读写策略"/></a><div class="content"><a class="title" href="/pages/database/db-redis-cache-read-write/" title="三大缓存读写策略">三大缓存读写策略</a><time datetime="2025-09-17T13:15:36.000Z" title="发表于 2025-09-17 21:15:36">2025-09-17</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/pages/database/db-redis-consistency/" title="Redis缓存与数据库的一致性"><img src="/img/article/article1.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Redis缓存与数据库的一致性"/></a><div class="content"><a class="title" href="/pages/database/db-redis-consistency/" title="Redis缓存与数据库的一致性">Redis缓存与数据库的一致性</a><time datetime="2025-09-17T13:15:36.000Z" title="发表于 2025-09-17 21:15:36">2025-09-17</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url('/img/article/article2.png')"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2025 By Southern Fish</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><script>var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',preloader.endLoading())</script><div class="js-pjax"></div><canvas class="fireworks" mobile="true"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/fireworks.min.js"></script><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="true" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-nest.min.js"></script><script id="click-heart" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/click-heart.min.js" async="async" mobile="true"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body></html>

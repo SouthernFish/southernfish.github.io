@@ -1,0 +1,194 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>三大缓存读写策略 | Southern Fish</title><meta name="keywords" content="Redis"><meta name="author" content="Southern Fish"><meta name="copyright" content="Southern Fish"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="‌Redis(Remote Dictionary Server)，远程字典服务，是用C语言编写、支持网络、可基于内存亦可持久化的日志型、Key-Value数据库，提供多种语言的API。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="三大缓存读写策略">
+<meta property="og:url" content="https://southernfish.github.io/pages/database/cache-read-write-strategies/index.html">
+<meta property="og:site_name" content="Southern Fish">
+<meta property="og:description" content="‌Redis(Remote Dictionary Server)，远程字典服务，是用C语言编写、支持网络、可基于内存亦可持久化的日志型、Key-Value数据库，提供多种语言的API。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://southernfish.github.io/img/article/article3.png">
+<meta property="article:published_time" content="2025-09-17T13:15:36.000Z">
+<meta property="article:modified_time" content="2025-09-19T03:11:09.129Z">
+<meta property="article:author" content="Southern Fish">
+<meta property="article:tag" content="Redis">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://southernfish.github.io/img/article/article3.png"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://southernfish.github.io/pages/database/cache-read-write-strategies/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//fonts.googleapis.com" crossorigin=""/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Titillium+Web&amp;display=swap" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":200},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: true
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '三大缓存读写策略',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2025-09-19 11:11:09'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 5.4.2"><link rel="alternate" href="/atom.xml" title="Southern Fish" type="application/atom+xml">
+</head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/avatar.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">96</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">35</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">16</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 文章</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于我</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/img/article/article3.png')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Southern Fish</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 文章</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于我</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">三大缓存读写策略</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2025-09-17T13:15:36.000Z" title="发表于 2025-09-17 21:15:36">2025-09-17</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-09-19T03:11:09.129Z" title="更新于 2025-09-19 11:11:09">2025-09-19</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Database/">Database</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">1.2k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>3分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="三大缓存读写策略"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><p>Cache的读写策略是指在计算机系统中，对于缓存（Cache）的数据读取和写入操作所采取的策略和方法。不同读写策略可根据系统需求和应用场景进行选择和配置，以达到最优性能和效果。本文简单记录了三大缓存读写策略旁路缓存模式、读写穿透、异步缓存写入。</p>
+<blockquote>
+<p>参考文章：</p>
+<p><a target="_blank" rel="noopener" href="https://javaguide.cn/database/redis/3-commonly-used-cache-read-and-write-strategies.html">3种常用的缓存读写策略详解</a></p>
+</blockquote>
+<h1 id="Cache-Aside-Pattern（旁路缓存模式）"><a href="#Cache-Aside-Pattern（旁路缓存模式）" class="headerlink" title="Cache Aside Pattern（旁路缓存模式）"></a>Cache Aside Pattern（旁路缓存模式）</h1><p><strong>Cache Aside Pattern ：平时使用比较多的一个缓存读写模式，比较适合读请求比较多的场景。</strong>该策略中服务端需要同时维系 db 和 cache，并且以 db 的结果为准。</p>
+<h2 id="缓存读写步骤"><a href="#缓存读写步骤" class="headerlink" title="缓存读写步骤"></a>缓存读写步骤</h2><p><strong>写</strong>：由应用先更新 db；然后应用再直接删除 cache 。</p>
+<p><strong>读</strong> ：应用从 cache 中读取数据，读取到就直接返回；若读取不到应用就会从 db 中读取数据返回；然后应用再把数据写到 cache 中。</p>
+<blockquote>
+<p>**在写数据的过程中，是否可以先删除 cache 后更新 db？ **</p>
+<p><strong>答案</strong>：肯定不可以！因为这样可能会造成 <strong>数据库（db）和缓存（Cache）数据不一致</strong>的问题。</p>
+<p>举例：请求 1 先写数据 A，请求 2 随后读数据 A 的话，就很有可能产生数据不一致性的问题。该过程实际是：请求 1 先把 cache 中的 A 数据删除 → 请求 2 从 db 中读取数据 → 请求 1 再把 db 中的 A 数据更新。</p>
+<p><strong>在写数据的过程中，先更新 db后删除 cache 是否就没有问题？</strong></p>
+<p><strong>答案</strong>：理论上仍可能会出现数据不一致性的问题，但概率非常小，因为缓存的写入速度是比数据库的写入速度快很多。</p>
+<p>举例：请求 1 先读数据 A，请求 2 随后写数据 A，且数据 A 在请求 1 请求前不在缓存中时也有可能产生数据不一致性的问题。该过程实际是：请求 1 从 db 读数据 A → 请求 2 更新 db 中的数据 A（此时缓存中无数据 A ，故不用执行删除缓存操作 ） → 请求 1 将数据 A 写入 cache</p>
+</blockquote>
+<h2 id="缺陷"><a href="#缺陷" class="headerlink" title="缺陷"></a>缺陷</h2><ol>
+<li><p><strong>缺陷 1：首次请求数据一定不在 cache。</strong>解决办法如下：</p>
+<p>数据预热。将热点数据提前放入 cache。</p>
+</li>
+<li><p><strong>缺陷 2：写操作频繁导致 cache 中数据被频繁删除影响缓存命中率 。</strong>解决办法如下：</p>
+<p>**数据库和缓存数据强一致：更新 db 的时同样更新 cache，需加一个锁/分布式锁保证更新 cache 时不存在线程安全问题。</p>
+<p><strong>可短暂地允许数据库和缓存数据不一致</strong>：更新 db 时同样更新 cache，但给缓存一个较短过期时间，如此数据不一致影响也较小。</p>
+</li>
+</ol>
+<hr>
+<h1 id="Read-Write-Through-Pattern（读写穿透）"><a href="#Read-Write-Through-Pattern（读写穿透）" class="headerlink" title="Read/Write Through Pattern（读写穿透）"></a>Read/Write Through Pattern（读写穿透）</h1><p>该策略中服务端把 cache 视为主要数据存储，从中读取数据并将数据写入其中。cache 服务负责将此数据读取和写入 db，从而减轻了应用程序的职责。在平时在开发过程中非常少见。</p>
+<p><strong>写（Write Through）：</strong>先查 cache，若cache 中不存在，直接更新 db。cache 中存在，则先更新 cache，然后 cache 服务自己更新 db（<strong>同步更新 cache 和 db</strong>）</p>
+<p><strong>读(Read Through)：</strong>从 cache 中读取数据，读取到就直接返回 。读取不到则先从 db 加载，写入到 cache 后返回响应。</p>
+<blockquote>
+<p>Read-Through Pattern 实际只是在 Cache-Aside Pattern 之上进行了封装。在 Cache-Aside Pattern 下，发生读请求的时候，如果 cache 中不存在对应的数据，是由客户端自己负责把数据写入 cache，而 Read Through Pattern 则是 cache 服务自己来写入缓存的，这对客户端是透明的。</p>
+</blockquote>
+<hr>
+<h1 id="Write-Behind-Pattern（异步缓存写入）"><a href="#Write-Behind-Pattern（异步缓存写入）" class="headerlink" title="Write Behind Pattern（异步缓存写入）"></a>Write Behind Pattern（异步缓存写入）</h1><p>和 Read/Write Through Pattern 相似都是由 cache 服务来负责 cache 和 db 的读写。</p>
+<p>但不同的是<strong>Read/Write Through 同步更新 cache 和 db，而 Write Behind 只更新缓存不直接更新 db，而是异步批量更新 db。</strong></p>
+<p>这种方式对数据一致性带来了更大的挑战，比如 cache 数据可能还没异步更新 db 的话，cache 服务可能就就挂掉了。平时开发非常少见，但消息队列中消息的异步写入磁盘、MySQL 的 Innodb Buffer Pool 机制都用到了这种策略。</p>
+<p>Write Behind Pattern 下 db 的写性能非常高，非常适合一些数据经常变化又对数据一致性要求没那么高的场景，比如浏览量、点赞量。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="https://southernfish.github.io">Southern Fish</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://southernfish.github.io/pages/database/cache-read-write-strategies/">https://southernfish.github.io/pages/database/cache-read-write-strategies/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://southernfish.github.io" target="_blank">Southern Fish</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Redis/">Redis</a></div><div class="post_share"><div class="social-share" data-image="/img/article/article3.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/pages/database/db-redis-persistence/"><img class="prev-cover" src="/img/article/article5.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">Redis的持久化机制</div></div></a></div><div class="next-post pull-right"><a href="/pages/database/db-redis-cache-read-write/"><img class="next-cover" src="/img/article/article1.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">三大缓存读写策略</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/pages/database/db-redis-cache-read-write/" title="三大缓存读写策略"><img class="cover" src="/img/article/article1.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2025-09-17</div><div class="title">三大缓存读写策略</div></div></a></div><div><a href="/pages/database/db-redis-consistency/" title="Redis缓存与数据库的一致性"><img class="cover" src="/img/article/article1.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2025-09-17</div><div class="title">Redis缓存与数据库的一致性</div></div></a></div><div><a href="/pages/database/db-redis-persistence/" title="Redis的持久化机制"><img class="cover" src="/img/article/article5.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2025-09-18</div><div class="title">Redis的持久化机制</div></div></a></div><div><a href="/pages/database/db-redis-produce-problem/" title="Redis的缓存穿透、缓存击穿、缓存雪崩"><img class="cover" src="/img/article/article4.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2025-09-17</div><div class="title">Redis的缓存穿透、缓存击穿、缓存雪崩</div></div></a></div><div><a href="/pages/distributed/distributed-lock/" title="分布式锁详解"><img class="cover" src="/img/article/article5.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2025-09-17</div><div class="title">分布式锁详解</div></div></a></div><div><a href="/pages/database/db-redis-datatype/" title="Redis支持的数据类型"><img class="cover" src="/img/article/article5.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2025-09-17</div><div class="title">Redis支持的数据类型</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Southern Fish</div><div class="author-info__description"></div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">96</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">35</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">16</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/SouthernFish" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="/1002721576@qq.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">天下事岂能尽如吾意，心境须恰适，尽其在我，随遇而安。</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Cache-Aside-Pattern%EF%BC%88%E6%97%81%E8%B7%AF%E7%BC%93%E5%AD%98%E6%A8%A1%E5%BC%8F%EF%BC%89"><span class="toc-number">1.</span> <span class="toc-text">Cache Aside Pattern（旁路缓存模式）</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BC%93%E5%AD%98%E8%AF%BB%E5%86%99%E6%AD%A5%E9%AA%A4"><span class="toc-number">1.1.</span> <span class="toc-text">缓存读写步骤</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BC%BA%E9%99%B7"><span class="toc-number">1.2.</span> <span class="toc-text">缺陷</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Read-Write-Through-Pattern%EF%BC%88%E8%AF%BB%E5%86%99%E7%A9%BF%E9%80%8F%EF%BC%89"><span class="toc-number">2.</span> <span class="toc-text">Read&#x2F;Write Through Pattern（读写穿透）</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Write-Behind-Pattern%EF%BC%88%E5%BC%82%E6%AD%A5%E7%BC%93%E5%AD%98%E5%86%99%E5%85%A5%EF%BC%89"><span class="toc-number">3.</span> <span class="toc-text">Write Behind Pattern（异步缓存写入）</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/pages/high-availability/server-limit-stream/" title="服务限流"><img src="/img/article/article2.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="服务限流"/></a><div class="content"><a class="title" href="/pages/high-availability/server-limit-stream/" title="服务限流">服务限流</a><time datetime="2025-09-18T09:02:36.000Z" title="发表于 2025-09-18 17:02:36">2025-09-18</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/pages/database/db-redis-persistence/" title="Redis的持久化机制"><img src="/img/article/article5.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Redis的持久化机制"/></a><div class="content"><a class="title" href="/pages/database/db-redis-persistence/" title="Redis的持久化机制">Redis的持久化机制</a><time datetime="2025-09-18T01:15:36.000Z" title="发表于 2025-09-18 09:15:36">2025-09-18</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/pages/database/cache-read-write-strategies/" title="三大缓存读写策略"><img src="/img/article/article3.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="三大缓存读写策略"/></a><div class="content"><a class="title" href="/pages/database/cache-read-write-strategies/" title="三大缓存读写策略">三大缓存读写策略</a><time datetime="2025-09-17T13:15:36.000Z" title="发表于 2025-09-17 21:15:36">2025-09-17</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/pages/database/db-redis-cache-read-write/" title="三大缓存读写策略"><img src="/img/article/article1.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="三大缓存读写策略"/></a><div class="content"><a class="title" href="/pages/database/db-redis-cache-read-write/" title="三大缓存读写策略">三大缓存读写策略</a><time datetime="2025-09-17T13:15:36.000Z" title="发表于 2025-09-17 21:15:36">2025-09-17</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/pages/database/db-redis-consistency/" title="Redis缓存与数据库的一致性"><img src="/img/article/article1.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Redis缓存与数据库的一致性"/></a><div class="content"><a class="title" href="/pages/database/db-redis-consistency/" title="Redis缓存与数据库的一致性">Redis缓存与数据库的一致性</a><time datetime="2025-09-17T13:15:36.000Z" title="发表于 2025-09-17 21:15:36">2025-09-17</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url('/img/article/article3.png')"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2025 By Southern Fish</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><script>var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',preloader.endLoading())</script><div class="js-pjax"></div><canvas class="fireworks" mobile="true"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/fireworks.min.js"></script><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="true" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-nest.min.js"></script><script id="click-heart" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/click-heart.min.js" async="async" mobile="true"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body></html>
