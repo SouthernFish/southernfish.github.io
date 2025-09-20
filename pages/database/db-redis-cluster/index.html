@@ -1,0 +1,562 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>Redis集群 | Southern Fish</title><meta name="keywords" content="Redis"><meta name="author" content="Southern Fish"><meta name="copyright" content="Southern Fish"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="‌Redis(Remote Dictionary Server)，远程字典服务，是用C语言编写、支持网络、可基于内存亦可持久化的日志型、Key-Value数据库，提供多种语言的API。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Redis集群">
+<meta property="og:url" content="https://southernfish.github.io/pages/database/db-redis-cluster/index.html">
+<meta property="og:site_name" content="Southern Fish">
+<meta property="og:description" content="‌Redis(Remote Dictionary Server)，远程字典服务，是用C语言编写、支持网络、可基于内存亦可持久化的日志型、Key-Value数据库，提供多种语言的API。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://southernfish.github.io/img/article/article4.png">
+<meta property="article:published_time" content="2025-09-17T13:15:36.000Z">
+<meta property="article:modified_time" content="2025-09-20T11:18:48.138Z">
+<meta property="article:author" content="Southern Fish">
+<meta property="article:tag" content="Redis">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://southernfish.github.io/img/article/article4.png"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://southernfish.github.io/pages/database/db-redis-cluster/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//fonts.googleapis.com" crossorigin=""/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Titillium+Web&amp;display=swap" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":200},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: true
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Redis集群',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2025-09-20 19:18:48'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 5.4.2"><link rel="alternate" href="/atom.xml" title="Southern Fish" type="application/atom+xml">
+</head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/avatar.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">96</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">35</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">16</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 文章</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于我</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/img/article/article4.png')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Southern Fish</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 文章</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于我</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">Redis集群</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2025-09-17T13:15:36.000Z" title="发表于 2025-09-17 21:15:36">2025-09-17</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-09-20T11:18:48.138Z" title="更新于 2025-09-20 19:18:48">2025-09-20</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Database/">Database</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">9.7k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>35分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="Redis集群"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><p>在互联网高并发、海量数据的场景下，单机 Redis 已无法满足系统对性能、存储和高可用性的需求。Redis 集群作为分布式缓存的终极解决方案，通过巧妙的架构设计实现了数据分片、自动故障转移和动态扩容。本文记录了相关原理、 Redis 集群的核心机制，及完整的实战部署流程。本文简单介绍了Redis的三种集群部署模式：<strong>主从模式，Sentinel（哨兵）模式，Cluster模式。</strong></p>
+<blockquote>
+<p>参考文章：</p>
+<p><a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/2169883">Redis集群部署的三种模式</a></p>
+</blockquote>
+<h1 id="Redis-集群模式"><a href="#Redis-集群模式" class="headerlink" title="Redis 集群模式"></a>Redis 集群模式</h1><p>Rdis最开始使用主从模式做集群，若master宕机需手动配置slave转为master；后来为了高可用提出哨兵模式，该模式下有一个哨兵监视master和slave，若master宕机可自动将slave转为master，但它也有一个问题，就是不能动态扩充；所以在3.x提出cluster集群模式。</p>
+<h2 id="三种集群模式对比"><a href="#三种集群模式对比" class="headerlink" title="三种集群模式对比"></a>三种集群模式对比</h2><p>Redis 发展至今形成了三种典型的集群模式，每种模式都针对不同的业务需求进行了优化：</p>
+<table>
+<thead>
+<tr>
+<th>模式</th>
+<th>版本</th>
+<th>核心优势</th>
+<th>局限性</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>主从模式</td>
+<td>Redis 2.8前</td>
+<td>数据备份与读写分离</td>
+<td>手动故障转移、无法动态扩容</td>
+</tr>
+<tr>
+<td>哨兵模式</td>
+<td>Redis 2.8+</td>
+<td>自动故障转移、主从状态监测</td>
+<td>写操作无法负载均衡、存储受限</td>
+</tr>
+<tr>
+<td>Cluster模式</td>
+<td>Redis 3.0+</td>
+<td>分布式分片、动态扩容、自动故障转移</td>
+<td>多Key命令不支持、架构较新</td>
+</tr>
+</tbody></table>
+<p><code>Redis哨兵（Sentinel）</code>是一个高可用性解决方案。哨兵系统可以<strong>监测Redis主从服务器的健康状态，自动执行故障转移，选举新的主服务器，并通知应用程序新主服务器的地址</strong>。哨兵还负责通知管理员，发送警报，并执行自定义脚本响应各种事件。<br><code>Redis集群（Cluster）</code>提供了一个<strong>数据分区（sharding）和自动管理的环境，支持在多个节点间进行数据共享</strong>。它能够在<strong>节点间自动分配数据，并在节点故障时提供自动的故障转移功能</strong>。集群通过分片来提高数据库的可扩展性，并能在不中断服务的情况下，动态地添加或移除节点。</p>
+<hr>
+<h1 id="主从模式"><a href="#主从模式" class="headerlink" title="主从模式"></a>主从模式</h1><h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>主从模式是三种模式中最简单的，在主从复制中，数据库分为两类：主数据库(master)和从数据库(slave)。其中，主从复制有如下特点：</p>
+<ul>
+<li>主数据库可以进行读写操作，当读写操作导致数据变化时会自动将数据同步给从数据库；</li>
+<li>从数据库一般是只读的，并且接收主数据库同步过来的数据；</li>
+<li>一个master可以拥有多个slave，但是一个slave只能对应一个master；</li>
+<li>slave挂了不影响其他slave的读和master的读和写，重新启动后会将数据从master同步过来；</li>
+<li>master挂了以后，不影响slave的读，但redis不再提供写服务，master重启后redis将重新对外提供写服务；</li>
+<li>master挂了以后，不会在slave节点中重新选一个master；</li>
+</ul>
+<p><strong>主从模式工作示意图</strong>：</p>
+<p><img src="https://raw.githubusercontent.com/SouthernFish/ImageHostServer/main/sql/image-20250919221344753.png" alt="image-20250919221344753"></p>
+<h2 id="工作机制"><a href="#工作机制" class="headerlink" title="工作机制"></a>工作机制</h2><ul>
+<li>当slave启动后，主动向master发送SYNC命令。master接收到SYNC命令后在后台保存快照（RDB持久化）和缓存保存快照这段时间的命令，然后将保存的快照文件和缓存的命令发送给slave。slave接收到快照文件和命令后加载快照文件和缓存的执行命令。</li>
+<li>复制初始化后，master每次接收到的写命令都会同步发送给slave，保证主从数据一致性。</li>
+</ul>
+<h2 id="实践-amp-配置"><a href="#实践-amp-配置" class="headerlink" title="实践&amp;配置"></a>实践&amp;配置</h2><h3 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h3><p>需要准备至少3台机器：</p>
+<table>
+<thead>
+<tr>
+<th>主机名</th>
+<th>IP</th>
+<th>角色</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>local-168-10-1</td>
+<td>192.168.10.1</td>
+<td>master</td>
+</tr>
+<tr>
+<td>local-168-10-2</td>
+<td>192.168.10.2</td>
+<td>slave1</td>
+</tr>
+<tr>
+<td>local-168-10-3</td>
+<td>192.168.10.3</td>
+<td>slave2</td>
+</tr>
+</tbody></table>
+<h3 id="下载解压Redis安装包"><a href="#下载解压Redis安装包" class="headerlink" title="下载解压Redis安装包"></a>下载解压Redis安装包</h3><p>下载地址：<a target="_blank" rel="noopener" href="http://download.redis.io/releases/%E3%80%82">http://download.redis.io/releases/。</a></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /opt/software</span><br><span class="line">wget http://download.redis.io/releases/redis-7.0.3.tar.gz</span><br><span class="line"><span class="comment"># 解压</span></span><br><span class="line">tar -xf redis-7.0.3.tar.gz</span><br><span class="line"><span class="built_in">cd</span> redis-7.0.3</span><br><span class="line"><span class="comment"># 设置环境变量</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;export REDIS_HOME=/opt/software/redis-7.0.3&quot;</span>&gt;&gt; /etc/profile</span><br><span class="line"><span class="built_in">source</span> /etc/profile</span><br></pre></td></tr></table></figure>
+
+<h3 id="编译安装所有节点"><a href="#编译安装所有节点" class="headerlink" title="编译安装所有节点"></a>编译安装所有节点</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> <span class="variable">$REDIS_HOME</span></span><br><span class="line">yum -y install gcc gcc++</span><br><span class="line">make &amp;&amp; make install</span><br><span class="line"><span class="comment"># 默认安装目录 /usr/local/bin</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="为安装节点配置服务"><a href="#为安装节点配置服务" class="headerlink" title="为安装节点配置服务"></a>为安装节点配置服务</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cat</span> &lt;&lt; <span class="string">EOF &gt; /usr/lib/systemd/system/redis.service</span></span><br><span class="line"><span class="string">[Unit]</span></span><br><span class="line"><span class="string">Description=Redis persistent key-value database</span></span><br><span class="line"><span class="string">After=network.target</span></span><br><span class="line"><span class="string">After=network-online.target</span></span><br><span class="line"><span class="string">Wants=network-online.target</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">[Service]</span></span><br><span class="line"><span class="string">ExecStart=/usr/local/bin/redis-server /usr/local/redis/redis.conf --supervised systemd</span></span><br><span class="line"><span class="string">ExecStop=/usr/libexec/redis-shutdown</span></span><br><span class="line"><span class="string">Type=forking</span></span><br><span class="line"><span class="string">User=redis</span></span><br><span class="line"><span class="string">Group=redis</span></span><br><span class="line"><span class="string">RuntimeDirectory=redis</span></span><br><span class="line"><span class="string">RuntimeDirectoryMode=0755</span></span><br><span class="line"><span class="string">LimitNOFILE=65536</span></span><br><span class="line"><span class="string">PrivateTmp=true</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">[Install]</span></span><br><span class="line"><span class="string">WantedBy=multi-user.target</span></span><br><span class="line"><span class="string">EOF</span></span><br></pre></td></tr></table></figure>
+
+<p>配置相关描述和说明：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Description: # 描述服务</span><br><span class="line">After: # 描述服务类别</span><br><span class="line">[Service] # 服务运行参数的设置</span><br><span class="line">Type=forking # 是后台运行的形式</span><br><span class="line">ExecStart # 为服务的具体运行命令</span><br><span class="line">ExecReload # 为重启命令</span><br><span class="line">ExecStop # 为停止命令</span><br><span class="line">LimitNOFILE=<span class="number">65536</span> # 打开文件数和进程数有限制，默认限制为<span class="number">1024</span>，不设置或设置为LimitNOFILE=unlimited(不识别)，则为<span class="number">1024</span></span><br><span class="line">PrivateTmp=True # 表示给服务分配独立的临时空间</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>【注意】[Service]的启动、重启、停止命令全部要求使用绝对路径 [Install] #运行级别下服务安装的相关设置，可设置为多用户，即系统运行级别为3</p>
+</blockquote>
+<p>重载系统服务（启停redis）：systemctl daemon-reload。以下是配置，位于/usr/libexec/redis-shutdown路径下。</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">#!/bin/bash</span><br><span class="line">#</span><br><span class="line"># Wrapper to <span class="built_in">close</span> properly redis <span class="keyword">and</span> sentinel</span><br><span class="line">test x<span class="string">&quot;$REDIS_DEBUG&quot;</span> != x &amp;&amp; set -x</span><br><span class="line">REDIS_CLI=/usr/<span class="keyword">local</span>/bin/redis-cli</span><br><span class="line"># Retrieve service name</span><br><span class="line">SERVICE_NAME=<span class="string">&quot;$1&quot;</span></span><br><span class="line"><span class="keyword">if</span> [ -z <span class="string">&quot;$SERVICE_NAME&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">   SERVICE_NAME=redis</span><br><span class="line">fi</span><br><span class="line"># Get the proper <span class="built_in">config</span> file based on service name</span><br><span class="line">CONFIG_FILE=<span class="string">&quot;/usr/local/redis/$SERVICE_NAME.conf&quot;</span></span><br><span class="line"># Use awk to retrieve host, port from <span class="built_in">config</span> file</span><br><span class="line">HOST=`awk <span class="string">&#x27;/^[[:blank:]]*bind/ &#123; print $2 &#125;&#x27;</span> $CONFIG_FILE | tail -n1`</span><br><span class="line">PORT=`awk <span class="string">&#x27;/^[[:blank:]]*port/ &#123; print $2 &#125;&#x27;</span> $CONFIG_FILE | tail -n1`</span><br><span class="line">PASS=`awk <span class="string">&#x27;/^[[:blank:]]*requirepass/ &#123; print $2 &#125;&#x27;</span> $CONFIG_FILE | tail -n1`</span><br><span class="line">SOCK=`awk <span class="string">&#x27;/^[[:blank:]]*unixsocket\s/ &#123; print $2 &#125;&#x27;</span> $CONFIG_FILE | tail -n1`</span><br><span class="line"># Just <span class="keyword">in</span> case, use default host, port</span><br><span class="line">HOST=$&#123;HOST:<span class="number">-127.0</span><span class="number">.0</span><span class="number">.1</span>&#125;</span><br><span class="line"><span class="keyword">if</span> [ <span class="string">&quot;$SERVICE_NAME&quot;</span> = redis ]; <span class="keyword">then</span></span><br><span class="line">    PORT=$&#123;PORT:<span class="number">-6379</span>&#125;</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">    PORT=$&#123;PORT:<span class="number">-26739</span>&#125;</span><br><span class="line">fi</span><br><span class="line"># Setup additional parameters</span><br><span class="line"># e.g password-protected redis instances</span><br><span class="line">[ -z <span class="string">&quot;$PASS&quot;</span>  ] || ADDITIONAL_PARAMS=<span class="string">&quot;-a $PASS&quot;</span></span><br><span class="line"># shutdown the service properly</span><br><span class="line"><span class="keyword">if</span> [ -e <span class="string">&quot;$SOCK&quot;</span> ] ; <span class="keyword">then</span></span><br><span class="line">        $REDIS_CLI -s $SOCK $ADDITIONAL_PARAMS shutdown</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">        $REDIS_CLI -h $HOST -p $PORT $ADDITIONAL_PARAMS shutdown</span><br><span class="line">fi</span><br></pre></td></tr></table></figure>
+
+<h3 id="授权启动服务相关命令"><a href="#授权启动服务相关命令" class="headerlink" title="授权启动服务相关命令"></a>授权启动服务相关命令</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">chmod</span> +x /usr/libexec/redis-shutdown</span><br><span class="line">useradd -s /sbin/nologin redis</span><br><span class="line"><span class="built_in">mkdir</span> /usr/local/redis ; <span class="built_in">cp</span> <span class="variable">$REDIS_HOME</span>/redis.conf /usr/local/redis/ &amp;&amp; <span class="built_in">chown</span> -R redis:redis /usr/local/redis</span><br><span class="line"><span class="built_in">mkdir</span> -p /opt/software/redis-7.0.3/data &amp;&amp; <span class="built_in">chown</span> -R redis:redis /opt/software/redis-7.0.3/data</span><br><span class="line">yum install -y bash-completion &amp;&amp; <span class="built_in">source</span> /etc/profile                 <span class="comment"># 命令补全</span></span><br><span class="line">systemctl daemon-reload</span><br><span class="line">systemctl <span class="built_in">enable</span> redis</span><br></pre></td></tr></table></figure>
+
+<h3 id="修改linux内核参数"><a href="#修改linux内核参数" class="headerlink" title="修改linux内核参数"></a>修改linux内核参数</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 临时生效</span></span><br><span class="line">sysctl  -w  vm.overcommit_memory=1</span><br><span class="line"><span class="comment"># 永久生效</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&#x27;vm.overcommit_memory=1&#x27;</span> &gt;&gt; /etc/sysctl.conf &amp;&amp; sysctl -p</span><br><span class="line"><span class="comment">### 可选值：0，1，2。</span></span><br><span class="line"><span class="comment"># 0：表示内核将检查是否有足够可用内存供应用进程使用；若有足够可用内存，内存申请允许；否则内存申请失败，并把错误返回给应用进程。</span></span><br><span class="line"><span class="comment"># 1：表示内核允许分配所有的物理内存，而不管当前的内存状态如何。</span></span><br><span class="line"><span class="comment"># 2：表示内核允许分配超过所有物理内存和交换空间总和的内存。</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="节点配置"><a href="#节点配置" class="headerlink" title="节点配置"></a>节点配置</h3><ul>
+<li><p>master节点配置，打开master节点文件，文件位于vi/usr/local/redis/redis.conf，修改配置如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">bind</span> 192.168.10.1               <span class="comment"># 监听ip，多个ip用空格分隔</span></span><br><span class="line">daemonize <span class="built_in">yes</span>               <span class="comment"># 允许后台启动</span></span><br><span class="line">logfile <span class="string">&quot;/usr/local/redis/redis.log&quot;</span>                <span class="comment"># 日志路径</span></span><br><span class="line"><span class="built_in">dir</span> /opt/software/redis-7.0.3/data                 <span class="comment"># 数据库备份文件存放目录</span></span><br><span class="line">masterauth 123456               <span class="comment"># slave连接master密码，master可省略</span></span><br><span class="line">requirepass 123456              <span class="comment"># 设置master连接密码，slave可省略</span></span><br><span class="line">appendonly <span class="built_in">yes</span>                  <span class="comment"># 在/opt/software/redis-7.0.3/data目录生成appendonly.aof文件，将每一次写操作请求都追加到appendonly.aof 文件中</span></span><br></pre></td></tr></table></figure></li>
+<li><p>slave1节点配置，打开slave1节点文件，文件位于vi/usr/local/redis/redis.conf，修改配置如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">bind</span> 192.168.10.2               <span class="comment"># 监听ip，多个ip用空格分隔</span></span><br><span class="line">daemonize <span class="built_in">yes</span>               <span class="comment"># 允许后台启动</span></span><br><span class="line">logfile <span class="string">&quot;/usr/local/redis/redis.log&quot;</span>                <span class="comment"># 日志路径</span></span><br><span class="line"><span class="built_in">dir</span> /opt/software/redis-7.0.3/data                 <span class="comment"># 数据库备份文件存放目录</span></span><br><span class="line"><span class="comment">#  replicaof用于追随某个节点的redis，被追随的节点为主节点，追随的为从节点。就是设置master节点</span></span><br><span class="line">replicaof 192.168.10.1 6379</span><br><span class="line">masterauth 123456               <span class="comment"># slave连接master密码，master可省略</span></span><br><span class="line">requirepass 123456              <span class="comment"># 设置master连接密码，slave可省略</span></span><br><span class="line">appendonly <span class="built_in">yes</span>                  <span class="comment"># 在/opt/software/redis-7.0.3/data目录生成appendonly.aof文件，将每一次写操作请求都追加到appendonly.aof 文件中</span></span><br></pre></td></tr></table></figure></li>
+<li><p>slave2节点配置，打开slave2节点文件，文件位于vi/usr/local/redis/redis.conf，修改配置如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">bind</span> 192.168.10.3               <span class="comment"># 监听ip，多个ip用空格分隔</span></span><br><span class="line">daemonize <span class="built_in">yes</span>               <span class="comment"># 允许后台启动</span></span><br><span class="line">logfile <span class="string">&quot;/usr/local/redis/redis.log&quot;</span>                <span class="comment"># 日志路径</span></span><br><span class="line"><span class="built_in">dir</span> /opt/software/redis-7.0.3/data                 <span class="comment"># 数据库备份文件存放目录</span></span><br><span class="line"><span class="comment">#  replicaof用于追随某个节点的redis，被追随的节点为主节点，追随的为从节点。就是设置master节点</span></span><br><span class="line">replicaof 192.168.10.1 6379</span><br><span class="line">masterauth 123456               <span class="comment"># slave连接master密码，master可省略</span></span><br><span class="line">requirepass 123456              <span class="comment"># 设置master连接密码，slave可省略</span></span><br><span class="line">appendonly <span class="built_in">yes</span>                  <span class="comment"># 在/opt/software/redis-7.0.3/data目录生成appendonly.aof文件，将每一次写操作请求都追加到appendonly.aof 文件中</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="启动Redis服务"><a href="#启动Redis服务" class="headerlink" title="启动Redis服务"></a>启动Redis服务</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">systemctl start redis</span><br><span class="line">systemctl status redis</span><br></pre></td></tr></table></figure>
+
+<h3 id="查看集群"><a href="#查看集群" class="headerlink" title="查看集群"></a>查看集群</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 交互式</span></span><br><span class="line">redis-cli -h 192.168.10.1 -a 123456</span><br><span class="line">192.168.10.1:6379&gt; info replication</span><br><span class="line"></span><br><span class="line"><span class="comment"># 交互式</span></span><br><span class="line">redis-cli -h 192.168.182.110</span><br><span class="line">192.168.10.1:6379&gt; auth 123456</span><br><span class="line">192.168.10.1:6379&gt; info replication</span><br><span class="line"></span><br><span class="line"><span class="comment"># 非交互式</span></span><br><span class="line">redis-cli -h 192.168.10.1 -a 123456 info replication</span><br></pre></td></tr></table></figure>
+
+<p>如果一切配置都没有问题，Redis的主数据库会不定时的向从数据库同步数据。</p>
+<hr>
+<h1 id="Sentinel（哨兵）模式"><a href="#Sentinel（哨兵）模式" class="headerlink" title="Sentinel（哨兵）模式"></a>Sentinel（哨兵）模式</h1><h2 id="简介-1"><a href="#简介-1" class="headerlink" title="简介"></a>简介</h2><p>主从模式的弊端就是不具备高可用性，当master挂掉以后，Redis将不能再对外提供写入操作，因此sentinel模式应运而生。sentinel中文含义为哨兵，顾名思义，它的作用就是监控redis集群的运行状况，此模式具有如下一些特点：</p>
+<ul>
+<li>sentinel模式是建立在主从模式的基础上，如果只有一个Redis节点，sentinel就没有任何意义；</li>
+<li>当master挂了以后，sentinel会在slave中选择一个做为master，并修改它们的配置文件，其他slave的配置文件也会被修改，比如slaveof属性会指向新的master；</li>
+<li>当master重新启动后，它将不再是master，而是做为slave接收新的master的同步数据；</li>
+<li>sentinel因为也是一个进程，所以有挂掉的可能，所以sentinel也会启动多个形成一个sentinel集群；</li>
+<li>多sentinel配置的时候，sentinel之间也会自动监控；</li>
+<li>当主从模式配置密码时，sentinel也会同步将配置信息修改到配置文件中；</li>
+<li>一个sentinel或sentinel集群可以管理多个主从Redis，多个sentinel也可以监控同一个redis；</li>
+<li>sentinel最好不要和Redis部署在同一台机器，不然Redis的服务器挂了以后，sentinel也可能会挂掉。</li>
+</ul>
+<p><strong>Sentinel（哨兵）模式工作原理图</strong>：</p>
+<p><img src="https://raw.githubusercontent.com/SouthernFish/ImageHostServer/main/sql/image-20250919224755151.png" alt="image-20250919224755151"></p>
+<h2 id="工作流程"><a href="#工作流程" class="headerlink" title="工作流程"></a>工作流程</h2><ul>
+<li>每个sentinel以每秒钟一次的频率向它所知的master，slave以及其他sentinel实例发送一个 PING 命令；</li>
+<li>如果一个实例距离最后一次有效回复 PING 命令的时间超过 down-after-milliseconds 选项所指定的值， 则这个实例会被sentinel标记为主观下线；</li>
+<li>若一个master被标记为主观下线，则正在监视这个master的所有sentinel要<strong>每秒一次</strong>确认master的确进入了主观下线状态；</li>
+<li>当有足够数量的sentinel（大于等于配置文件指定的值）在指定的时间范围内确认master的确进入了主观下线状态， 则master会被标记为客观下线；</li>
+<li>在一般情况下， 每个sentinel会以每 10 秒一次的频率向它已知的所有master，slave发送 INFO 命令；</li>
+<li>当master被sentinel标记为客观下线时，sentinel向下线的master的所有slave发送 INFO 命令的频率会从 10 秒一次改为 1 秒一次；</li>
+<li>若没有足够数量的sentinel同意master已经下线，master的客观下线状态就会被移除；若master重新向sentinel的 PING 命令返回有效回复，master的主观下线状态就会被移除。</li>
+</ul>
+<h2 id="实践-amp-配置-1"><a href="#实践-amp-配置-1" class="headerlink" title="实践&amp;配置"></a>实践&amp;配置</h2><h3 id="环境准备-1"><a href="#环境准备-1" class="headerlink" title="环境准备"></a>环境准备</h3><blockquote>
+<p>与上述主从模式一样。同时为保证能够最小可能的碟机事件，sentinel 最好跟 redis 部署在不同机器上，sentinel 端口：26379。</p>
+</blockquote>
+<h3 id="配置sentinel"><a href="#配置sentinel" class="headerlink" title="配置sentinel"></a>配置sentinel</h3><p>哨兵模式基于主从模式，所以 redis 的相关配置参考主从模式。只需在主从模式基础上修改sentinel配置文件，配置3个哨兵即可，哨兵的配置可以参考如下内容。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 三个节点创建存储目录</span></span><br><span class="line"><span class="built_in">mkdir</span> /opt/software/redis-7.0.3/sentinel</span><br><span class="line"><span class="built_in">mkdir</span> /opt/software/redis-7.0.3/sentinel ; <span class="built_in">chown</span> -R redis:redis /opt/software/redis-7.0.3/</span><br><span class="line"><span class="built_in">cat</span> &gt;/usr/local/redis/sentinel.conf&lt;&lt;<span class="string">EOF</span></span><br><span class="line"><span class="string">daemonize yes</span></span><br><span class="line"><span class="string">logfile &quot;/usr/local/redis/sentinel.log&quot;</span></span><br><span class="line"><span class="string"># sentinel工作目录</span></span><br><span class="line"><span class="string">dir &quot;/opt/software/redis-7.0.3/sentinel&quot;</span></span><br><span class="line"><span class="string"># 判断master失效至少需要2个sentinel同意，建议设置为n/2+1，n为sentinel个数</span></span><br><span class="line"><span class="string"># sentinel monitor &lt;master-name&gt; &lt;ip&gt; &lt;port&gt; &lt;count&gt;</span></span><br><span class="line"><span class="string">sentinel monitor mymaster 192.168.182.110 6379 2</span></span><br><span class="line"><span class="string">sentinel auth-pass mymaster 123456</span></span><br><span class="line"><span class="string"># 判断master主观下线时间，默认30s</span></span><br><span class="line"><span class="string">sentinel down-after-milliseconds mymaster 30000</span></span><br><span class="line"><span class="string">EOF</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="启动sentinel"><a href="#启动sentinel" class="headerlink" title="启动sentinel"></a>启动sentinel</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">/usr/local/bin/redis-sentinel /usr/local/redis/sentinel.conf</span><br><span class="line">netstat -tnlp|grep 26379</span><br></pre></td></tr></table></figure>
+
+<h3 id="故障模拟测试"><a href="#故障模拟测试" class="headerlink" title="故障模拟测试"></a>故障模拟测试</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 停掉master</span></span><br><span class="line">systemctl stop redis</span><br><span class="line">redis-cli -h 192.168.10.1 -a 123456 info replication</span><br></pre></td></tr></table></figure>
+
+<p>Redis发现master节点出现问题后，会自动切换到其它节点。主要看 master_link_status:up/down</p>
+<p>测试读写</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@local-168-10-1 redis-7.0.3]<span class="comment"># redis-cli -h 192.168.10.3 -a 123456</span></span><br><span class="line">Warning: Using a password with <span class="string">&#x27;-a&#x27;</span> or <span class="string">&#x27;-u&#x27;</span> option on the <span class="built_in">command</span> line interface may not be safe.</span><br><span class="line">192.168.10.3:6379&gt; <span class="built_in">set</span> k2 v2</span><br><span class="line">OK</span><br></pre></td></tr></table></figure>
+
+<p>结果是新的master节点读写能力都是正常的，接下来恢复故障，看能否正常。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">redis-cli -h 192.168.10.3 -a 123456 info replication</span><br></pre></td></tr></table></figure>
+
+<p>结果发现原先的master节点在恢复后并不会主动切换到master角色，而是作为slave角色继续服务。</p>
+<h2 id="常见问题"><a href="#常见问题" class="headerlink" title="常见问题"></a>常见问题</h2><h3 id="Sentinel-作用"><a href="#Sentinel-作用" class="headerlink" title="Sentinel 作用"></a>Sentinel 作用</h3><p>Sentinel是一中运行模式，不提供任何的读写过程，它只负责运行特殊的Redis命令执行自动化的故障转移。作用如下：</p>
+<ol>
+<li><strong>监控</strong>：Sentinel会监控redis的每一个节点（master，slave），甚至包括监控自己。</li>
+<li><strong>故障转移</strong>：当一个master节点出现故障后，Sentinel会自动实现故障转移，自动将某一台的slave节点选举为新的master节点</li>
+<li><strong>通知</strong>：通知slave连接线新的master节点，让他们执行replicaof命令成为新的master的slave</li>
+<li><strong>配置提供</strong>：客户端连接 sentinel 请求 master 的地址，如果发生故障转移，sentinel 会通知新的 master 链接信息给客户端。</li>
+</ol>
+<h3 id="节点下线检测-amp-主观下线VS客观下线"><a href="#节点下线检测-amp-主观下线VS客观下线" class="headerlink" title="节点下线检测&amp;主观下线VS客观下线"></a>节点下线检测&amp;主观下线VS客观下线</h3><p>Sentinel 通过定期发送 PING 命令检测节点状态，并根据响应情况判断节点是否下线。主观下线是单个 Sentinel 根据配置时间阈值判断节点无响应的状态，而客观下线需要多个 Sentinel 达成共识后才能触发故障转移。</p>
+<p><strong>主观下线检测</strong>：每个 Sentinel 会以固定频率（默认每秒一次）向所有被监控的节点发送 PING 命令。若节点在 :ml-search-more[down-after-milliseconds]{text=”down-after-milliseconds”}（如 30000 毫秒）内未响应或回复无效内容（如非 PONG、LOADING、MASTERDOWN），则该 Sentinel 会将该节点标记为主观下线。</p>
+<p><strong>客观下线判定</strong>：当多个 Sentinel（默认需超过半数）确认同一主服务器进入主观下线状态后，会通过互相询问（is-master-down-by-addr 命令）达成共识。若所有 Sentinel 均认为主服务器不可达，则触发客观下线判定，随后执行故障转移。</p>
+<h3 id="故障转移流程"><a href="#故障转移流程" class="headerlink" title="故障转移流程"></a>故障转移流程</h3><ol>
+<li><strong>主观下线判定</strong>‌：每个Sentinel 节点独立检查主节点的健康状态，若主节点失联超过配置的阈值（如 down-after-milliseconds 默认 5000 毫秒），则判定该节点主观下线。 ‌</li>
+<li>‌<strong>客观下线判定</strong>‌：当超过指定数量的 Sentinel 节点（如 quorum 值）都判定主节点失联时，系统进入客观下线状态。 ‌</li>
+<li>‌<strong>选举新主节点</strong>‌：使用Raft 协议选举新的Sentinel 领头节点，该节点负责后续故障转移操作。 ‌</li>
+<li>‌<strong>选择最优从节点</strong>‌：领头节点根据配置（如优先选择复制延迟低、在线时间长的从节点）确定晋升的新主节点。 ‌</li>
+<li>‌<strong>晋升新主节点</strong>‌：通过SLAVEOF 命令将选定的从节点晋升为主节点，并更新配置文件。 ‌</li>
+<li>‌<strong>同步数据</strong>‌：新主节点通过复制功能将数据同步给原从节点，完成故障转移</li>
+</ol>
+<h3 id="为什么建议哨兵集群"><a href="#为什么建议哨兵集群" class="headerlink" title="为什么建议哨兵集群"></a>为什么建议哨兵集群</h3><p>目的是为了 <strong>防止误判</strong>，主要基于以下原因：</p>
+<ol>
+<li><strong>故障判断的准确性</strong>：单个Sentinel节点可能因网络延迟或自身故障导致误判，通过多数派投票机制（如2n+1个奇数节点）可确保故障判断的准确性。若节点数量不足3个，无法形成有效投票机制，可能导致主节点误判或延迟发现故障。 ‌</li>
+<li><strong>决策一致性需求</strong>：故障转移决策需全体哨兵节点达成一致，至少3个节点可确保在主节点故障时快速完成选举并切换至备用节点，避免因决策分歧导致服务中断。 ‌</li>
+<li><strong>集群健壮性保障</strong>：哨兵集群采用分布式部署，即使部分节点故障也能维持剩余节点的正常运行，确保监控和故障转移功能持续有效。 ‌</li>
+<li><strong>数据一致性要求</strong>：故障转移过程需同步多个节点数据，3个以上节点可分散数据存储风险，减少单点故障对数据完整性的影响。</li>
+</ol>
+<h3 id="选举机制"><a href="#选举机制" class="headerlink" title="选举机制"></a>选举机制</h3><p>slave必须是在线状态才能参加竞选成为新的master，sentinel在选举新的master时是基于以下3个方面来实现的：</p>
+<ol>
+<li><p><strong>slave的优先级</strong>：可以通过slave-priority手动设置slave的优先级，优先级越高成为master的几率也就越高，优先级最高的slave可以直接成为master，如是没有设置slave的优先级sentinel会采用复制进度进一步判断</p>
+</li>
+<li><p><strong>复制进度</strong>：sentinel会选择出数据最完整也就是复制进度最快的slave节点升级为master</p>
+</li>
+<li><p><strong>runid</strong>：通常经过前面两轮筛选已经成果选出来了新的 master，万一真有多个 slave 的优 先级和复制进度一样的话，那就 runid 小的成为新的 master，每个 redis 节点启动时都有一个 40 字节随机字符串作为运行 id。</p>
+</li>
+</ol>
+<h3 id="如何从-Sentinel-集群选出-Leader"><a href="#如何从-Sentinel-集群选出-Leader" class="headerlink" title="如何从 Sentinel 集群选出 Leader"></a>如何从 Sentinel 集群选出 Leader</h3><p>这就需要用到分布式领域的 <strong>共识算法</strong> 了。简单来说，共识算法就是让分布式系统中的节点就一个问题达成共识。在 sentinel 选举 leader 这个场景下，这些 sentinel 要达成的共识就是谁才是 leader 。 大部分共识算法都是基于 <strong>Paxos 算法</strong>改进而来，在 sentinel 选举 leader 这个场景下使用的是 <strong>Raft 算法</strong>。这是一个比 Paxos 算法更易理解和实现的共识算法—Raft 算法。更具体点来说，Raft 是 MultiPaxos 的一个变种，其简化了 Multi-Paxos 的思想，变得更容易被理解以及工程实现</p>
+<h3 id="Sentinel-可以防止脑裂吗"><a href="#Sentinel-可以防止脑裂吗" class="headerlink" title="Sentinel 可以防止脑裂吗"></a>Sentinel 可以防止脑裂吗</h3><p>“脑裂”是指主节点和从节点之间出现通信中断，哨兵误判主节点失效并触发故障转移。可以通过设置合理的超时时间和部署多个哨兵节点来降低脑裂的风险。</p>
+<hr>
+<h1 id="Cluster（集群）模式"><a href="#Cluster（集群）模式" class="headerlink" title="Cluster（集群）模式"></a>Cluster（集群）模式</h1><h2 id="简介-2"><a href="#简介-2" class="headerlink" title="简介"></a>简介</h2><p>Redis 的哨兵模式基本已经可以实现高可用，读写分离 ，但这种模式下每台 Redis 服务器都存储相同的数据，很浪费内存，redis3.0 加入了 Cluster 集群模式，实现了 Redis 的分布式存储，即每台 Redis 节点上存储不同的内容。下面是Cluster 集群模式的一些特点：</p>
+<ul>
+<li>sentinel模式基本可以满足一般生产的需求，具备高可用性。但当数据量过大到一台服务器存放不下时，主从模式或sentinel模式就不能满足需求了，这个时候需要对存储的数据进行分片，将数据存储到多个Redis实例中。cluster模式的出现就是为了解决单机Redis容量有限的问题，将Redis的数据根据一定的规则分配到多台机器。</li>
+<li>Cluster 是sentinel+主从模式的结合体，通过cluster可实现主从和master重选功能，所以如果配置两个副本三个分片，就需要6个Redis实例。因为Redis的数据是根据一定规则分配到cluster的不同机器的，当数据量过大时，可以新增机器进行扩容。</li>
+<li>使用集群只需将redis配置文件中cluster-enable配置打开即可，每个集群中至少需要三个主数据库才能正常运行，新增节点方便。</li>
+</ul>
+<p><strong>Cluster 集群模式架构示意图</strong></p>
+<p><img src="https://raw.githubusercontent.com/SouthernFish/ImageHostServer/main/sql/image-20250919230038247.png" alt="image-20250919230038247"></p>
+<h2 id="实践-amp-配置-2"><a href="#实践-amp-配置-2" class="headerlink" title="实践&amp;配置"></a>实践&amp;配置</h2><h3 id="环境准备-2"><a href="#环境准备-2" class="headerlink" title="环境准备"></a>环境准备</h3><table>
+<thead>
+<tr>
+<th>主机名</th>
+<th>IP</th>
+<th>端口</th>
+<th>角色</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>local-168-10-1</td>
+<td>192.168.10.1</td>
+<td>7001,7002,7003</td>
+<td>node1</td>
+</tr>
+<tr>
+<td>local-168-10-2</td>
+<td>192.168.10.2</td>
+<td>7001,7002,7003</td>
+<td>node2</td>
+</tr>
+<tr>
+<td>local-168-10-3</td>
+<td>192.168.10.3</td>
+<td>7001,7002,7003</td>
+<td>node3</td>
+</tr>
+</tbody></table>
+<h3 id="修改配置"><a href="#修改配置" class="headerlink" title="修改配置"></a>修改配置</h3><ol>
+<li><p>基于主从模式的配置做如下修改:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 创建存储目录</span></span><br><span class="line"><span class="built_in">mkdir</span> -p /opt/software/redis-7.0.3/cluster/redis_&#123;7001..7003&#125;</span><br><span class="line"><span class="built_in">cp</span> /usr/local/redis/redis.conf /usr/local/redis/cluster_redis_7001.conf</span><br><span class="line"><span class="built_in">cp</span> /usr/local/redis/redis.conf /usr/local/redis/cluster_redis_7002.conf</span><br><span class="line"><span class="built_in">cp</span> /usr/local/redis/redis.conf /usr/local/redis/cluster_redis_7003.conf</span><br><span class="line"></span><br><span class="line"><span class="built_in">chown</span> -R redis:redis /usr/local/redis ;<span class="built_in">chown</span> -R redis:redis /opt/software/redis-7.0.3/cluster</span><br></pre></td></tr></table></figure></li>
+<li><p>修改配置文件cluster_redis_7001.conf，位于/usr/local/redis/cluster_redis_7001.conf目录下</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 【注意】节点不一样，IP不一样，记得修改这个bind配置</span></span><br><span class="line"><span class="built_in">bind</span> 192.168.10.1</span><br><span class="line">port 7001</span><br><span class="line">daemonize <span class="built_in">yes</span></span><br><span class="line">pidfile <span class="string">&quot;/var/run/cluster_redis_7001.pid&quot;</span></span><br><span class="line">logfile <span class="string">&quot;/usr/local/redis/cluster_redis_7001.log&quot;</span></span><br><span class="line"><span class="built_in">dir</span> <span class="string">&quot;/opt/software/redis-7.0.3/cluster/redis_7001&quot;</span></span><br><span class="line"><span class="comment">#replicaof 192.168.10.1 6379</span></span><br><span class="line">masterauth <span class="string">&quot;123456&quot;</span></span><br><span class="line">requirepass <span class="string">&quot;123456&quot;</span></span><br><span class="line">appendonly <span class="built_in">yes</span></span><br><span class="line"><span class="comment"># 开启集群模式</span></span><br><span class="line">cluster-enabled <span class="built_in">yes</span></span><br><span class="line"><span class="comment"># 虽然此配置的名字叫&quot;集群配置文件&quot;，但是此配置文件不能人工编辑，它是集群节点自动维护的文件，主要用于记录集群中有哪些节点、他们的状态以及一些持久化参数等，方便在重启时恢复这些状态。通常是在收到请求之后这个文件就会被更新。</span></span><br><span class="line">cluster-config-file nodes_7001.conf</span><br><span class="line">cluster-node-timeout 15000</span><br></pre></td></tr></table></figure></li>
+<li><p>修改配置文件cluster_redis_7002.conf，位于/usr/local/redis/cluster_redis_7002.conf目录下</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 【注意】节点不一样，IP不一样，记得修改这个bind配置</span></span><br><span class="line"><span class="built_in">bind</span> 192.168.10.1</span><br><span class="line">port 7002</span><br><span class="line">daemonize <span class="built_in">yes</span></span><br><span class="line">pidfile <span class="string">&quot;/var/run/cluster_redis_7002.pid&quot;</span></span><br><span class="line">logfile <span class="string">&quot;/usr/local/redis/cluster_redis_7002.log&quot;</span></span><br><span class="line"><span class="built_in">dir</span> <span class="string">&quot;/opt/software/redis-7.0.3/cluster/redis_7002&quot;</span></span><br><span class="line"><span class="comment">#replicaof 192.168.10.1 6379</span></span><br><span class="line">masterauth <span class="string">&quot;123456&quot;</span></span><br><span class="line">requirepass <span class="string">&quot;123456&quot;</span></span><br><span class="line">appendonly <span class="built_in">yes</span></span><br><span class="line"><span class="comment"># 配置yes则开启集群功能，此redis实例作为集群的一个节点，否则，它是一个普通的单一的redis实例。</span></span><br><span class="line">cluster-enabled <span class="built_in">yes</span></span><br><span class="line"><span class="comment"># 虽然此配置的名字叫&quot;集群配置文件&quot;，但是此配置文件不能人工编辑，它是集群节点自动维护的文件，主要用于记录集群中有哪些节点、他们的状态以及一些持久化参数等，方便在重启时恢复这些状态。通常是在收到请求之后这个文件就会被更新。</span></span><br><span class="line">cluster-config-file nodes_7002.conf</span><br><span class="line">cluster-node-timeout 15000</span><br></pre></td></tr></table></figure></li>
+<li><p>修改配置文件cluster_redis_7003.conf，位于/usr/local/redis/cluster_redis_7003.conf目录下</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 【注意】节点不一样，IP不一样，记得修改这个bind配置</span></span><br><span class="line"><span class="built_in">bind</span> 192.168.182.1</span><br><span class="line">port 7003</span><br><span class="line">daemonize <span class="built_in">yes</span></span><br><span class="line">pidfile <span class="string">&quot;/var/run/cluster_redis_7003.pid&quot;</span></span><br><span class="line">logfile <span class="string">&quot;/usr/local/redis/cluster_redis_7003.log&quot;</span></span><br><span class="line"><span class="built_in">dir</span> <span class="string">&quot;/opt/software/redis-7.0.3/cluster/redis_7003&quot;</span></span><br><span class="line"><span class="comment">#replicaof 192.168.10.1 6379</span></span><br><span class="line">masterauth <span class="string">&quot;123456&quot;</span></span><br><span class="line">requirepass <span class="string">&quot;123456&quot;</span></span><br><span class="line">appendonly <span class="built_in">yes</span></span><br><span class="line"><span class="comment"># 配置yes则开启集群功能，此redis实例作为集群的一个节点，否则，它是一个普通的单一的redis实例。</span></span><br><span class="line">cluster-enabled <span class="built_in">yes</span></span><br><span class="line"><span class="comment"># 虽然此配置的名字叫&quot;集群配置文件&quot;，但是此配置文件不能人工编辑，它是集群节点自动维护的文件，主要用于记录集群中有哪些节点、他们的状态以及一些持久化参数等，方便在重启时恢复这些状态。通常是在收到请求之后这个文件就会被更新。</span></span><br><span class="line">cluster-config-file nodes_7003.conf</span><br><span class="line">cluster-node-timeout 15000</span><br></pre></td></tr></table></figure></li>
+<li><p>其它两台机器配置与192.168.10.1一致，只是ip不同，此处省略。</p>
+</li>
+</ol>
+<h3 id="启动Redis服务-1"><a href="#启动Redis服务-1" class="headerlink" title="启动Redis服务"></a>启动Redis服务</h3><p>启动Redis服务的所有的节点。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">redis-server /usr/local/redis/cluster_redis_7001.conf</span><br><span class="line">netstat -tnlp|grep 7001</span><br><span class="line">redis-server /usr/local/redis/cluster_redis_7002.conf</span><br><span class="line">netstat -tnlp|grep 7002</span><br><span class="line">redis-server /usr/local/redis/cluster_redis_7003.conf</span><br><span class="line">netstat -tnlp|grep 7003</span><br><span class="line"><span class="built_in">tail</span> -f /usr/local/redis/cluster_redis_7001.<span class="built_in">log</span></span><br><span class="line"><span class="built_in">tail</span> -f /usr/local/redis/cluster_redis_7002.<span class="built_in">log</span></span><br><span class="line"><span class="built_in">tail</span> -f /usr/local/redis/cluster_redis_7003.<span class="built_in">log</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="创建集群"><a href="#创建集群" class="headerlink" title="创建集群"></a>创建集群</h3><p>为了能够正常工作，需要集群的一个主节点有2个从节点。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># –cluster-replicas 2 : 表示集群的一个主节点有2个从节点，就是一主两从模式</span></span><br><span class="line">redis-cli -a 123456 --cluster create \</span><br><span class="line">192.168.10.1:7001 192.168.10.1:7002 192.168.10.1:7003 \</span><br><span class="line">192.168.10.2:7001 192.168.10.2:7002 192.168.10.2:7003 \</span><br><span class="line">192.168.10.3:7001 192.168.10.3:7002 192.168.10.3:7003 \</span><br><span class="line">--cluster-replicas 2</span><br></pre></td></tr></table></figure>
+
+<p>系统会自动生成nodes.conf文件，打开文件即可看到集群的相关信息。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ll /opt/software/redis-7.0.3/cluster/redis_&#123;7001..7003&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="继承操作"><a href="#继承操作" class="headerlink" title="继承操作"></a>继承操作</h3><p>登录集群，集群信息，列出集群节点</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">redis-cli -c -h 192.168.10.1 -p 7001</span><br><span class="line">192.168.10.1:7001&gt; auth 123456</span><br><span class="line">192.168.10.1:7001&gt; CLUSTER INFO</span><br><span class="line">192.168.10.1:7001&gt; CLUSTER NODES</span><br></pre></td></tr></table></figure>
+
+<h3 id="增加节点"><a href="#增加节点" class="headerlink" title="增加节点"></a>增加节点</h3><p>比如，在node1服务器上增加一节点。</p>
+<ol>
+<li><p>首先添加如下配置</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># copy配置</span></span><br><span class="line"><span class="built_in">cp</span> /usr/local/redis/cluster_redis_7003.conf /usr/local/redis/cluster_redis_7004.conf</span><br><span class="line"><span class="comment"># 创建存储目录</span></span><br><span class="line"><span class="built_in">mkdir</span> /opt/software/redis-7.0.3/cluster/redis_7004</span><br><span class="line"><span class="comment"># 修改配置</span></span><br><span class="line">vi /usr/local/redis/cluster_redis_7004.conf</span><br><span class="line"></span><br><span class="line"><span class="built_in">bind</span> 192.168.10.1</span><br><span class="line">port 7004</span><br><span class="line">daemonize <span class="built_in">yes</span></span><br><span class="line">pidfile <span class="string">&quot;/var/run/redis_7004.pid&quot;</span></span><br><span class="line">logfile <span class="string">&quot;/usr/local/redis/cluster_redis_7004.log&quot;</span></span><br><span class="line"><span class="built_in">dir</span> <span class="string">&quot;/opt/software/redis-7.0.3/cluster/redis_7004&quot;</span></span><br><span class="line"><span class="comment">#replicaof 192.168.10.1 6379</span></span><br><span class="line">masterauth <span class="string">&quot;123456&quot;</span></span><br><span class="line">requirepass <span class="string">&quot;123456&quot;</span></span><br><span class="line">appendonly <span class="built_in">yes</span></span><br><span class="line">cluster-enabled <span class="built_in">yes</span></span><br><span class="line">cluster-config-file nodes_7004.conf</span><br><span class="line">cluster-node-timeout 15000</span><br><span class="line"></span><br><span class="line"><span class="comment"># 授权</span></span><br><span class="line"><span class="built_in">chown</span> -R redis:redis /usr/local/redis &amp;&amp; <span class="built_in">chown</span> -R redis:redis /opt/software/redis-7.0.3/cluster/redis_7004</span><br></pre></td></tr></table></figure></li>
+<li><p>再启动服务</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">redis-server /usr/local/redis/cluster_redis_7004.conf</span><br><span class="line">netstat -tnlp|grep :7004</span><br></pre></td></tr></table></figure></li>
+<li><p>如果要在集群中增加节点，可以使用下面的方式。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[root@local-168-10-1 ~]<span class="comment"># redis-cli -c -h 192.168.10.1 -p 7001</span></span><br><span class="line">192.168.10.1:7001&gt; auth 123456</span><br><span class="line"><span class="comment"># 添加节点</span></span><br><span class="line">192.168.10.1:7001&gt; CLUSTER MEET 192.168.10.1 7004</span><br><span class="line"><span class="comment"># 查看节点信息</span></span><br><span class="line">192.168.10.1:7001&gt; CLUSTER NODES</span><br></pre></td></tr></table></figure></li>
+<li><p>新增节点都是以master身份加入集群的。如果要【更换节点身份】，比如将新增的192.168.10.1:7004节点身份改为192.168.10.1:7001的slave。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">redis-cli -c -h 192.168.10.1 -p 7004</span><br><span class="line">192.168.10.1:7004&gt; auth 123456</span><br><span class="line"><span class="comment"># 改变节点类型</span></span><br><span class="line">192.168.10.1:7004&gt; cluster replicate <span class="string">&#x27;所列出节点的id&#x27;</span></span><br><span class="line">192.168.10.1:7004&gt; CLUSTER NODES</span><br></pre></td></tr></table></figure></li>
+</ol>
+<h3 id="删除节点"><a href="#删除节点" class="headerlink" title="删除节点"></a>删除节点</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">redis-cli -c -h 192.168.10.1 -p 7001</span><br><span class="line">192.168.10.1:7001&gt; auth 123456</span><br><span class="line"><span class="comment"># 查看节点</span></span><br><span class="line">192.168.10.1:7001&gt; CLUSTER NODES</span><br><span class="line"><span class="comment"># 删除节点</span></span><br><span class="line">192.168.10.1:7001&gt; CLUSTER FORGET <span class="string">&#x27;待删除节点id&#x27;</span></span><br><span class="line"><span class="comment"># 检查节点信息</span></span><br><span class="line">192.168.10.1:7001&gt; CLUSTER NODES</span><br></pre></td></tr></table></figure>
+
+<p>在配置修改完后保存配置。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">redis-cli -c -h 192.168.10. -p 7001</span><br><span class="line">192.168.10.1:7001&gt; auth 123456</span><br><span class="line"><span class="comment"># 将节点的配置文件保存到硬盘里面</span></span><br><span class="line">192.168.10.1:7001&gt; CLUSTER SAVECONFIG</span><br></pre></td></tr></table></figure>
+
+<p>可以看到，之前删除的节点又恢复了，这是因为对应的配置文件没有删除，执行CLUSTER SAVECONFIG恢复。</p>
+<h3 id="故障模拟"><a href="#故障模拟" class="headerlink" title="故障模拟"></a>故障模拟</h3><h4 id="故障转移流程-1"><a href="#故障转移流程-1" class="headerlink" title="故障转移流程"></a>故障转移流程</h4><p>当主节点故障时，集群会按以下步骤完成故障转移：</p>
+<ul>
+<li><strong>故障检测</strong>：超过半数节点认为主节点下线（FAIL状态）</li>
+<li><strong>从节点选举</strong>：基于Raft协议，获得N/2+1票的从节点胜出</li>
+<li><strong>角色切换</strong>：新主节点执行 SLAVEOF NO ONE 成为主节点</li>
+<li><strong>槽位迁移</strong>：新主节点接管原主节点的所有槽位</li>
+<li><strong>集群广播</strong>：通过PONG消息通知所有节点状态变更</li>
+</ul>
+<h4 id="多从节点选举机制"><a href="#多从节点选举机制" class="headerlink" title="多从节点选举机制"></a>多从节点选举机制</h4><p>在多从场景下，选举过程遵循以下规则：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">1. 从节点发现主节点下线，广播 CLUSTERMSG_TYPE_FAILOVER_AUTH_REQUEST</span><br><span class="line">2. 其他主节点收到请求后，若未投票则返回 CLUSTERMSG_TYPE_FAILOVER_AUTH_ACK</span><br><span class="line">3. 从节点收集投票，当票数 ≥ (N/2 + 1) 时当选新主（N为主节点总数）</span><br><span class="line">4. 若选举周期内无节点获足够票数，进入下一轮选举</span><br></pre></td></tr></table></figure>
+
+<h4 id="模拟主节点挂掉"><a href="#模拟主节点挂掉" class="headerlink" title="模拟主节点挂掉"></a>模拟主节点挂掉</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">netstat -lntp |grep :7001|awk <span class="string">&#x27;&#123;print $NF&#125;&#x27;</span>|<span class="built_in">cut</span> -d <span class="string">&#x27;/&#x27;</span> -f 1|xargs <span class="built_in">kill</span> -9</span><br><span class="line">redis-cli -c -h 192.168.10.1 -p 7001 -a 123456 CLUSTER NODES</span><br></pre></td></tr></table></figure>
+
+<p>结果，192.168.10.1:7001的一行为master fail，状态为disconnected；而对应192.168.10.1:7004的一行，slave已经变成master。</p>
+<p>再模拟下故障恢复场景，重新启动192.168.10.1:7001节点。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">redis-server /usr/local/redis/cluster_redis_7001.conf</span><br><span class="line">redis-cli -c -h 192.168.10.1 -p 7001 -a 123456 CLUSTER NODES</span><br></pre></td></tr></table></figure>
+
+<p>结果，192.168.10.1:7001节点启动后为slave节点，并且是192.168.10.1:7004的slave节点。即master节点如果挂掉，它的slave节点变为新master节点继续对外提供服务，而原来的master节点重启后变为新master节点的slave节点。需要说明的是，cluster不能选择db，只能默认db为0，所以select切库相当于是不能使用的。</p>
+<h2 id="其他操作"><a href="#其他操作" class="headerlink" title="其他操作"></a>其他操作</h2><h3 id="查看集群信息"><a href="#查看集群信息" class="headerlink" title="查看集群信息"></a>查看集群信息</h3><ul>
+<li>cluster info ：打印集群的信息</li>
+<li>cluster nodes ：列出集群当前已知的所有节点（ node），以及这些节点的相关信息。</li>
+</ul>
+<h3 id="节点操作"><a href="#节点操作" class="headerlink" title="节点操作"></a>节点操作</h3><ul>
+<li>cluster meet ：将 ip 和 port 所指定的节点添加到集群当中，让它成为集群的一份子。</li>
+<li>cluster forget <node_id> ：从集群中移除 node_id 指定的节点。</li>
+<li>cluster replicate <node_id> ：将当前节点设置为 node_id 指定的节点的从节点。</li>
+<li>cluster saveconfig ：将节点的配置文件保存到硬盘里面。</li>
+</ul>
+<h3 id="槽-slot-操作"><a href="#槽-slot-操作" class="headerlink" title="槽(slot)操作"></a>槽(slot)操作</h3><ul>
+<li>cluster addslots [slot …] ：将一个或多个槽（ slot）指派（ assign）给当前节点。</li>
+<li>cluster delslots [slot …] ：移除一个或多个槽对当前节点的指派。</li>
+<li>cluster flushslots ：移除指派给当前节点的所有槽，让当前节点变成一个没有指派任何槽的节点。</li>
+<li>cluster setslot node <node_id> ：将槽 slot 指派给 node_id 指定的节点，如果槽已经指派给另一个节点，那么先让另一个节点删除该槽，然后再进行指派。</li>
+<li>cluster setslot migrating <node_id> ：将本节点的槽 slot 迁移到 node_id 指定的节点中。</li>
+<li>cluster setslot importing <node_id> ：从 node_id 指定的节点中导入槽 slot 到本节点。</li>
+<li>cluster setslot stable ：取消对槽 slot 的导入（ import）或者迁移（ migrate）。</li>
+</ul>
+<h3 id="键"><a href="#键" class="headerlink" title="键"></a>键</h3><ul>
+<li>cluster keyslot ：计算键 key 应该被放置在哪个槽上。</li>
+<li>cluster countkeysinslot ：返回槽 slot 目前包含的键值对数量。</li>
+<li>cluster getkeysinslot ：返回 count 个 slot 槽中的键</li>
+</ul>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>Redis Cluster 通过哈希槽分片与自动故障转移，完美解决了单机 Redis 的三大痛点：<strong>存储限制、写操作瓶颈和手动运维成本</strong>。其无中心化架构与动态扩容能力，使其成为以下场景的首选方案：</p>
+<ul>
+<li><strong>高并发读写</strong>：电商秒杀、社交平台 feed 流</li>
+<li><strong>海量数据存储</strong>：用户行为分析、实时统计系统</li>
+<li><strong>高可用要求</strong>：核心业务缓存、分布式会话存储</li>
+<li><strong>弹性扩展场景</strong>：流量波动大的互联网应用</li>
+</ul>
+<h2 id="常见问题-1"><a href="#常见问题-1" class="headerlink" title="常见问题"></a>常见问题</h2><h3 id="Redis-Cluster-特性"><a href="#Redis-Cluster-特性" class="headerlink" title="Redis Cluster 特性"></a>Redis Cluster 特性</h3><p>Redis Cluster 作为官方推荐的分布式方案，具有以下革命性突破：</p>
+<ol>
+<li><p><strong>无中心化架构</strong>：所有节点通过 <code>PING-PONG</code> 机制网络互联，数据共享，不存在单点故障，客户端可以连接任何一个主节点进行读写。</p>
+<p>所有的节点都是一主一从（也可以是一主多从），其中从不提供服务，仅作为备用；</p>
+</li>
+<li><p><strong>哈希槽分片</strong>：将数据映射到 16384 个槽位，实现<strong>自动数据分片</strong></p>
+<p>不支持同时处理多个key（如MSET/MGET），因为redis需要把key均匀分布在各个节点上，并发量很高的情况下同时创建key-value会降低性能并导致不可预测的行为；</p>
+</li>
+<li><p><strong>智能故障转移</strong>：基于 <code>Raft</code> 协议的选举机制，超过半数节点投票确认故障</p>
+</li>
+<li><p><strong>动态扩容</strong>：支持节点在线添加与删除，自动迁移数据槽位</p>
+</li>
+<li><p><strong>高可用性</strong>：主从复制结合自动故障转移，保证服务持续可用</p>
+</li>
+</ol>
+<h3 id="哈希槽分片机制"><a href="#哈希槽分片机制" class="headerlink" title="哈希槽分片机制"></a>哈希槽分片机制</h3><p>Redis Cluster 采用哈希槽（Hash Slot） 实现数据分片，这是其区别于传统分片方案的关键：</p>
+<ul>
+<li><strong>槽位分配</strong>：16384 个槽位均匀分配给集群中的主节点</li>
+<li><strong>数据路由</strong>：通过 HASH_SLOT = CRC16(key) mod 16384 计算目标槽位</li>
+<li><strong>透明转发</strong>：当客户端请求非本节点槽位时，节点会返回正确节点地址</li>
+</ul>
+<p>Redis 支持<strong>客户端分片，代理分片，服务器端分片（Redis Cluster）</strong>三种分片实现方式，各有适用场景：</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>客户端分片</th>
+<th>代理分片</th>
+<th>服务器端分片（Redis Cluster）</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>原理</td>
+<td>在业务代码中实现分片逻辑，直接连接多个 Redis 实例</td>
+<td>通过代理层接收请求并转发至目标节点</td>
+<td>节点自身管理分片逻辑，客户端直接连接</td>
+</tr>
+<tr>
+<td>工具</td>
+<td>无成熟开源方案</td>
+<td>Twemproxy、Codis</td>
+<td>——</td>
+</tr>
+<tr>
+<td>优势</td>
+<td>无中间层开销，性能最佳</td>
+<td>业务无感知，运维方便</td>
+<td>官方支持，无中间层，自动故障转移</td>
+</tr>
+<tr>
+<td>缺点</td>
+<td>代码侵入性强，运维复杂，不适合中小团队</td>
+<td>引入代理层性能损耗（约20%）</td>
+<td>多Key命令限制，需要客户端支持</td>
+</tr>
+</tbody></table>
+<h3 id="为什么是-16384-个哈希槽"><a href="#为什么是-16384-个哈希槽" class="headerlink" title="为什么是 16384 个哈希槽"></a>为什么是 16384 个哈希槽</h3><ul>
+<li><p><strong>均匀分布</strong>：使用 16384 个哈希槽可以提供一种相对均匀的分布方式。这意味着理论上每个节点可以处理大约 16384 / N 个键值对，其中 N 是集群中节点的数量。这种均匀分布有助于减少热点问题（即某些节点负载过重，而其他节点负载较轻）的发生。</p>
+</li>
+<li><p>灵活性：16384 这个数字足够大，可以适应大多数中小型部署的需求。对于大型部署，虽然理论上可以增加更多的哈希槽，但在实践中，考虑到性能和操作的复杂性，16384 已经是一个较为合理的上限。</p>
+</li>
+<li><p><strong>简化计算</strong>：在 Redis Cluster 中，键到哈希槽的映射是通过计算键的 CRC16 值来实现的，然后将这个值对 16384 取模（即 CRC16(key) % 16384），从而确定该键应该存储在哪个哈希槽中。使用 16384 作为模数简化了计算过程，因为它是 2 的幂次方，使得模运算非常高效。</p>
+</li>
+<li><p><strong>网络带宽效率</strong>：Gossip协议的通信成本。Redis集群节点间通过Gossip协议交换集群状态（如节点存活、槽位分配等）。每个节点会定期向其他节点广播自己负责的槽位信息，这些信息通过位图（bitmap）表示，16384个槽对应16384位，恰好<strong>2048字节，即2KB</strong>。若槽位数量更多（如65536=2^16），位图会增至8KB。在节点数量较多时（如100个节点），广播的总数据量会显著增加（从200KB增至800KB），浪费带宽并增加节点处理负担。<br>16384的设计在“槽位数量”和“Gossip通信成本”间取得了平衡，保证了集群状态同步的轻量性。</p>
+</li>
+</ul>
+<h3 id="节点通信"><a href="#节点通信" class="headerlink" title="节点通信"></a>节点通信</h3><p>在Redis Cluster中，所有节点之间都是通过TCP协议进行通信的。Redis Cluster中的节点间通信主要分为两种方式：</p>
+<ul>
+<li><strong>节点间的gossip通信</strong>：每个节点都会定期向其他节点发送PING消息，以检查其他节点的状态和可用性。同时，节点也会接收其他节点发送的PING消息，并根据接收到的消息更新自己的节点列表。如果一个节点在一定时间内没有回复PING消息，就会被判定为下线，并进行相应的处理，如进行故障转移等。另外，节点之间还会进行CLUSTER MEET消息的交换，以建立新的节点之间的连接。</li>
+<li><strong>节点间的命令通信</strong>：当一个节点接收到客户端的请求后，如果该节点不是负责处理该请求的槽位，则会触发重定向机制，将请求重定向到负责槽位的节点。负责槽位的节点接收到请求后，会进行相应的处理，并将结果返回给客户端。在这种情况下，节点之间会通过TCP协议进行命令通信，以保证数据的正确性和一致性。</li>
+</ul>
+<p>在实现上，Redis Cluster中的节点间通信使用了基于TCP协议的二进制协议，以保证通信的高效性和稳定性。每个节点都会维护一个关于整个集群的拓扑结构，以便进行槽位的分配和重定向机制的触发。同时，Redis Cluster还提供了一些机制，如槽位迁移、故障转移等，以保证数据的可靠性和高可用性。</p>
+<h3 id="确定-key-对应的哈希槽"><a href="#确定-key-对应的哈希槽" class="headerlink" title="确定 key 对应的哈希槽"></a>确定 key 对应的哈希槽</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> hashlib</span><br><span class="line"><span class="comment"># 计算 key 应该落到哪个节点的函数</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">calculate_slot</span>(<span class="params">key</span>):</span><br><span class="line">    key_hash = hashlib.md5(key.encode()).digest()</span><br><span class="line">    slot = (key_hash[<span class="number">0</span>] &lt;&lt; <span class="number">24</span>) | (key_hash[<span class="number">1</span>] &lt;&lt; <span class="number">16</span>) | (key_hash[<span class="number">2</span>] &lt;&lt; <span class="number">8</span>) | key_hash[<span class="number">3</span>]</span><br><span class="line">    <span class="keyword">return</span> slot % <span class="number">16384</span></span><br><span class="line"><span class="comment"># 示例 key</span></span><br><span class="line">key = <span class="string">&quot;example_key&quot;</span></span><br><span class="line">slot = calculate_slot(key)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;The key &#x27;<span class="subst">&#123;key&#125;</span>&#x27; should be in slot: <span class="subst">&#123;slot&#125;</span>&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="手动干预重新分配哈希槽"><a href="#手动干预重新分配哈希槽" class="headerlink" title="手动干预重新分配哈希槽"></a>手动干预重新分配哈希槽</h3><p>虽然大多数情况下Redis集群可以自动处理哈希槽的迁移，但在某些情况下，可能需要手动干预：</p>
+<p>使用CLUSTER SETSLOT命令：Redis提供了CLUSTER SETSLOT命令来手动指定某个槽应该被迁移到哪个节点。例如，CLUSTER SETSLOT 1234 IMPORTING <node_id>可以用来指示一个节点开始导入槽1234的数据，而CLUSTER SETSLOT 1234 MIGRATING <node_id>则用来指示一个节点开始迁移槽1234的数据到另一个节点。</p>
+<p>使用CLUSTER SETSLOT <slot> NODE <node_id>：这个命令可以用来更改特定槽的主节点。</p>
+<h3 id="扩容缩容期间可以提供服务吗"><a href="#扩容缩容期间可以提供服务吗" class="headerlink" title="扩容缩容期间可以提供服务吗"></a>扩容缩容期间可以提供服务吗</h3><p><em>可以</em>继续提供服务。因为 Redis 的节点会根据集群拓扑结构进行自动重定向，以确保客户端可以找到正确的节点来处理请求。</p>
+<p>扩容和缩容操作指 Redis Cluster 允许在运行时动态添加和移除节点。步骤大致如下：</p>
+<ol>
+<li><p><strong>在已有集群中添加新节点</strong>：添加新的 Redis 节点到已有的集群中</p>
+</li>
+<li><p><strong>将新节点加入集群</strong>：将新的 Redis 节点加入到集群中，并进行握手和插槽分配</p>
+</li>
+<li><p><strong>迁移槽位</strong>：自动将一部分槽位从已有的节点迁移到新的节点上</p>
+</li>
+<li><p><strong>重新分配槽位</strong>：当槽位被迁移到新的节点后，集群会自动重新分配所有的槽位</p>
+</li>
+<li><p><strong>移除旧节点</strong>：当新节点成功加入集群并接管了相应的槽位后，可以选择移除旧的节点</p>
+</li>
+</ol>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="https://southernfish.github.io">Southern Fish</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://southernfish.github.io/pages/database/db-redis-cluster/">https://southernfish.github.io/pages/database/db-redis-cluster/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://southernfish.github.io" target="_blank">Southern Fish</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Redis/">Redis</a></div><div class="post_share"><div class="social-share" data-image="/img/article/article4.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/pages/database/db-redis-produce-problem/"><img class="prev-cover" src="/img/article/article1.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">Redis的缓存穿透、缓存击穿、缓存雪崩</div></div></a></div><div class="next-post pull-right"><a href="/pages/database/db-redis-datatype/"><img class="next-cover" src="/img/article/article2.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">Redis支持的数据类型</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/pages/database/cache-read-write-strategies/" title="三大缓存读写策略"><img class="cover" src="/img/article/article1.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2025-09-17</div><div class="title">三大缓存读写策略</div></div></a></div><div><a href="/pages/database/db-redis-consistency/" title="Redis缓存与数据库的一致性"><img class="cover" src="/img/article/article6.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2025-09-17</div><div class="title">Redis缓存与数据库的一致性</div></div></a></div><div><a href="/pages/database/db-redis-persistence/" title="Redis的持久化机制"><img class="cover" src="/img/article/article5.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2025-09-18</div><div class="title">Redis的持久化机制</div></div></a></div><div><a href="/pages/database/db-redis-produce-problem/" title="Redis的缓存穿透、缓存击穿、缓存雪崩"><img class="cover" src="/img/article/article1.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2025-09-17</div><div class="title">Redis的缓存穿透、缓存击穿、缓存雪崩</div></div></a></div><div><a href="/pages/distributed/distributed-lock/" title="分布式锁详解"><img class="cover" src="/img/article/article2.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2025-09-17</div><div class="title">分布式锁详解</div></div></a></div><div><a href="/pages/database/db-redis-datatype/" title="Redis支持的数据类型"><img class="cover" src="/img/article/article2.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2025-09-17</div><div class="title">Redis支持的数据类型</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Southern Fish</div><div class="author-info__description"></div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">96</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">35</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">16</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/SouthernFish" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="/1002721576@qq.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">天下事岂能尽如吾意，心境须恰适，尽其在我，随遇而安。</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Redis-%E9%9B%86%E7%BE%A4%E6%A8%A1%E5%BC%8F"><span class="toc-number">1.</span> <span class="toc-text">Redis 集群模式</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E7%A7%8D%E9%9B%86%E7%BE%A4%E6%A8%A1%E5%BC%8F%E5%AF%B9%E6%AF%94"><span class="toc-number">1.1.</span> <span class="toc-text">三种集群模式对比</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%BB%E4%BB%8E%E6%A8%A1%E5%BC%8F"><span class="toc-number">2.</span> <span class="toc-text">主从模式</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AE%80%E4%BB%8B"><span class="toc-number">2.1.</span> <span class="toc-text">简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B7%A5%E4%BD%9C%E6%9C%BA%E5%88%B6"><span class="toc-number">2.2.</span> <span class="toc-text">工作机制</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E8%B7%B5-amp-%E9%85%8D%E7%BD%AE"><span class="toc-number">2.3.</span> <span class="toc-text">实践&amp;配置</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%8E%AF%E5%A2%83%E5%87%86%E5%A4%87"><span class="toc-number">2.3.1.</span> <span class="toc-text">环境准备</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%8B%E8%BD%BD%E8%A7%A3%E5%8E%8BRedis%E5%AE%89%E8%A3%85%E5%8C%85"><span class="toc-number">2.3.2.</span> <span class="toc-text">下载解压Redis安装包</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85%E6%89%80%E6%9C%89%E8%8A%82%E7%82%B9"><span class="toc-number">2.3.3.</span> <span class="toc-text">编译安装所有节点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BA%E5%AE%89%E8%A3%85%E8%8A%82%E7%82%B9%E9%85%8D%E7%BD%AE%E6%9C%8D%E5%8A%A1"><span class="toc-number">2.3.4.</span> <span class="toc-text">为安装节点配置服务</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8E%88%E6%9D%83%E5%90%AF%E5%8A%A8%E6%9C%8D%E5%8A%A1%E7%9B%B8%E5%85%B3%E5%91%BD%E4%BB%A4"><span class="toc-number">2.3.5.</span> <span class="toc-text">授权启动服务相关命令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BF%AE%E6%94%B9linux%E5%86%85%E6%A0%B8%E5%8F%82%E6%95%B0"><span class="toc-number">2.3.6.</span> <span class="toc-text">修改linux内核参数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%8A%82%E7%82%B9%E9%85%8D%E7%BD%AE"><span class="toc-number">2.3.7.</span> <span class="toc-text">节点配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%90%AF%E5%8A%A8Redis%E6%9C%8D%E5%8A%A1"><span class="toc-number">2.3.8.</span> <span class="toc-text">启动Redis服务</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8B%E9%9B%86%E7%BE%A4"><span class="toc-number">2.3.9.</span> <span class="toc-text">查看集群</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Sentinel%EF%BC%88%E5%93%A8%E5%85%B5%EF%BC%89%E6%A8%A1%E5%BC%8F"><span class="toc-number">3.</span> <span class="toc-text">Sentinel（哨兵）模式</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AE%80%E4%BB%8B-1"><span class="toc-number">3.1.</span> <span class="toc-text">简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%A8%8B"><span class="toc-number">3.2.</span> <span class="toc-text">工作流程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E8%B7%B5-amp-%E9%85%8D%E7%BD%AE-1"><span class="toc-number">3.3.</span> <span class="toc-text">实践&amp;配置</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%8E%AF%E5%A2%83%E5%87%86%E5%A4%87-1"><span class="toc-number">3.3.1.</span> <span class="toc-text">环境准备</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%85%8D%E7%BD%AEsentinel"><span class="toc-number">3.3.2.</span> <span class="toc-text">配置sentinel</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%90%AF%E5%8A%A8sentinel"><span class="toc-number">3.3.3.</span> <span class="toc-text">启动sentinel</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%85%E9%9A%9C%E6%A8%A1%E6%8B%9F%E6%B5%8B%E8%AF%95"><span class="toc-number">3.3.4.</span> <span class="toc-text">故障模拟测试</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98"><span class="toc-number">3.4.</span> <span class="toc-text">常见问题</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Sentinel-%E4%BD%9C%E7%94%A8"><span class="toc-number">3.4.1.</span> <span class="toc-text">Sentinel 作用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%8A%82%E7%82%B9%E4%B8%8B%E7%BA%BF%E6%A3%80%E6%B5%8B-amp-%E4%B8%BB%E8%A7%82%E4%B8%8B%E7%BA%BFVS%E5%AE%A2%E8%A7%82%E4%B8%8B%E7%BA%BF"><span class="toc-number">3.4.2.</span> <span class="toc-text">节点下线检测&amp;主观下线VS客观下线</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%85%E9%9A%9C%E8%BD%AC%E7%A7%BB%E6%B5%81%E7%A8%8B"><span class="toc-number">3.4.3.</span> <span class="toc-text">故障转移流程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E5%BB%BA%E8%AE%AE%E5%93%A8%E5%85%B5%E9%9B%86%E7%BE%A4"><span class="toc-number">3.4.4.</span> <span class="toc-text">为什么建议哨兵集群</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%80%89%E4%B8%BE%E6%9C%BA%E5%88%B6"><span class="toc-number">3.4.5.</span> <span class="toc-text">选举机制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E4%BB%8E-Sentinel-%E9%9B%86%E7%BE%A4%E9%80%89%E5%87%BA-Leader"><span class="toc-number">3.4.6.</span> <span class="toc-text">如何从 Sentinel 集群选出 Leader</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Sentinel-%E5%8F%AF%E4%BB%A5%E9%98%B2%E6%AD%A2%E8%84%91%E8%A3%82%E5%90%97"><span class="toc-number">3.4.7.</span> <span class="toc-text">Sentinel 可以防止脑裂吗</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Cluster%EF%BC%88%E9%9B%86%E7%BE%A4%EF%BC%89%E6%A8%A1%E5%BC%8F"><span class="toc-number">4.</span> <span class="toc-text">Cluster（集群）模式</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AE%80%E4%BB%8B-2"><span class="toc-number">4.1.</span> <span class="toc-text">简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9E%E8%B7%B5-amp-%E9%85%8D%E7%BD%AE-2"><span class="toc-number">4.2.</span> <span class="toc-text">实践&amp;配置</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%8E%AF%E5%A2%83%E5%87%86%E5%A4%87-2"><span class="toc-number">4.2.1.</span> <span class="toc-text">环境准备</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BF%AE%E6%94%B9%E9%85%8D%E7%BD%AE"><span class="toc-number">4.2.2.</span> <span class="toc-text">修改配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%90%AF%E5%8A%A8Redis%E6%9C%8D%E5%8A%A1-1"><span class="toc-number">4.2.3.</span> <span class="toc-text">启动Redis服务</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E9%9B%86%E7%BE%A4"><span class="toc-number">4.2.4.</span> <span class="toc-text">创建集群</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BB%A7%E6%89%BF%E6%93%8D%E4%BD%9C"><span class="toc-number">4.2.5.</span> <span class="toc-text">继承操作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A2%9E%E5%8A%A0%E8%8A%82%E7%82%B9"><span class="toc-number">4.2.6.</span> <span class="toc-text">增加节点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%A0%E9%99%A4%E8%8A%82%E7%82%B9"><span class="toc-number">4.2.7.</span> <span class="toc-text">删除节点</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%85%E9%9A%9C%E6%A8%A1%E6%8B%9F"><span class="toc-number">4.2.8.</span> <span class="toc-text">故障模拟</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%95%85%E9%9A%9C%E8%BD%AC%E7%A7%BB%E6%B5%81%E7%A8%8B-1"><span class="toc-number">4.2.8.1.</span> <span class="toc-text">故障转移流程</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A4%9A%E4%BB%8E%E8%8A%82%E7%82%B9%E9%80%89%E4%B8%BE%E6%9C%BA%E5%88%B6"><span class="toc-number">4.2.8.2.</span> <span class="toc-text">多从节点选举机制</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%A8%A1%E6%8B%9F%E4%B8%BB%E8%8A%82%E7%82%B9%E6%8C%82%E6%8E%89"><span class="toc-number">4.2.8.3.</span> <span class="toc-text">模拟主节点挂掉</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B6%E4%BB%96%E6%93%8D%E4%BD%9C"><span class="toc-number">4.3.</span> <span class="toc-text">其他操作</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8B%E9%9B%86%E7%BE%A4%E4%BF%A1%E6%81%AF"><span class="toc-number">4.3.1.</span> <span class="toc-text">查看集群信息</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%8A%82%E7%82%B9%E6%93%8D%E4%BD%9C"><span class="toc-number">4.3.2.</span> <span class="toc-text">节点操作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A7%BD-slot-%E6%93%8D%E4%BD%9C"><span class="toc-number">4.3.3.</span> <span class="toc-text">槽(slot)操作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%94%AE"><span class="toc-number">4.3.4.</span> <span class="toc-text">键</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B0%8F%E7%BB%93"><span class="toc-number">4.4.</span> <span class="toc-text">小结</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98-1"><span class="toc-number">4.5.</span> <span class="toc-text">常见问题</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Redis-Cluster-%E7%89%B9%E6%80%A7"><span class="toc-number">4.5.1.</span> <span class="toc-text">Redis Cluster 特性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%93%88%E5%B8%8C%E6%A7%BD%E5%88%86%E7%89%87%E6%9C%BA%E5%88%B6"><span class="toc-number">4.5.2.</span> <span class="toc-text">哈希槽分片机制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E6%98%AF-16384-%E4%B8%AA%E5%93%88%E5%B8%8C%E6%A7%BD"><span class="toc-number">4.5.3.</span> <span class="toc-text">为什么是 16384 个哈希槽</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%8A%82%E7%82%B9%E9%80%9A%E4%BF%A1"><span class="toc-number">4.5.4.</span> <span class="toc-text">节点通信</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%A1%AE%E5%AE%9A-key-%E5%AF%B9%E5%BA%94%E7%9A%84%E5%93%88%E5%B8%8C%E6%A7%BD"><span class="toc-number">4.5.5.</span> <span class="toc-text">确定 key 对应的哈希槽</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%89%8B%E5%8A%A8%E5%B9%B2%E9%A2%84%E9%87%8D%E6%96%B0%E5%88%86%E9%85%8D%E5%93%88%E5%B8%8C%E6%A7%BD"><span class="toc-number">4.5.6.</span> <span class="toc-text">手动干预重新分配哈希槽</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%89%A9%E5%AE%B9%E7%BC%A9%E5%AE%B9%E6%9C%9F%E9%97%B4%E5%8F%AF%E4%BB%A5%E6%8F%90%E4%BE%9B%E6%9C%8D%E5%8A%A1%E5%90%97"><span class="toc-number">4.5.7.</span> <span class="toc-text">扩容缩容期间可以提供服务吗</span></a></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/pages/high-availability/server-limit-stream/" title="服务限流"><img src="/img/article/article3.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="服务限流"/></a><div class="content"><a class="title" href="/pages/high-availability/server-limit-stream/" title="服务限流">服务限流</a><time datetime="2025-09-18T09:02:36.000Z" title="发表于 2025-09-18 17:02:36">2025-09-18</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/pages/database/db-redis-persistence/" title="Redis的持久化机制"><img src="/img/article/article5.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Redis的持久化机制"/></a><div class="content"><a class="title" href="/pages/database/db-redis-persistence/" title="Redis的持久化机制">Redis的持久化机制</a><time datetime="2025-09-18T01:15:36.000Z" title="发表于 2025-09-18 09:15:36">2025-09-18</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/pages/database/cache-read-write-strategies/" title="三大缓存读写策略"><img src="/img/article/article1.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="三大缓存读写策略"/></a><div class="content"><a class="title" href="/pages/database/cache-read-write-strategies/" title="三大缓存读写策略">三大缓存读写策略</a><time datetime="2025-09-17T13:15:36.000Z" title="发表于 2025-09-17 21:15:36">2025-09-17</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/pages/database/db-redis-consistency/" title="Redis缓存与数据库的一致性"><img src="/img/article/article6.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Redis缓存与数据库的一致性"/></a><div class="content"><a class="title" href="/pages/database/db-redis-consistency/" title="Redis缓存与数据库的一致性">Redis缓存与数据库的一致性</a><time datetime="2025-09-17T13:15:36.000Z" title="发表于 2025-09-17 21:15:36">2025-09-17</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/pages/database/db-redis-produce-problem/" title="Redis的缓存穿透、缓存击穿、缓存雪崩"><img src="/img/article/article1.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Redis的缓存穿透、缓存击穿、缓存雪崩"/></a><div class="content"><a class="title" href="/pages/database/db-redis-produce-problem/" title="Redis的缓存穿透、缓存击穿、缓存雪崩">Redis的缓存穿透、缓存击穿、缓存雪崩</a><time datetime="2025-09-17T13:15:36.000Z" title="发表于 2025-09-17 21:15:36">2025-09-17</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url('/img/article/article4.png')"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2025 By Southern Fish</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><script>var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',preloader.endLoading())</script><div class="js-pjax"></div><canvas class="fireworks" mobile="true"></canvas><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/fireworks.min.js"></script><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="true" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-nest.min.js"></script><script id="click-heart" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/click-heart.min.js" async="async" mobile="true"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body></html>
